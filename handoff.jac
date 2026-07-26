@@ -69,10 +69,17 @@ node User {
 }
 
 node Resident {
-    """A person being handed off. Summaries and retrieval are scoped to these."""
+    """A person being handed off. Summaries and retrieval are scoped to these.
+
+    `concern_status`/`concern_note` are the homescreen's clinical-attention
+    signal: "concern" (tier-1) | "watching" (tier-2) | "stable". In a real
+    deployment the tripwire pipeline writes these; for the demo the seed
+    walker sets them (NOT fabricated in the client)."""
     has name: str;
     has room: str;
     has facility_id: str = "F1";
+    has concern_status: str = "stable";   # concern | watching | stable
+    has concern_note: str = "";           # one-line reason shown on the row
 }
 
 node HandoffSession {
@@ -379,7 +386,9 @@ def _gen_at(d: dict) -> float {
 # ===========================================================================
 
 walker:pub SeedDemo {
-    """Idempotently seed demo staff + residents (PRD 5.1). Safe to call repeatedly."""
+    """Idempotently seed demo staff + residents (PRD 5.1). Safe to call
+    repeatedly; guarded on emptiness. To RE-seed with fresh data, wipe the
+    graph store first: `jac clean --data --force` (then reboot / log in)."""
     has reports: list[dict] = [];
 
     can seed with Root entry {
@@ -390,9 +399,24 @@ walker:pub SeedDemo {
             here ++> User(username="acna", name="Alex Cruz", role="CNA");
         }
         if not [here --> [?:Resident]] {
-            here ++> Resident(name="Harold Alvarez", room="3B");
-            here ++> Resident(name="Rosa Marino", room="2A");
-            here ++> Resident(name="Walter Kim", room="4C");
+            # A whole hall. concern_status / concern_note are the homescreen's
+            # clinical-attention signal, seeded here in the DB (the tripwire
+            # pipeline would set them in production) -- never faked client-side.
+            here ++> Resident(name="Alma Reyes", room="14",
+                concern_status="concern", concern_note="Fall detected 02:14 · no check logged since");
+            here ++> Resident(name="Bernard Osei", room="08",
+                concern_status="concern", concern_note="3rd overnight desat this week");
+            here ++> Resident(name="Victor Lang", room="22",
+                concern_status="watching", concern_note="Started anticoagulant · bruising watch");
+            here ++> Resident(name="Rosa Marino", room="05",
+                concern_status="watching", concern_note="Low fluid intake · monitoring hydration");
+            here ++> Resident(name="Ingrid Sato", room="09",
+                concern_status="watching", concern_note="Sundowning past two evenings");
+            here ++> Resident(name="Clara Nguyen", room="03");
+            here ++> Resident(name="Dev Kapoor", room="11");
+            here ++> Resident(name="Harold Alvarez", room="17");
+            here ++> Resident(name="Walter Kim", room="02");
+            here ++> Resident(name="Priya Anand", room="19");
         }
         report {
             "users": len([here --> [?:User]]),
@@ -825,6 +849,7 @@ walker:pub HomeFeed {
             }
             out.append({
                 "id": rid, "name": r.name, "room": r.room,
+                "concern_status": r.concern_status, "concern_note": r.concern_note,
                 "open": open_sess, "has_draft": has_draft,
                 "signed_count": signed_count,
                 "last_at": last_at, "last_situation": last_situation

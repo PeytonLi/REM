@@ -3,9 +3,9 @@
 Ties the app together: a greeting + shift context, a hard-capped "needs
 attention" strip, the primary "Start handoff" action, and every facility
 resident sorted by concern (there is no roster/assignment model in the MVP, so
-all residents show). Concern status is DERIVED from real handoff state via the
-HomeFeed walker; on a fresh demo graph (no handoffs yet) a small placeholder
-overlay keeps the screen legible. Tapping a resident opens their handoff
+all residents show). Concern status comes from the DB (Resident.concern_status
+/ concern_note, set by the seed walker / tripwire pipeline) via the HomeFeed
+walker -- nothing is fabricated client-side. Tapping a resident opens their handoff
 history (PatientView). Deliberately NOT a live-vitals monitor -- one line of
 status per row, nothing more (feature spec, alarm-fatigue + non-goal).
 """
@@ -40,20 +40,22 @@ def:pub HomeView(
     def onQuery(e: any) -> None { query = e.target.value; }
     def toggleAttn(e: MouseEvent) -> None { showAllAttn = not showAllAttn; }
 
-    # Real handoff state always wins; the `demo` reasons only fill in when the
-    # facility has no handoff history at all, so the landing screen still reads.
-    def deriveStatus(r: dict, i: int, demo: bool) -> dict {
-        if r["open"] as bool {
-            return {"kind": "concern", "bucket": 0, "reason": "Handoff in progress", "hot": True};
+    # Status comes from the DB (concern_status/concern_note, set by the seed
+    # walker / tripwire pipeline). The reason falls back to real handoff state
+    # only for stable residents with no note -- nothing is fabricated here.
+    def deriveStatus(r: dict) -> dict {
+        status = r["concern_status"] as str;
+        note = r["concern_note"] as str;
+        if status == "concern" {
+            return {"kind": "concern", "bucket": 0,
+                "reason": note if note else "Active concern", "hot": True};
         }
-        if r["has_draft"] as bool {
-            return {"kind": "watch", "bucket": 1, "reason": "Draft handoff — not signed", "hot": False};
+        if status == "watching" {
+            return {"kind": "watch", "bucket": 1,
+                "reason": note if note else "On watch", "hot": False};
         }
-        if demo and i == 0 {
-            return {"kind": "concern", "bucket": 0, "reason": "Fall flagged overnight · unresolved", "hot": True};
-        }
-        if demo and i == 1 {
-            return {"kind": "watch", "bucket": 1, "reason": "Desat pattern · watching", "hot": False};
+        if note {
+            return {"kind": "stable", "bucket": 2, "reason": note, "hot": False};
         }
         if (r["last_at"] as float) > 0.0 {
             return {"kind": "stable", "bucket": 2, "reason": "Stable · handoff on file", "hot": False};
@@ -71,18 +73,10 @@ def:pub HomeView(
     parts = [p for p in fullName.split(" ") if p];
     firstName = (parts[0] as str) if len(parts) > 0 else "there";
 
-    demo = True;
+    enriched: list[dict] = [];
     for r in residents {
         rd = r as dict;
-        if (rd["open"] as bool) or (rd["has_draft"] as bool) or ((rd["last_at"] as float) > 0.0) {
-            demo = False;
-        }
-    }
-
-    enriched: list[dict] = [];
-    for (i, r) in enumerate(residents) {
-        rd = r as dict;
-        d = deriveStatus(rd, i, demo);
+        d = deriveStatus(rd);
         enriched.append({
             "id": rd["id"], "name": rd["name"], "room": rd["room"],
             "kind": d["kind"], "bucket": d["bucket"], "reason": d["reason"], "hot": d["hot"]
