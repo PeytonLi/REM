@@ -16,6 +16,8 @@ import from .live_transcribe { startLive, stopLive, getSegments, clearSegments, 
 
 sv import from realtime { IngestUtterance }
 sv import from omission { OmissionPanel }
+sv import from tripwire { Tripwire }
+sv import from escalate { Escalate }
 
 
 def:pub LiveHandoff() -> JsxElement {
@@ -25,6 +27,9 @@ def:pub LiveHandoff() -> JsxElement {
     has errorMsg: str = "";
     has omissions: list = [];          # claims the graph required, talk skipped
     has omissionRan: bool = False;
+    has tripwireRan: bool = False;
+    has firedFindings: list = [];   # findings from the post-handoff tripwire
+    has escalatedFindings: list = []; # tier-3 findings that were escalated
     has shift: str = "D5-night";
 
     # -- transcription-service callbacks (captured once at start) --------------
@@ -47,6 +52,9 @@ def:pub LiveHandoff() -> JsxElement {
         errorMsg = "";
         omissions = [];
         omissionRan = False;
+        tripwireRan = False;
+        firedFindings = [];
+        escalatedFindings = [];
         segments = [];
         interim = "";
         clearSegments();
@@ -56,7 +64,10 @@ def:pub LiveHandoff() -> JsxElement {
         });
     }
 
-    # Stop the mic, then run the post-hoc omission check against everything said.
+    # Stop the mic, run the omission check, then re-evaluate the tripwire
+    # against the freshly ingested episodes. If a new corroboration pushes a
+    # Clinical belief past the threshold, the phone rings — right here, from
+    # the live handoff screen.
     async def stop(e: MouseEvent) -> None {
         stopLive();
         status = "stopped";
@@ -65,6 +76,7 @@ def:pub LiveHandoff() -> JsxElement {
         if not transcript.strip() {
             return;
         }
+        # -- omission check (post-hoc, what the conversation skipped) -------
         try {
             res = root spawn OmissionPanel(transcript=transcript);
             missed = res.reports[0];
@@ -72,6 +84,38 @@ def:pub LiveHandoff() -> JsxElement {
             omissionRan = True;
         } except Exception as err {
             errorMsg = "Omission check unavailable (needs a model key): " + str(err);
+        }
+        # -- tripwire: re-evaluate rules with the new episodes in the graph --
+        try {
+            tw = root spawn Tripwire(now_ref=0.0);
+            firedFindings = [{rule: f.rule, tier: f.tier, claim: f.claim,
+                              fired: f.fired, claim_id: f.claim_id}
+                             for f in tw.reports if f.fired];
+            tripwireRan = True;
+            # Escalate every tier-3 finding — this is where the phone rings.
+            escalatedFindings = [];
+            for f in firedFindings {
+                if f.tier >= 3 and f.claim_id {
+                    try {
+                        esc = root spawn Escalate(finding_id=f.claim_id);
+                        er = esc.reports[0];
+                        escalatedFindings.append({
+                            claim: f.claim,
+                            acknowledged: er.acknowledged,
+                            chain: er.chain,
+                        });
+                    } except Exception as e2 {
+                        escalatedFindings.append({
+                            claim: f.claim,
+                            acknowledged: False,
+                            chain: [],
+                            error: str(e2),
+                        });
+                    }
+                }
+            }
+        } except Exception as err2 {
+            errorMsg = "Tripwire unavailable: " + str(err2);
         }
     }
 
@@ -173,6 +217,66 @@ def:pub LiveHandoff() -> JsxElement {
                             <div key={str(j)} style={{
                                 "color": "#fde68a", "padding": "0.3rem 0", "fontSize": "0.92rem"
                             }}>{"· " + claim}</div>
+                        }}
+                    </div>
+                }}
+            </div>
+        }}
+        # -- tripwire findings + escalation result
+        {if tripwireRan {
+            <div style={{"marginTop": "1.25rem"}}>
+                {if len(firedFindings) == 0 {
+                    <div style={{
+                        "background": "#1f2937", "color": "#9ca3af",
+                        "padding": "0.8rem 1rem", "borderRadius": "10px"
+                    }}>No new findings fired. The graph saw nothing new that crossed a threshold.</div>
+                } else {
+                    <div style={{
+                        "background": "#1f2937", "border": "1px solid #374151",
+                        "borderRadius": "10px", "padding": "1rem"
+                    }}>
+                        <div style={{"color": "#fbbf24", "fontWeight": "700", "marginBottom": "0.5rem"}}>
+                            {"Findings fired (" + str(len(firedFindings)) + ")"}
+                        </div>
+                        {for (k, f) in enumerate(firedFindings) {
+                            <div key={str(k)} style={{
+                                "padding": "0.4rem 0", "fontSize": "0.9rem",
+                                "display": "flex", "justifyContent": "space-between",
+                                "color": "#d1d5db"
+                            }}>
+                                <span style={{"flex": "1"}}>{f.rule + "  — " + f.claim}</span>
+                                <span style={{
+                                    "background": "#dc2626" if f.tier >= 3 else "#d97706",
+                                    "color": "white", "padding": "0.15rem 0.5rem",
+                                    "borderRadius": "6px", "fontSize": "0.8rem",
+                                    "fontWeight": "600"
+                                }}>{"T" + str(f.tier) + (" 📞" if f.tier >= 3 else "")}</span>
+                            </div>
+                        }}
+                        {if len(escalatedFindings) > 0 {
+                            <div style={{"marginTop": "0.75rem"}}>
+                                <div style={{"color": "#fbbf24", "fontWeight": "700", "marginBottom": "0.4rem"}}>
+                                    Escalation results
+                                </div>
+                                {for (j, e) in enumerate(escalatedFindings) {
+                                    <div key={str(j)} style={{
+                                        "padding": "0.4rem 0.6rem", "marginBottom": "0.3rem",
+                                        "borderRadius": "8px", "fontSize": "0.85rem",
+                                        "background": "#064e3b" if e.acknowledged else "#7f1d1d"
+                                    }}>
+                                        <div style={{"color": "#a7f3d0" if e.acknowledged else "#fecaca", "fontWeight": "600"}}>
+                                            {e.claim}
+                                        </div>
+                                        <div style={{"color": "#9ca3af", "marginTop": "0.15rem"}}>
+                                            {if e.acknowledged {
+                                                "Acknowledged by " + e.chain[len(e.chain) - 1]
+                                            } else {
+                                                "Not acknowledged" + (" — " + e.chain[len(e.chain) - 1] + " reached" if len(e.chain) > 0 else "")
+                                            }}
+                                        </div>
+                                    </div>
+                                }}
+                            </div>
                         }}
                     </div>
                 }}
