@@ -13,6 +13,10 @@ import from baseline { Baseline }
 import from ingest { IngestDevice, IngestTranscript }
 import from omission { OmissionPanel }
 import from realtime { DeepgramToken, IngestUtterance }
+import from handoff {
+    SeedDemo, Login, Roster, StartHandoff, EndHandoff,
+    ListHandoffs, HandoffDetail, EditSummary, SignSummary
+}
 
 # Client-side UI
 cl {
