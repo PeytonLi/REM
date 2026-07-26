@@ -184,6 +184,10 @@ def scripted_segments() -> list[Segment] {
 # B6 -- outbound call (ElevenLabs Agents over the SignalWire SIP trunk)
 # ============================================================================
 
+# REST, not the elevenlabs SDK: jac ships its own Python and `requests` is
+# already there, so this adds no install step to the demo machine. Two
+# endpoints, four fields -- the SDK buys nothing here.
+glob ELEVENLABS_API: str = "https://api.elevenlabs.io/v1/convai";
 glob CALL_POLL_S: float = 3.0;
 glob CALL_TIMEOUT_S: float = 150.0;   # the 40s cap is on the agent; this is the
                                       # wall-clock give-up for ring + talk + wrap.
@@ -222,53 +226,69 @@ def place_call(phone: str, script: str) -> CallResult {
         return notify(phone, script, "telephony not configured");
     }
 
+    headers = {"xi-api-key": key};
+    conv_id = "";
+    turns: list[dict] = [];
+    # Annotated dict[str, any], not a literal inline: the checker infers a
+    # Literal-keyed dict from an inline body and rejects it against `json=`.
+    payload: dict[str, any] = {
+        "agent_id": agent_id,
+        "agent_phone_number_id": number_id,
+        "to_number": phone,
+        "conversation_initiation_client_data": {
+            "dynamic_variables": {"finding_script": script}
+        }
+    };
     try {
         import time;
-        import from elevenlabs.client { ElevenLabs }
-        client = ElevenLabs(api_key=key);
-
-        call = client.conversational_ai.sip_trunk.outbound_call(
-            agent_id=agent_id,
-            agent_phone_number_id=number_id,
-            to_number=phone,
-            conversation_initiation_client_data={
-                "dynamic_variables": {"finding_script": script}
-            }
+        placed = requests.post(
+            f"{ELEVENLABS_API}/sip-trunk/outbound-call",
+            headers=headers,
+            json=payload,
+            timeout=30
         );
-        if not call.success or not call.conversation_id {
-            return notify(phone, script, f"call not placed: {call.message}");
+        placed.raise_for_status();
+        call = placed.json();
+        conv_id = call.get("conversation_id") or "";
+        if not call.get("success") or not conv_id {
+            return notify(phone, script, f"call not placed: {call.get('message')}");
         }
 
-        # `any`, not inferred None: the SDK's conversation object is untyped
-        # here, and without this the checker narrows conv to NoneType and every
-        # conv.<field> read below fails E1030.
-        conv: any = None;
+        status = "initiated";
         waited = 0.0;
         while waited < CALL_TIMEOUT_S {
             time.sleep(CALL_POLL_S);
             waited += CALL_POLL_S;
-            conv = client.conversational_ai.conversations.get(call.conversation_id);
-            if conv.status in ["done", "failed"] {
+            got = requests.get(
+                f"{ELEVENLABS_API}/conversations/{conv_id}", headers=headers, timeout=30
+            );
+            got.raise_for_status();
+            conv = got.json();
+            status = conv.get("status") or "";
+            # "processing" means the call ended and the transcript is still
+            # being written -- keep waiting, or we read an empty transcript and
+            # wrongly report the page unacknowledged.
+            if status in ["done", "failed"] {
+                turns = conv.get("transcript") or [];
                 break;
             }
         }
-        if conv is None or conv.status != "done" {
-            return notify(phone, script, f"call did not complete ({call.conversation_id})");
+        if status != "done" {
+            return notify(phone, script, f"call did not complete ({status}, {conv_id})");
         }
-        turns = conv.transcript or [];
     } except Exception as e {
         return notify(phone, script, f"telephony error: {e}");
     }
 
-    human = "\n".join([t.message for t in turns if t.role == "user" and t.message]);
-    full = "\n".join([f"{t.role}: {t.message}" for t in turns if t.message]);
+    human = "\n".join([t["message"] for t in turns if t.get("role") == "user" and t.get("message")]);
+    full = "\n".join([f"{t.get('role')}: {t['message']}" for t in turns if t.get("message")]);
 
     # Acknowledged means a person actually spoke on the call. Read-back is the
     # walker's termination condition, so parse it honestly -- an empty line or
     # a voicemail beep is not an acknowledgment.
     acknowledged = bool(human.strip());
     readback = acknowledged and readback_ok(script, human);
-    print(f"[voice] call {call.conversation_id}: acknowledged={acknowledged} readback={readback}");
+    print(f"[voice] call {conv_id}: acknowledged={acknowledged} readback={readback}");
     return CallResult(acknowledged=acknowledged, readback=readback, transcript=full);
 }
 
@@ -299,5 +319,5 @@ with entry:__main__ {
     assert "+15555550123" in r.transcript, "degraded path must record the target";
 
     print(f"voice self-check OK: {len(segs)} segments, {len(speakers)} speakers, "
-          f"degraded call correctly not acknowledged");
+          "degraded call correctly not acknowledged");
 }
