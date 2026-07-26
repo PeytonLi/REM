@@ -246,23 +246,19 @@ def:pub LiveHandoff() -> JsxElement {
                 }}
             </div>
         }}
-        # -- audio recording download (provenance: the original audio) ------
+        # -- audio recording playback (provenance: the original audio) ------
         {if hasRecording and audioUrl {
             <div style={{
                 "marginTop": "1.25rem", "background": "#0b1220",
                 "border": "1px solid #1f2937", "borderRadius": "10px",
                 "padding": "0.8rem 1rem"
             }}>
-                <span style={{"color": "#9ca3af", "fontSize": "0.9rem"}}>
-                    Original recording saved —
-                </span>
-                <a href={audioUrl} download="handoff-recording.webm" style={{
-                    "color": "#60a5fa", "fontSize": "0.9rem", "marginLeft": "0.4rem",
-                    "textDecoration": "underline", "cursor": "pointer"
-                }}>download audio</a>
-                <span style={{"color": "#6b7280", "fontSize": "0.8rem", "marginLeft": "0.5rem"}}>
-                    (keep this — it's the ground-truth source for every transcribed episode)
-                </span>
+                <div style={{"color": "#9ca3af", "fontSize": "0.85rem", "marginBottom": "0.5rem"}}>
+                    Original recording — ground-truth source for every transcribed episode
+                </div>
+                <audio controls style={{"width": "100%", "height": "32px"}}>
+                    <source src={audioUrl} type={getAudioMime()}/>
+                </audio>
             </div>
         }}
 
