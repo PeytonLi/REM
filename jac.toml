@@ -1,0 +1,24 @@
+[project]
+name = "rem"
+version = "0.1.0"
+description = "REM — long-term-care shift-handoff memory on a consolidating belief graph"
+entry-point = "main.sv.jac"
+kind = "service"
+
+[dependencies]
+byllm = "~=0.6"
+
+[dev-dependencies]
+watchdog = ">=3.0.0"
+
+# Model routing (PRD §10.4). DeepSeek in the PRD; we route to whatever key exists
+# in this environment. Flat structs + enum classification -> cheap model; the nested
+# SBARPlus composition -> the stronger model. Validated at hour 2 (see compose.jac).
+[byllm.model]
+default_model = "gpt-4o-mini"
+
+[byllm.call_params]
+temperature = 0.2
+
+[test]
+verbose = true
