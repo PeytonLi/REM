@@ -780,3 +780,56 @@ walker:pub ResidentGraph {
         };
     }
 }
+
+
+# ===========================================================================
+# Homescreen feed (landing screen). Every facility resident with a concern
+# status DERIVED from real handoff state -- no roster/assignment model in the
+# MVP, so all residents are returned. Concern is a handoff-workflow signal
+# (open session / unsigned draft / last handoff), NOT live clinical vitals:
+# the homescreen produces reviewable handoffs, it is not a monitoring board.
+# ===========================================================================
+walker:pub HomeFeed {
+    """All residents + handoff-derived status for the nurse landing screen."""
+    has reports: list[dict] = [];
+
+    can build with Root entry {
+        sessions = [here --> [?:HandoffSession]];
+        out: list[dict] = [];
+        for r in [here --> [?:Resident]] {
+            rid = jid(r);
+            open_sess = False;
+            has_draft = False;
+            signed_count = 0;
+            last_at = 0.0;
+            last_situation = "";
+            for sess in sessions {
+                if rid in sess.resident_ids {
+                    if sess.status == "in_progress" {
+                        open_sess = True;
+                    }
+                    for summ in [sess --> [?:HandoffSummary]] {
+                        if summ.resident_id == rid {
+                            if summ.status == "signed" {
+                                signed_count = signed_count + 1;
+                            } else {
+                                has_draft = True;
+                            }
+                            if summ.generated_at > last_at {
+                                last_at = summ.generated_at;
+                                last_situation = summ.situation;
+                            }
+                        }
+                    }
+                }
+            }
+            out.append({
+                "id": rid, "name": r.name, "room": r.room,
+                "open": open_sess, "has_draft": has_draft,
+                "signed_count": signed_count,
+                "last_at": last_at, "last_situation": last_situation
+            });
+        }
+        report {"residents": out};
+    }
+}

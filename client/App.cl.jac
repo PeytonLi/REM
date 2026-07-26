@@ -12,6 +12,7 @@ only their own local UI state.
 """
 
 import from .Login { LoginView }
+import from .Home { HomeView }
 import from .StartHandoff { StartHandoffView }
 import from .RecordHandoff { RecordView }
 import from .SummaryReview { SummaryView }
@@ -21,14 +22,16 @@ import from .theme { remCss }
 
 
 def:pub app() -> JsxElement {
-    has screen: str = "login";        # login | start | record | summary | retrieve | patient
+    has screen: str = "login";        # login | home | start | record | summary | retrieve | patient
     has user: dict = {};              # {id, username, name, role}
     has session: dict = {};           # {id, shift, resident_ids, residents_label, incoming_name}
     has summaries: list = [];         # drafts from EndHandoff, for the summary screen
     has transcript: list = [];        # segments behind those summaries
     has patient: dict = {};           # {id, name, room} for the patient knowledge screen
 
-    def onLogin(u: dict) -> None { user = u; screen = "start"; }
+    def onLogin(u: dict) -> None { user = u; screen = "home"; }
+    def goHome() -> None { session = {}; screen = "home"; }
+    def onSignOut() -> None { user = {}; session = {}; screen = "login"; }
     def onLogout(e: MouseEvent) -> None { user = {}; session = {}; screen = "login"; }
     def onStarted(s: dict) -> None { session = s; screen = "record"; }
     def onEnded(summ: list, tsegs: list) -> None {
@@ -41,13 +44,14 @@ def:pub app() -> JsxElement {
 
     return <div className="rem-app">
         <style>{remCss()}</style>
-        {if screen != "login" {
+        {if screen != "login" and screen != "home" {
             <div className="rem-header">
                 <span className="rem-brand">REM</span>
                 <span className="muted-sm">
                     {(user.get("name", "") as str) + " · " + (user.get("role", "") as str)}
                 </span>
                 <span style={{"marginLeft": "auto", "display": "flex", "gap": "0.5rem"}}>
+                    <button onClick={lambda (e: MouseEvent) { goHome(); }} className="btn btn-ghost btn-sm">Home</button>
                     <button onClick={goStart} className="btn btn-ghost btn-sm">New handoff</button>
                     <button onClick={lambda (e: MouseEvent) { goRetrieve(); }} className="btn btn-ghost btn-sm">Past handoffs</button>
                     <button onClick={onLogout} className="btn btn-outline btn-sm">Sign out</button>
@@ -57,6 +61,9 @@ def:pub app() -> JsxElement {
 
         {if screen == "login" {
             <LoginView onLogin={onLogin}/>
+        }}
+        {if screen == "home" {
+            <HomeView user={user} onStartHandoff={newHandoff} onOpenResident={goPatient} onRetrieve={goRetrieve} onSignOut={onSignOut}/>
         }}
         {if screen == "start" {
             <StartHandoffView user={user} onStarted={onStarted}/>
