@@ -1,0 +1,25 @@
+{
+ "resident": "Ruth Alvarez, 82F, Room 3B",
+ "window_days": 5,
+ "causal_chain": [
+  [
+   "P-ABX-START",
+   "P-RASH"
+  ],
+  [
+   "P-RASH",
+   "P-ABX-SWITCH"
+  ]
+ ],
+ "should_fire": {
+  "R1": "three overnight desaturations, 3 distinct RNs + wearable, 3 shifts",
+  "R2": "P-CULTURE-NEG contradicts suspected-UTI while levofloxacin still running D5",
+  "R5": "4-day mobility/sleep decline (seed/device.py)",
+  "R6": "single wearable_fall episode (seed/device.py)"
+ },
+ "must_survive_to_shift_6": [
+  "P-RASH",
+  "P-ABX-SWITCH",
+  "P-CULTURE-NEG"
+ ]
+}

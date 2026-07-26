@@ -1,0 +1,3640 @@
+[
+ {
+  "id": "F-OBS-240",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772435160.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-248",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772435400.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-264",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772436120.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-217",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772436540.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-278",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772436660.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-297",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772437440.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-204",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772438700.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-000",
+  "content": "Vitals: BP 122/70, HR 81, RR 19, T 36.5 C, SpO2 94% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Maya Ortiz",
+  "at": 1772438760.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-095",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772438760.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-237",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772440740.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-023",
+  "content": "Repositioned in bed for comfort, call light within reach.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772440860.0,
+  "shift": "D1-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-269",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772441520.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-029",
+  "content": "Lisinopril 10 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772442240.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-158",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772442720.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-030",
+  "content": "Atorvastatin 20 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772442780.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-178",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772442780.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "P-UTI-SUSPECT",
+  "content": "Resident febrile 38.4 C, new-onset confusion and urinary urgency. Suspected UTI. Urine culture sent, empiric ceftriaxone ordered by on-call MD.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772442900.0,
+  "shift": "D1-day",
+  "tag": "planted"
+ },
+ {
+  "id": "F-MAR-028",
+  "content": "Acetaminophen 650 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772443620.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-098",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772444820.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-SINGLE-11",
+  "content": "Complained the dinner tray was cold, replaced.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772445240.0,
+  "shift": "D1-day",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-OBS-266",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772445240.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "P-ABX-START",
+  "content": "Ceftriaxone 1 g IV administered, first dose.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772445600.0,
+  "shift": "D1-day",
+  "tag": "planted"
+ },
+ {
+  "id": "F-OBS-249",
+  "content": "Son called, asked about appetite and sleep.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772446140.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-207",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772446740.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-001",
+  "content": "Ambulated in hallway with standby assist, steady gait.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772446980.0,
+  "shift": "D1-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-143",
+  "content": "Son called, asked about appetite and sleep.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772447040.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-036",
+  "content": "Up to chair for meal, tolerated sitting 40 minutes.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772451240.0,
+  "shift": "D1-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-293",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772453520.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-130",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772454000.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-001",
+  "content": "Vitals: BP 128/73, HR 70, RR 19, T 36.8 C, SpO2 94% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Maya Ortiz",
+  "at": 1772454240.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-SINGLE-02",
+  "content": "Reading glasses misplaced, located in dayroom.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772454480.0,
+  "shift": "D1-day",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-OBS-074",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772455200.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R3-CLAIM",
+  "content": "Resident reports occasional dry mouth. No treatment ordered, comfort measures only.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772455500.0,
+  "shift": "D1-day",
+  "tag": "decoy",
+  "note": "R3 near-miss: stale >24h but justifies no active intervention"
+ },
+ {
+  "id": "N-027",
+  "content": "Repositioned in bed for comfort, call light within reach.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772456880.0,
+  "shift": "D1-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-MAR-031",
+  "content": "Pantoprazole 40 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772456940.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-102",
+  "content": "Son called, asked about appetite and sleep.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772457660.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-033",
+  "content": "Lisinopril 10 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772458860.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-032",
+  "content": "Acetaminophen 650 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772459100.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-162",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772459520.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-077",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772459940.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R2-ORDER",
+  "content": "Vitamin K 5 mg PO ordered daily for low INR.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772460000.0,
+  "shift": "D1-day",
+  "tag": "decoy",
+  "note": "R2 near-miss: order below is DC'd before the contradiction"
+ },
+ {
+  "id": "F-OBS-139",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772463120.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-296",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772465340.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-022",
+  "content": "Ambulated to dining room with front-wheeled walker, standby assist.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772466240.0,
+  "shift": "D1-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-161",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772466960.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-167",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772467020.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-169",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772467140.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-086",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772467200.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-090",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772467500.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-119",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772468100.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-002",
+  "content": "Vitals: BP 128/71, HR 86, RR 14, T 37.0 C, SpO2 96% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Maya Ortiz",
+  "at": 1772468160.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-199",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772468760.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "P-RASH",
+  "content": "New maculopapular rash across chest and both forearms, roughly 6 hours after the first ceftriaxone dose. No respiratory involvement, no facial swelling. MD notified.",
+  "source": "nursing_note",
+  "author": "LPN Grace Chen",
+  "at": 1772469600.0,
+  "shift": "D1-day",
+  "tag": "planted"
+ },
+ {
+  "id": "N-020",
+  "content": "Assisted with oral care, no complaints.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772473440.0,
+  "shift": "D1-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-272",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772474580.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "P-ABX-SWITCH",
+  "content": "Ceftriaxone discontinued per MD due to suspected drug rash. Levofloxacin 500 mg PO started in its place.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772475600.0,
+  "shift": "D1-day",
+  "tag": "planted"
+ },
+ {
+  "id": "F-OBS-284",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772476020.0,
+  "shift": "D1-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-196",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772480400.0,
+  "shift": "D1-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-209",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772480400.0,
+  "shift": "D1-night",
+  "tag": "filler"
+ },
+ {
+  "id": "N-003",
+  "content": "Up to chair for meal, tolerated sitting 40 minutes.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772481840.0,
+  "shift": "D1-night",
+  "tag": "noise"
+ },
+ {
+  "id": "F-VS-003",
+  "content": "Vitals: BP 123/67, HR 77, RR 15, T 36.8 C, SpO2 98% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Dev Patel",
+  "at": 1772482200.0,
+  "shift": "D1-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-179",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772482260.0,
+  "shift": "D1-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-132",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772483040.0,
+  "shift": "D1-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-302",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772484300.0,
+  "shift": "D1-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-035",
+  "content": "Acetaminophen 650 mg PO administered.",
+  "source": "mar",
+  "author": "RN Dev Patel",
+  "at": 1772485680.0,
+  "shift": "D1-night",
+  "tag": "filler"
+ },
+ {
+  "id": "X-SINGLE-05",
+  "content": "Declined group activity, preferred to rest.",
+  "source": "nursing_note",
+  "author": "RN Dev Patel",
+  "at": 1772485740.0,
+  "shift": "D1-night",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-MAR-034",
+  "content": "Pantoprazole 40 mg PO administered.",
+  "source": "mar",
+  "author": "RN Dev Patel",
+  "at": 1772486160.0,
+  "shift": "D1-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-036",
+  "content": "Atorvastatin 20 mg PO administered.",
+  "source": "mar",
+  "author": "RN Dev Patel",
+  "at": 1772486940.0,
+  "shift": "D1-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-107",
+  "content": "Niece visited briefly after dinner.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772489040.0,
+  "shift": "D1-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-252",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772490240.0,
+  "shift": "D1-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-195",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772490360.0,
+  "shift": "D1-night",
+  "tag": "filler"
+ },
+ {
+  "id": "P-RASH-FOLLOWUP",
+  "content": "Rash unchanged overnight, no spread. Resident denies itching. No further ceftriaxone given.",
+  "source": "nursing_note",
+  "author": "RN Dev Patel",
+  "at": 1772494200.0,
+  "shift": "D1-night",
+  "tag": "planted"
+ },
+ {
+  "id": "F-VS-004",
+  "content": "Vitals: BP 132/69, HR 85, RR 15, T 37.0 C, SpO2 97% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Priya Shah",
+  "at": 1772497380.0,
+  "shift": "D1-night",
+  "tag": "filler"
+ },
+ {
+  "id": "P-DESAT-N1-NOTE",
+  "content": "Spot-check SpO2 88% on room air during rounds, resident asleep. Repositioned and encouraged deep breaths, improved. Will continue to monitor.",
+  "source": "vitals_manual",
+  "author": "RN Dev Patel",
+  "at": 1772504100.0,
+  "shift": "D1-night",
+  "tag": "planted"
+ },
+ {
+  "id": "F-VS-005",
+  "content": "Vitals: BP 137/69, HR 72, RR 18, T 36.8 C, SpO2 94% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Priya Shah",
+  "at": 1772510400.0,
+  "shift": "D1-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-223",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772521920.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-116",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772522160.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-265",
+  "content": "Son called, asked about appetite and sleep.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772523840.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-243",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772523900.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-192",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772524920.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-007",
+  "content": "Assisted to bathroom, no incontinence episode.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772525880.0,
+  "shift": "D2-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-208",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772526000.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-006",
+  "content": "Vitals: BP 137/70, HR 81, RR 16, T 36.6 C, SpO2 98% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Maya Ortiz",
+  "at": 1772526600.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-286",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772526780.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-034",
+  "content": "Ambulated to dining room with front-wheeled walker, standby assist.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772527980.0,
+  "shift": "D2-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-MAR-038",
+  "content": "Lisinopril 10 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772529000.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-225",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772529000.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-257",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772529000.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R1-0-0",
+  "content": "Noted mild pitting edema in right ankle. Monitored, no intervention required.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772529600.0,
+  "shift": "D2-day",
+  "tag": "decoy",
+  "note": "R1 near-miss: only 2 distinct observers, rule requires >=3"
+ },
+ {
+  "id": "X-R1-3-0",
+  "content": "Noted complaint of mild lower back stiffness. Monitored, no intervention required.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772529600.0,
+  "shift": "D2-day",
+  "tag": "decoy",
+  "note": "R1 near-miss: only 2 distinct observers, rule requires >=3"
+ },
+ {
+  "id": "X-SINGLE-03",
+  "content": "Requested extra blanket overnight.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772529660.0,
+  "shift": "D2-day",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-MAR-037",
+  "content": "Atorvastatin 20 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772530260.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-039",
+  "content": "Vitamin D 1000 IU PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772530920.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-SINGLE-14",
+  "content": "Visited by facility chaplain at own request.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772531220.0,
+  "shift": "D2-day",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-OBS-109",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772531220.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-004",
+  "content": "Up to chair for meal, tolerated sitting 40 minutes.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772532180.0,
+  "shift": "D2-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-254",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772532420.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-301",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772532960.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-281",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772533860.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-015",
+  "content": "Repositioned in bed for comfort, call light within reach.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772533980.0,
+  "shift": "D2-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-171",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772534940.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-289",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772537520.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-033",
+  "content": "Bed bath given, skin intact, no new areas of concern.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772538120.0,
+  "shift": "D2-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-180",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772538420.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-007",
+  "content": "Vitals: BP 123/76, HR 77, RR 16, T 36.5 C, SpO2 94% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Maya Ortiz",
+  "at": 1772539620.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-235",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772540280.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R4-DUE-0",
+  "content": "Repositioning check due at 14:00 (task 0).",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772542800.0,
+  "shift": "D2-day",
+  "tag": "decoy",
+  "note": "R4 near-miss: paired completion exists, 1 minute late"
+ },
+ {
+  "id": "X-R4-DUE-3",
+  "content": "Repositioning check due at 14:00 (task 3).",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772542800.0,
+  "shift": "D2-day",
+  "tag": "decoy",
+  "note": "R4 near-miss: paired completion exists, 1 minute late"
+ },
+ {
+  "id": "F-MAR-042",
+  "content": "Vitamin D 1000 IU PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772544060.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-041",
+  "content": "Pantoprazole 40 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772544300.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-040",
+  "content": "Atorvastatin 20 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772544720.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-213",
+  "content": "Daughter visited, brought photographs, resident engaged.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772545320.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R4-DONE-0",
+  "content": "Repositioning check completed (task 0).",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772546460.0,
+  "shift": "D2-day",
+  "tag": "decoy",
+  "note": "R4 near-miss: completed 1 min past due, still completed"
+ },
+ {
+  "id": "X-R4-DONE-3",
+  "content": "Repositioning check completed (task 3).",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772546460.0,
+  "shift": "D2-day",
+  "tag": "decoy",
+  "note": "R4 near-miss: completed 1 min past due, still completed"
+ },
+ {
+  "id": "F-OBS-088",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772546700.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-291",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772547000.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R1-0-1",
+  "content": "Noted mild pitting edema in right ankle. Monitored, no intervention required.",
+  "source": "nursing_note",
+  "author": "LPN Grace Chen",
+  "at": 1772547600.0,
+  "shift": "D2-day",
+  "tag": "decoy",
+  "note": "R1 near-miss: only 2 distinct observers, rule requires >=3"
+ },
+ {
+  "id": "X-R1-3-1",
+  "content": "Noted complaint of mild lower back stiffness. Monitored, no intervention required.",
+  "source": "nursing_note",
+  "author": "LPN Grace Chen",
+  "at": 1772547600.0,
+  "shift": "D2-day",
+  "tag": "decoy",
+  "note": "R1 near-miss: only 2 distinct observers, rule requires >=3"
+ },
+ {
+  "id": "F-OBS-080",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772547900.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-174",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772548140.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-176",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772548200.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-100",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772548260.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-154",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772548680.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-141",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772548860.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-185",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772548860.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-152",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772549280.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-303",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772551740.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R2-DC",
+  "content": "Vitamin K discontinued per MD, INR now therapeutic.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772551800.0,
+  "shift": "D2-day",
+  "tag": "decoy",
+  "note": "R2 near-miss: order inactive from here on"
+ },
+ {
+  "id": "F-OBS-290",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772552760.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-271",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772554560.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-298",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772554560.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-SINGLE-09",
+  "content": "Preferred left side-lying position noted.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772554920.0,
+  "shift": "D2-day",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-VS-008",
+  "content": "Vitals: BP 127/68, HR 76, RR 15, T 36.8 C, SpO2 98% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Maya Ortiz",
+  "at": 1772555160.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-280",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772555460.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-262",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772555940.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-292",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772559960.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-234",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772562480.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-131",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772564160.0,
+  "shift": "D2-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-201",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772564400.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-260",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772566200.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-155",
+  "content": "Daughter visited, brought photographs, resident engaged.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772566680.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-229",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772566980.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-210",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772567580.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-156",
+  "content": "Daughter visited, brought photographs, resident engaged.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772568660.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-009",
+  "content": "Vitals: BP 112/77, HR 86, RR 16, T 37.0 C, SpO2 94% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Priya Shah",
+  "at": 1772569560.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "N-028",
+  "content": "Up to chair for meal, tolerated sitting 40 minutes.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772571480.0,
+  "shift": "D2-night",
+  "tag": "noise"
+ },
+ {
+  "id": "F-MAR-044",
+  "content": "Atorvastatin 20 mg PO administered.",
+  "source": "mar",
+  "author": "RN Priya Shah",
+  "at": 1772571900.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-190",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772571960.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-287",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772572200.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-043",
+  "content": "Vitamin D 1000 IU PO administered.",
+  "source": "mar",
+  "author": "RN Priya Shah",
+  "at": 1772572800.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-045",
+  "content": "Acetaminophen 650 mg PO administered.",
+  "source": "mar",
+  "author": "RN Priya Shah",
+  "at": 1772572980.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "X-SINGLE-08",
+  "content": "Denture soak completed.",
+  "source": "nursing_note",
+  "author": "RN Priya Shah",
+  "at": 1772573040.0,
+  "shift": "D2-night",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-OBS-159",
+  "content": "Niece visited briefly after dinner.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772574780.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-218",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772574780.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-244",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772574900.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-187",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772574960.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-146",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772575260.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-219",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772575680.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-105",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772576940.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-279",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772577360.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-224",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772577780.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "N-012",
+  "content": "Up to chair for meal, tolerated sitting 40 minutes.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772578140.0,
+  "shift": "D2-night",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-128",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772578680.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-010",
+  "content": "Vitals: BP 133/65, HR 78, RR 19, T 37.0 C, SpO2 97% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Alan Whitfield",
+  "at": 1772584080.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "P-DESAT-N2-NOTE",
+  "content": "Spot-check SpO2 86% on room air during rounds, resident asleep. Repositioned and encouraged deep breaths, improved. Will continue to monitor.",
+  "source": "vitals_manual",
+  "author": "RN Priya Shah",
+  "at": 1772589000.0,
+  "shift": "D2-night",
+  "tag": "planted"
+ },
+ {
+  "id": "F-VS-011",
+  "content": "Vitals: BP 117/75, HR 86, RR 16, T 36.5 C, SpO2 97% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Alan Whitfield",
+  "at": 1772597640.0,
+  "shift": "D2-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-076",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772607600.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-274",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772609220.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-136",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772610300.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-012",
+  "content": "Vitals: BP 124/64, HR 71, RR 15, T 37.2 C, SpO2 94% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Grace Chen",
+  "at": 1772611440.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-081",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772611440.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "P-ZOMBIE-D3",
+  "content": "Continues on levofloxacin for suspected UTI. Afebrile, no urinary complaints.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772613000.0,
+  "shift": "D3-day",
+  "tag": "planted"
+ },
+ {
+  "id": "P-MAR-LEVO-D3-9",
+  "content": "Levofloxacin 500 mg PO administered.",
+  "source": "mar",
+  "author": "RN Grace Chen",
+  "at": 1772614800.0,
+  "shift": "D3-day",
+  "tag": "planted"
+ },
+ {
+  "id": "F-MAR-048",
+  "content": "Vitamin D 1000 IU PO administered.",
+  "source": "mar",
+  "author": "RN Grace Chen",
+  "at": 1772614860.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-151",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772615940.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R1-1-0",
+  "content": "Noted intermittent dry cough after meals. Monitored, no intervention required.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772616000.0,
+  "shift": "D3-day",
+  "tag": "decoy",
+  "note": "R1 near-miss: only 2 distinct observers, rule requires >=3"
+ },
+ {
+  "id": "F-OBS-117",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772616180.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-089",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772616300.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-046",
+  "content": "Lisinopril 10 mg PO administered.",
+  "source": "mar",
+  "author": "RN Grace Chen",
+  "at": 1772616480.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-222",
+  "content": "Niece visited briefly after dinner.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772617260.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-047",
+  "content": "Acetaminophen 650 mg PO administered.",
+  "source": "mar",
+  "author": "RN Grace Chen",
+  "at": 1772617500.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-175",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772617680.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-214",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772620500.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-153",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772620740.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "P-CULTURE-NEG",
+  "content": "Urine culture final result: no growth at 48 hours. Negative.",
+  "source": "lab",
+  "author": "Lab - Central Processing",
+  "at": 1772622300.0,
+  "shift": "D3-day",
+  "tag": "planted"
+ },
+ {
+  "id": "F-OBS-242",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772622600.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-026",
+  "content": "Ambulated in hallway with standby assist, steady gait.",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772623860.0,
+  "shift": "D3-day",
+  "tag": "noise"
+ },
+ {
+  "id": "N-009",
+  "content": "Ambulated in hallway with standby assist, steady gait.",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772624220.0,
+  "shift": "D3-day",
+  "tag": "noise"
+ },
+ {
+  "id": "N-000",
+  "content": "Up to chair for meal, tolerated sitting 40 minutes.",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772624460.0,
+  "shift": "D3-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-142",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772624640.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-194",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772626380.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-013",
+  "content": "Vitals: BP 130/76, HR 86, RR 15, T 36.9 C, SpO2 98% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Grace Chen",
+  "at": 1772626500.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-277",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772626680.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R4-DUE-1",
+  "content": "Repositioning check due at 14:00 (task 1).",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772629200.0,
+  "shift": "D3-day",
+  "tag": "decoy",
+  "note": "R4 near-miss: paired completion exists, 1 minute late"
+ },
+ {
+  "id": "X-R4-DUE-4",
+  "content": "Repositioning check due at 14:00 (task 4).",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772629200.0,
+  "shift": "D3-day",
+  "tag": "decoy",
+  "note": "R4 near-miss: paired completion exists, 1 minute late"
+ },
+ {
+  "id": "F-MAR-050",
+  "content": "Acetaminophen 650 mg PO administered.",
+  "source": "mar",
+  "author": "RN Grace Chen",
+  "at": 1772629440.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-051",
+  "content": "Docusate 100 mg PO administered.",
+  "source": "mar",
+  "author": "RN Grace Chen",
+  "at": 1772629620.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-184",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772630160.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-075",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772630220.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-049",
+  "content": "Vitamin D 1000 IU PO administered.",
+  "source": "mar",
+  "author": "RN Grace Chen",
+  "at": 1772631120.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-259",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772631480.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-014",
+  "content": "Assisted to bathroom, no incontinence episode.",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772631840.0,
+  "shift": "D3-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-144",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772632800.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R4-DONE-1",
+  "content": "Repositioning check completed (task 1).",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772632860.0,
+  "shift": "D3-day",
+  "tag": "decoy",
+  "note": "R4 near-miss: completed 1 min past due, still completed"
+ },
+ {
+  "id": "X-R4-DONE-4",
+  "content": "Repositioning check completed (task 4).",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772632860.0,
+  "shift": "D3-day",
+  "tag": "decoy",
+  "note": "R4 near-miss: completed 1 min past due, still completed"
+ },
+ {
+  "id": "F-OBS-258",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772633400.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R1-1-1",
+  "content": "Noted intermittent dry cough after meals. Monitored, no intervention required.",
+  "source": "nursing_note",
+  "author": "LPN Grace Chen",
+  "at": 1772634000.0,
+  "shift": "D3-day",
+  "tag": "decoy",
+  "note": "R1 near-miss: only 2 distinct observers, rule requires >=3"
+ },
+ {
+  "id": "F-OBS-135",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772634420.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-188",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772635080.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-149",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772635500.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-226",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772636940.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-182",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772637120.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-233",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772638560.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-255",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772638800.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-014",
+  "content": "Vitals: BP 133/73, HR 70, RR 18, T 36.8 C, SpO2 94% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Grace Chen",
+  "at": 1772640000.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-103",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772640000.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-170",
+  "content": "Daughter visited, brought photographs, resident engaged.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772640060.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-206",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772643540.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-160",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772643600.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-133",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772644620.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-037",
+  "content": "Assisted to bathroom, no incontinence episode.",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772646240.0,
+  "shift": "D3-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-273",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772646840.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-115",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772647140.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-085",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772648100.0,
+  "shift": "D3-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-114",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772650800.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-245",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772650980.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-230",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772651220.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-126",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772652600.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-087",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772652720.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-015",
+  "content": "Vitals: BP 137/82, HR 69, RR 18, T 37.0 C, SpO2 95% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Alan Whitfield",
+  "at": 1772655180.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-198",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772655960.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-215",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772656020.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-220",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772656320.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-295",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772656800.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-082",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772656920.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-120",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772657340.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-121",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772657880.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "P-MAR-LEVO-D3-21",
+  "content": "Levofloxacin 500 mg PO administered.",
+  "source": "mar",
+  "author": "RN Alan Whitfield",
+  "at": 1772658000.0,
+  "shift": "D3-night",
+  "tag": "planted"
+ },
+ {
+  "id": "F-MAR-054",
+  "content": "Docusate 100 mg PO administered.",
+  "source": "mar",
+  "author": "RN Alan Whitfield",
+  "at": 1772658120.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-129",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772658900.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-052",
+  "content": "Atorvastatin 20 mg PO administered.",
+  "source": "mar",
+  "author": "RN Alan Whitfield",
+  "at": 1772658960.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-053",
+  "content": "Lisinopril 10 mg PO administered.",
+  "source": "mar",
+  "author": "RN Alan Whitfield",
+  "at": 1772659020.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-164",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772660820.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-092",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772661720.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "N-021",
+  "content": "Ambulated to dining room with front-wheeled walker, standby assist.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772661840.0,
+  "shift": "D3-night",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-124",
+  "content": "Son called, asked about appetite and sleep.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772662200.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "N-013",
+  "content": "Ambulated to dining room with front-wheeled walker, standby assist.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772662980.0,
+  "shift": "D3-night",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-227",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772663940.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-270",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772664600.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-016",
+  "content": "Vitals: BP 118/68, HR 66, RR 16, T 36.6 C, SpO2 98% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Dev Patel",
+  "at": 1772669220.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "P-DESAT-N3-NOTE",
+  "content": "Spot-check SpO2 84% on room air during rounds, resident asleep. Repositioned and encouraged deep breaths, improved. Will continue to monitor.",
+  "source": "vitals_manual",
+  "author": "RN Alan Whitfield",
+  "at": 1772681100.0,
+  "shift": "D3-night",
+  "tag": "planted"
+ },
+ {
+  "id": "F-VS-017",
+  "content": "Vitals: BP 136/80, HR 76, RR 16, T 36.8 C, SpO2 95% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Dev Patel",
+  "at": 1772683260.0,
+  "shift": "D3-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-200",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772696460.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-165",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772697060.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-166",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772697840.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-018",
+  "content": "Vitals: BP 135/73, HR 80, RR 19, T 36.9 C, SpO2 98% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Maya Ortiz",
+  "at": 1772698380.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "P-ZOMBIE-D4",
+  "content": "Continues on levofloxacin for suspected UTI. Afebrile, no urinary complaints.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772699400.0,
+  "shift": "D4-day",
+  "tag": "planted"
+ },
+ {
+  "id": "F-OBS-104",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772700240.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-186",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772700960.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "P-MAR-LEVO-D4-9",
+  "content": "Levofloxacin 500 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772701200.0,
+  "shift": "D4-day",
+  "tag": "planted"
+ },
+ {
+  "id": "F-OBS-140",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772701200.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-SINGLE-01",
+  "content": "Family called to check in, no concerns raised.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772701920.0,
+  "shift": "D4-day",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-OBS-163",
+  "content": "Niece visited briefly after dinner.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772701920.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-057",
+  "content": "Pantoprazole 40 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772702160.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R1-2-0",
+  "content": "Noted reduced appetite at breakfast. Monitored, no intervention required.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772702400.0,
+  "shift": "D4-day",
+  "tag": "decoy",
+  "note": "R1 near-miss: only 2 distinct observers, rule requires >=3"
+ },
+ {
+  "id": "F-MAR-055",
+  "content": "Atorvastatin 20 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772702820.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-SINGLE-00",
+  "content": "Resident declined evening snack, stated not hungry.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772703000.0,
+  "shift": "D4-day",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-MAR-056",
+  "content": "Acetaminophen 650 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772703780.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-101",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772704140.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-148",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772704740.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-268",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772705220.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R2-CONTRA",
+  "content": "Repeat INR 2.4, within therapeutic range. Earlier low-INR concern resolved.",
+  "source": "lab",
+  "author": "Lab - Central Processing",
+  "at": 1772705700.0,
+  "shift": "D4-day",
+  "tag": "decoy",
+  "note": "R2 near-miss: contradicts an INACTIVE order, no live Justifies"
+ },
+ {
+  "id": "N-029",
+  "content": "Assisted to bathroom, no incontinence episode.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772706480.0,
+  "shift": "D4-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-078",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772707320.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-232",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772707620.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-018",
+  "content": "Assisted with oral care, no complaints.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772708940.0,
+  "shift": "D4-day",
+  "tag": "noise"
+ },
+ {
+  "id": "N-008",
+  "content": "Ambulated in hallway with standby assist, steady gait.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772710560.0,
+  "shift": "D4-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-294",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772711160.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-019",
+  "content": "Vitals: BP 138/78, HR 70, RR 18, T 36.5 C, SpO2 98% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Maya Ortiz",
+  "at": 1772712000.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-084",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772712000.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-202",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772713500.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-211",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772713500.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R3-ECHO",
+  "content": "Dry mouth mentioned again, still no order in place.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772715000.0,
+  "shift": "D4-day",
+  "tag": "decoy",
+  "note": "R3 near-miss: still justifies nothing"
+ },
+ {
+  "id": "F-OBS-173",
+  "content": "Family reports resident seemed more tired than usual on their last visit.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772715120.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R4-DUE-2",
+  "content": "Repositioning check due at 14:00 (task 2).",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772715600.0,
+  "shift": "D4-day",
+  "tag": "decoy",
+  "note": "R4 near-miss: paired completion exists, 1 minute late"
+ },
+ {
+  "id": "N-032",
+  "content": "Assisted to bathroom, no incontinence episode.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772715900.0,
+  "shift": "D4-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-MAR-060",
+  "content": "Pantoprazole 40 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772715900.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-059",
+  "content": "Atorvastatin 20 mg PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772716800.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-058",
+  "content": "Vitamin D 1000 IU PO administered.",
+  "source": "mar",
+  "author": "RN Maya Ortiz",
+  "at": 1772718240.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-250",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772718720.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R4-DONE-2",
+  "content": "Repositioning check completed (task 2).",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772719260.0,
+  "shift": "D4-day",
+  "tag": "decoy",
+  "note": "R4 near-miss: completed 1 min past due, still completed"
+ },
+ {
+  "id": "F-OBS-239",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772719260.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-183",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772719740.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-R1-2-1",
+  "content": "Noted reduced appetite at breakfast. Monitored, no intervention required.",
+  "source": "nursing_note",
+  "author": "LPN Grace Chen",
+  "at": 1772720400.0,
+  "shift": "D4-day",
+  "tag": "decoy",
+  "note": "R1 near-miss: only 2 distinct observers, rule requires >=3"
+ },
+ {
+  "id": "F-OBS-118",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772723160.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-172",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772723280.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-099",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772723700.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-031",
+  "content": "Up to chair for meal, tolerated sitting 40 minutes.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772724120.0,
+  "shift": "D4-day",
+  "tag": "noise"
+ },
+ {
+  "id": "N-030",
+  "content": "Assisted to bathroom, no incontinence episode.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772725920.0,
+  "shift": "D4-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-083",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772726520.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-SINGLE-13",
+  "content": "Slippers replaced with non-skid pair per fall-prevention policy.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772726700.0,
+  "shift": "D4-day",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-VS-020",
+  "content": "Vitals: BP 126/67, HR 85, RR 14, T 37.0 C, SpO2 95% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Maya Ortiz",
+  "at": 1772726700.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-147",
+  "content": "Son called, asked about appetite and sleep.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772728260.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-016",
+  "content": "Ambulated to dining room with front-wheeled walker, standby assist.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772731080.0,
+  "shift": "D4-day",
+  "tag": "noise"
+ },
+ {
+  "id": "N-025",
+  "content": "Assisted with ADLs, tolerated well.",
+  "source": "nursing_note",
+  "author": "CNA Ruben Diaz",
+  "at": 1772731740.0,
+  "shift": "D4-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-150",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772733600.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-216",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Maya Ortiz",
+  "at": 1772734260.0,
+  "shift": "D4-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-283",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772738820.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "X-SINGLE-12",
+  "content": "Asked what day of the week it was, reoriented without difficulty.",
+  "source": "nursing_note",
+  "author": "RN Dev Patel",
+  "at": 1772739000.0,
+  "shift": "D4-night",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-OBS-079",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772739840.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-238",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772741280.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-021",
+  "content": "Vitals: BP 116/77, HR 85, RR 19, T 36.5 C, SpO2 94% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Dev Patel",
+  "at": 1772741400.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-125",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772741760.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "N-019",
+  "content": "Assisted with ADLs, tolerated well.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772743320.0,
+  "shift": "D4-night",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-300",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772743380.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "P-MAR-LEVO-D4-21",
+  "content": "Levofloxacin 500 mg PO administered.",
+  "source": "mar",
+  "author": "RN Dev Patel",
+  "at": 1772744400.0,
+  "shift": "D4-night",
+  "tag": "planted"
+ },
+ {
+  "id": "F-MAR-062",
+  "content": "Lisinopril 10 mg PO administered.",
+  "source": "mar",
+  "author": "RN Dev Patel",
+  "at": 1772744640.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-253",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772745060.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-063",
+  "content": "Atorvastatin 20 mg PO administered.",
+  "source": "mar",
+  "author": "RN Dev Patel",
+  "at": 1772745420.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-106",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772745540.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-113",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772745960.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-061",
+  "content": "Acetaminophen 650 mg PO administered.",
+  "source": "mar",
+  "author": "RN Dev Patel",
+  "at": 1772746020.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-288",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772746620.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-096",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772746800.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-123",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772746860.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-157",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772747160.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-112",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "CNA Tomas Reyes",
+  "at": 1772748000.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-137",
+  "content": "Niece visited briefly after dinner.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772751540.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-022",
+  "content": "Vitals: BP 133/78, HR 82, RR 18, T 36.8 C, SpO2 94% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Priya Shah",
+  "at": 1772756880.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-023",
+  "content": "Vitals: BP 129/63, HR 73, RR 15, T 36.6 C, SpO2 94% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Priya Shah",
+  "at": 1772770560.0,
+  "shift": "D4-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-094",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772780700.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-261",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772783160.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-002",
+  "content": "Bed bath given, skin intact, no new areas of concern.",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772784120.0,
+  "shift": "D5-day",
+  "tag": "noise"
+ },
+ {
+  "id": "N-006",
+  "content": "Up to chair for meal, tolerated sitting 40 minutes.",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772784180.0,
+  "shift": "D5-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-221",
+  "content": "Son called, asked about appetite and sleep.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772784300.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-024",
+  "content": "Vitals: BP 126/79, HR 66, RR 14, T 36.8 C, SpO2 98% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Grace Chen",
+  "at": 1772784960.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "P-ZOMBIE-D5",
+  "content": "Continues on levofloxacin for suspected UTI. Afebrile, no urinary complaints.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772785800.0,
+  "shift": "D5-day",
+  "tag": "planted"
+ },
+ {
+  "id": "F-OBS-231",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772787300.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-038",
+  "content": "Ambulated to dining room with front-wheeled walker, standby assist.",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772787420.0,
+  "shift": "D5-day",
+  "tag": "noise"
+ },
+ {
+  "id": "P-MAR-LEVO-D5-9",
+  "content": "Levofloxacin 500 mg PO administered.",
+  "source": "mar",
+  "author": "RN Grace Chen",
+  "at": 1772787600.0,
+  "shift": "D5-day",
+  "tag": "planted"
+ },
+ {
+  "id": "X-SINGLE-07",
+  "content": "Room temperature adjusted at resident request.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772787840.0,
+  "shift": "D5-day",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-MAR-064",
+  "content": "Lisinopril 10 mg PO administered.",
+  "source": "mar",
+  "author": "RN Grace Chen",
+  "at": 1772787900.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-SINGLE-04",
+  "content": "Hearing aid battery replaced.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772787960.0,
+  "shift": "D5-day",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-OBS-263",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772788140.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-066",
+  "content": "Acetaminophen 650 mg PO administered.",
+  "source": "mar",
+  "author": "RN Grace Chen",
+  "at": 1772788440.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-SINGLE-06",
+  "content": "Nail care performed by podiatry.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772788980.0,
+  "shift": "D5-day",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-MAR-065",
+  "content": "Pantoprazole 40 mg PO administered.",
+  "source": "mar",
+  "author": "RN Grace Chen",
+  "at": 1772789880.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-197",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772790240.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-282",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772791560.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-181",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772792280.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-017",
+  "content": "Ambulated in hallway with standby assist, steady gait.",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772793120.0,
+  "shift": "D5-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-275",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772793240.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-011",
+  "content": "Assisted with ADLs, tolerated well.",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772793540.0,
+  "shift": "D5-day",
+  "tag": "noise"
+ },
+ {
+  "id": "N-005",
+  "content": "Bed bath given, skin intact, no new areas of concern.",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772793600.0,
+  "shift": "D5-day",
+  "tag": "noise"
+ },
+ {
+  "id": "N-035",
+  "content": "Repositioned in bed for comfort, call light within reach.",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772795880.0,
+  "shift": "D5-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-091",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772797680.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-212",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772798940.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-025",
+  "content": "Vitals: BP 131/78, HR 72, RR 19, T 36.6 C, SpO2 98% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Grace Chen",
+  "at": 1772799420.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-251",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772799540.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-285",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772800140.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-068",
+  "content": "Acetaminophen 650 mg PO administered.",
+  "source": "mar",
+  "author": "RN Grace Chen",
+  "at": 1772802000.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "N-010",
+  "content": "Assisted with oral care, no complaints.",
+  "source": "nursing_note",
+  "author": "CNA Alice Nkemdi",
+  "at": 1772802360.0,
+  "shift": "D5-day",
+  "tag": "noise"
+ },
+ {
+  "id": "F-MAR-069",
+  "content": "Pantoprazole 40 mg PO administered.",
+  "source": "mar",
+  "author": "RN Grace Chen",
+  "at": 1772803260.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-193",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772803560.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-067",
+  "content": "Lisinopril 10 mg PO administered.",
+  "source": "mar",
+  "author": "RN Grace Chen",
+  "at": 1772803740.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-189",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772803920.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-276",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772804160.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-122",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772805540.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-228",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772806320.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-073",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772806560.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-097",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772807340.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-111",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772810040.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-110",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772811480.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-236",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772811960.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-145",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772814000.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-026",
+  "content": "Vitals: BP 137/77, HR 82, RR 15, T 37.0 C, SpO2 96% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Grace Chen",
+  "at": 1772814540.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "X-SINGLE-10",
+  "content": "Watched television in dayroom for 1 hour.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772814600.0,
+  "shift": "D5-day",
+  "tag": "decoy",
+  "note": "single observer, no pattern to corroborate"
+ },
+ {
+  "id": "F-OBS-168",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772818740.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-177",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772819760.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-134",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772820300.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-203",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772820480.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-205",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772820540.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-191",
+  "content": "Denies pain at rest, rates 2/10 with movement.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772821260.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-241",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772822220.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-246",
+  "content": "Participated in bedside range-of-motion exercises.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772822280.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-267",
+  "content": "Skin assessment: no breakdown, heels floated.",
+  "source": "nursing_note",
+  "author": "RN Grace Chen",
+  "at": 1772823360.0,
+  "shift": "D5-day",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-127",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772823840.0,
+  "shift": "D5-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-299",
+  "content": "Son called, asked about appetite and sleep.",
+  "source": "family",
+  "author": "Family - daughter",
+  "at": 1772827080.0,
+  "shift": "D5-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-VS-027",
+  "content": "Vitals: BP 129/68, HR 80, RR 15, T 36.7 C, SpO2 97% on room air.",
+  "source": "vitals_manual",
+  "author": "RN Priya Shah",
+  "at": 1772828040.0,
+  "shift": "D5-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-256",
+  "content": "Bowel movement recorded, formed.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772828280.0,
+  "shift": "D5-night",
+  "tag": "filler"
+ },
+ {
+  "id": "N-039",
+  "content": "Up to chair for meal, tolerated sitting 40 minutes.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772828700.0,
+  "shift": "D5-night",
+  "tag": "noise"
+ },
+ {
+  "id": "F-OBS-093",
+  "content": "Intake 60% of meal, encouraged fluids.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772830680.0,
+  "shift": "D5-night",
+  "tag": "filler"
+ },
+ {
+  "id": "P-MAR-LEVO-D5-21",
+  "content": "Levofloxacin 500 mg PO administered.",
+  "source": "mar",
+  "author": "RN Priya Shah",
+  "at": 1772830800.0,
+  "shift": "D5-night",
+  "tag": "planted"
+ },
+ {
+  "id": "F-MAR-072",
+  "content": "Acetaminophen 650 mg PO administered.",
+  "source": "mar",
+  "author": "RN Priya Shah",
+  "at": 1772830920.0,
+  "shift": "D5-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-071",
+  "content": "Vitamin D 1000 IU PO administered.",
+  "source": "mar",
+  "author": "RN Priya Shah",
+  "at": 1772831280.0,
+  "shift": "D5-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-108",
+  "content": "Slept in intervals, awake briefly at rounds.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772831580.0,
+  "shift": "D5-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-MAR-070",
+  "content": "Docusate 100 mg PO administered.",
+  "source": "mar",
+  "author": "RN Priya Shah",
+  "at": 1772833140.0,
+  "shift": "D5-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-138",
+  "content": "Voided clear yellow urine, no odor.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772833800.0,
+  "shift": "D5-night",
+  "tag": "filler"
+ },
+ {
+  "id": "F-OBS-247",
+  "content": "Oriented to person and place, mild confusion about date.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772834520.0,
+  "shift": "D5-night",
+  "tag": "filler"
+ },
+ {
+  "id": "N-024",
+  "content": "Repositioned in bed for comfort, call light within reach.",
+  "source": "nursing_note",
+  "author": "CNA Joy Abara",
+  "at": 1772837100.0,
+  "shift": "D5-night",
+  "tag": "noise"
+ }
+]

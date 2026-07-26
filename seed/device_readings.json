@@ -1,0 +1,146 @@
+[
+ {
+  "metric": "mobility",
+  "source": "wearable_mobility",
+  "device_id": "wearable-3B-014",
+  "timestamp": 1772494200.0,
+  "value": 920,
+  "unit": "steps",
+  "baseline": 2500,
+  "tag": "decoy",
+  "note": "R5 decoy: isolated low-step day, scheduled outing, not decline"
+ },
+ {
+  "metric": "sleep",
+  "source": "wearable_sleep",
+  "device_id": "wearable-3B-014",
+  "timestamp": 1772495100.0,
+  "value": 78,
+  "unit": "score_0_100",
+  "baseline": 80,
+  "tag": "planted"
+ },
+ {
+  "metric": "spo2",
+  "source": "wearable_vitals",
+  "device_id": "wearable-3B-014",
+  "timestamp": 1772504100.0,
+  "value": 83.9,
+  "unit": "%",
+  "heart_rate_bpm": 87.1,
+  "resp_rate_bpm": 26.3,
+  "tag": "planted"
+ },
+ {
+  "metric": "mobility",
+  "source": "wearable_mobility",
+  "device_id": "wearable-3B-014",
+  "timestamp": 1772580600.0,
+  "value": 2486,
+  "unit": "steps",
+  "baseline": 2500,
+  "tag": "planted"
+ },
+ {
+  "metric": "sleep",
+  "source": "wearable_sleep",
+  "device_id": "wearable-3B-014",
+  "timestamp": 1772581500.0,
+  "value": 79,
+  "unit": "score_0_100",
+  "baseline": 80,
+  "tag": "planted"
+ },
+ {
+  "metric": "spo2",
+  "source": "wearable_vitals",
+  "device_id": "wearable-3B-014",
+  "timestamp": 1772589000.0,
+  "value": 83.9,
+  "unit": "%",
+  "heart_rate_bpm": 91.9,
+  "resp_rate_bpm": 26.5,
+  "tag": "planted"
+ },
+ {
+  "metric": "mobility",
+  "source": "wearable_mobility",
+  "device_id": "wearable-3B-014",
+  "timestamp": 1772667000.0,
+  "value": 2190,
+  "unit": "steps",
+  "baseline": 2500,
+  "tag": "planted"
+ },
+ {
+  "metric": "sleep",
+  "source": "wearable_sleep",
+  "device_id": "wearable-3B-014",
+  "timestamp": 1772667900.0,
+  "value": 72,
+  "unit": "score_0_100",
+  "baseline": 80,
+  "tag": "planted"
+ },
+ {
+  "metric": "spo2",
+  "source": "wearable_vitals",
+  "device_id": "wearable-3B-014",
+  "timestamp": 1772681100.0,
+  "value": 83.6,
+  "unit": "%",
+  "heart_rate_bpm": 90.4,
+  "resp_rate_bpm": 25.5,
+  "tag": "planted"
+ },
+ {
+  "metric": "mobility",
+  "source": "wearable_mobility",
+  "device_id": "wearable-3B-014",
+  "timestamp": 1772753400.0,
+  "value": 1902,
+  "unit": "steps",
+  "baseline": 2500,
+  "tag": "planted"
+ },
+ {
+  "metric": "sleep",
+  "source": "wearable_sleep",
+  "device_id": "wearable-3B-014",
+  "timestamp": 1772754300.0,
+  "value": 57,
+  "unit": "score_0_100",
+  "baseline": 80,
+  "tag": "planted"
+ },
+ {
+  "metric": "fall",
+  "source": "wearable_fall",
+  "device_id": "wearable-3B-014",
+  "timestamp": 1772766300.0,
+  "value": 4.95,
+  "unit": "g",
+  "stillness_after_s": 120,
+  "tag": "planted"
+ },
+ {
+  "metric": "mobility",
+  "source": "wearable_mobility",
+  "device_id": "wearable-3B-014",
+  "timestamp": 1772839800.0,
+  "value": 1352,
+  "unit": "steps",
+  "baseline": 2500,
+  "tag": "planted"
+ },
+ {
+  "metric": "sleep",
+  "source": "wearable_sleep",
+  "device_id": "wearable-3B-014",
+  "timestamp": 1772840700.0,
+  "value": 49,
+  "unit": "score_0_100",
+  "baseline": 80,
+  "tag": "planted"
+ }
+]
