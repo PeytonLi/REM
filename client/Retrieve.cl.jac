@@ -9,10 +9,14 @@ one to read the SBAR-plus summary and drill into the source transcript behind it
 sv import from handoff { Roster, ListHandoffs, HandoffDetail }
 
 
-def:pub RetrieveView(onNew: Callable[[], None]) -> JsxElement {
+def:pub RetrieveView(
+    onNew: Callable[[], None],
+    onInspect: Callable[[dict], None]
+) -> JsxElement {
     has residents: list = [];
     has selectedRid: str = "";
     has selectedName: str = "";
+    has selectedRoom: str = "";
     has handoffs: list = [];
     has detail: dict = {};
     has loading: bool = False;
@@ -27,9 +31,10 @@ def:pub RetrieveView(onNew: Callable[[], None]) -> JsxElement {
         }
     }
 
-    async def pickResident(rid: str, name: str) -> None {
+    async def pickResident(rid: str, name: str, room: str) -> None {
         selectedRid = rid;
         selectedName = name;
+        selectedRoom = room;
         detail = {};
         loading = True;
         errorMsg = "";
@@ -83,13 +88,22 @@ def:pub RetrieveView(onNew: Callable[[], None]) -> JsxElement {
             {for (ri, r) in enumerate(residents) {
                 rid = (r as dict)["id"] as str;
                 rname = (r as dict)["name"] as str;
-                <button key={str(ri)} onClick={lambda (e: MouseEvent) { pickResident(rid, rname); }} style={{
+                rroom = (r as dict)["room"] as str;
+                <button key={str(ri)} onClick={lambda (e: MouseEvent) { pickResident(rid, rname, rroom); }} style={{
                     "padding": "0.45rem 0.8rem", "borderRadius": "999px", "cursor": "pointer",
                     "border": "1px solid #2563eb" if rid == selectedRid else "1px solid #374151",
                     "background": "#132038" if rid == selectedRid else "#111827", "color": "#e5e7eb"
-                }}>{rname + " · " + ((r as dict)["room"] as str)}</button>
+                }}>{rname + " · " + rroom}</button>
             }}
         </div>
+
+        {if selectedRid {
+            <button onClick={lambda (e: MouseEvent) { onInspect({"id": selectedRid, "name": selectedName, "room": selectedRoom}); }} style={{
+                "padding": "0.5rem 0.9rem", "background": "#4338ca", "color": "white",
+                "border": "none", "borderRadius": "8px", "cursor": "pointer", "fontWeight": "600",
+                "marginBottom": "0.6rem"
+            }}>{"🧠 " + selectedName + "'s knowledge graph"}</button>
+        }}
 
         {if loading {
             <p style={{"color": "#9ca3af"}}>Loading…</p>

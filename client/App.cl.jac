@@ -16,14 +16,16 @@ import from .StartHandoff { StartHandoffView }
 import from .RecordHandoff { RecordView }
 import from .SummaryReview { SummaryView }
 import from .Retrieve { RetrieveView }
+import from .Patient { PatientView }
 
 
 def:pub app() -> JsxElement {
-    has screen: str = "login";        # login | start | record | summary | retrieve
+    has screen: str = "login";        # login | start | record | summary | retrieve | patient
     has user: dict = {};              # {id, username, name, role}
     has session: dict = {};           # {id, shift, resident_ids, residents_label, incoming_name}
     has summaries: list = [];         # drafts from EndHandoff, for the summary screen
     has transcript: list = [];        # segments behind those summaries
+    has patient: dict = {};           # {id, name, room} for the patient knowledge screen
 
     def onLogin(u: dict) -> None { user = u; screen = "start"; }
     def onLogout(e: MouseEvent) -> None { user = {}; session = {}; screen = "login"; }
@@ -34,6 +36,7 @@ def:pub app() -> JsxElement {
     def goStart(e: MouseEvent) -> None { session = {}; screen = "start"; }
     def goRetrieve() -> None { screen = "retrieve"; }
     def newHandoff() -> None { session = {}; screen = "start"; }
+    def goPatient(r: dict) -> None { patient = r; screen = "patient"; }
 
     return <div style={{"background": "#111827", "minHeight": "100vh"}}>
         {if screen != "login" {
@@ -77,7 +80,10 @@ def:pub app() -> JsxElement {
             <SummaryView user={user} summaries={summaries} transcript={transcript} onDone={goRetrieve}/>
         }}
         {if screen == "retrieve" {
-            <RetrieveView onNew={newHandoff}/>
+            <RetrieveView onNew={newHandoff} onInspect={goPatient}/>
+        }}
+        {if screen == "patient" {
+            <PatientView resident={patient} onBack={goRetrieve}/>
         }}
     </div>;
 }
