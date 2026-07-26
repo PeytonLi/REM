@@ -880,7 +880,13 @@ walker:pub ResidentGraph {
         seen: dict = {};                      # episode id -> True (add each once)
         for b in [res ->:ResBelief:->] {
             bid: str = jid(b);
-            nodes.append({"id": bid, "kind": "Clinical", "label": _short(b.claim)});
+            # `label` stays short for the graph canvas; `full` carries the whole
+            # claim for the belief list, plus category + evidence count.
+            nodes.append({
+                "id": bid, "kind": "Clinical", "label": _short(b.claim),
+                "full": b.claim, "category": b.category,
+                "evidence": len([b ->:Derived:->])
+            });
             links.append({"source": jid(res), "target": bid});
             for ep in [b ->:Derived:->] {
                 eid: str = jid(ep);

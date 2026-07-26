@@ -179,7 +179,14 @@ def:pub remCss() -> str {
         "cursor:pointer;padding:.4rem 0;display:flex;flex-direction:column;align-items:center;gap:.2rem;transition:color .12s}",
         ".tabbar-item:hover{color:var(--muted)}",
         ".tabbar-active{color:var(--primary)}",
-        ".tabbar-ic{font-size:1.05rem;line-height:1}"
+        ".tabbar-ic{font-size:1.05rem;line-height:1}",
+        ".belief{position:relative;display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--border);",
+        "border-left:3px solid var(--border-strong);border-radius:12px;padding:.75rem .9rem;margin-bottom:.5rem;",
+        "cursor:pointer;transition:border-color .15s,box-shadow .15s,background .15s}",
+        ".belief:hover{border-color:var(--border-strong);box-shadow:var(--shadow)}",
+        ".belief-active{border-color:var(--primary);border-left-color:var(--primary);background:var(--primary-soft)}",
+        ".belief-claim{font-size:.95rem;line-height:1.5;color:var(--fg)}",
+        ".belief-meta{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin-top:.5rem}"
     ];
     return "".join(rules);
 }

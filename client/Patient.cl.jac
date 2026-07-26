@@ -122,10 +122,22 @@ def:pub PatientView(resident: dict, onBack: Callable[[], None]) -> JsxElement {
                     <div style={{"marginTop": "1.2rem"}}>
                         <div className="field" style={{"marginBottom": "0.5rem"}}>Beliefs</div>
                         {for (bi, b) in enumerate(beliefs) {
-                            bid = (b as dict)["id"] as str;
-                            <div key={str(bi)} onClick={lambda (e: MouseEvent) { onNode(bid); }}
-                                className={"row row-active" if bid in highlight else "row"}
-                                style={{"marginBottom": "0.4rem"}}>{(b as dict)["label"] as str}</div>
+                            bd = b as dict;
+                            bid = bd["id"] as str;
+                            cat = (bd.get("category", "") as str);
+                            ev = (bd.get("evidence", 0) as int);
+                            <button key={str(bi)} onClick={lambda (e: MouseEvent) { onNode(bid); }}
+                                className={"belief belief-active" if bid in highlight else "belief"}>
+                                <div className="belief-claim">{bd.get("full", bd["label"]) as str}</div>
+                                <div className="belief-meta">
+                                    {if cat {
+                                        <span className="badge badge-muted">{cat}</span>
+                                    }}
+                                    <span className="muted-sm">
+                                        {(str(ev) + (" observation" if ev == 1 else " observations")) + " · tap to trace"}
+                                    </span>
+                                </div>
+                            </button>
                         }}
                     </div>
                 }}
