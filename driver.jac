@@ -9,7 +9,7 @@ import from fixture { SeedGraph, SEED_NOW }
 import from tripwire { Tripwire }
 import from escalate { Escalate }
 import from adapters.voice { STUB_ANSWER_PHONES }
-import from schema { Clinical, Clinician, Acknowledged, now }
+import from schema { Clinical, Clinician, Fired, Acknowledged, now }
 
 
 with entry:__main__ {
@@ -32,21 +32,21 @@ with entry:__main__ {
     }
     print(f"[tripwire] distinct rules fired: {sorted(rules.keys())}");
 
-    # -- Escalate the fall (R6), the primary demo call (Call script A) --------
-    fall_beliefs = [root -->[?:Clinical, category == "fall"]];
-    if fall_beliefs {
-        # Make the first clinician answer without live telephony (B's stub seam):
-        # exercises the acknowledged path offline. Drop this + set ELEVENLABS_* to
-        # place a real call.
-        for c in [root -->[?:Clinician]] {
-            STUB_ANSWER_PHONES.add(c.phone);
-        }
-        fall = fall_beliefs[0];
-        esc = root spawn Escalate(finding_id=jid(fall));
+    # -- Escalate every tier-3 finding (the phone-call beat) ------------------
+    # Stub each clinician's phone so the offline path exercises the full chain
+    # without live telephony. Drop these lines + set BRIDGE_URL to place real calls.
+    for c in [root -->[?:Clinician]] {
+        STUB_ANSWER_PHONES.add(c.phone);
+    }
+    tier3_beliefs = [c for c in [root -->[?:Clinical]]
+                     for edge in [c ->:Fired:->]
+                     if edge.tier >= 3];
+    print(f"\n[escalate] {len(tier3_beliefs)} tier-3 belief(s) to escalate:");
+    for c in tier3_beliefs {
+        esc = root spawn Escalate(finding_id=jid(c));
         r = esc.reports[0];
-        print(f"\n[escalate] chain: {r.chain}");
-        print(f"[escalate] acknowledged: {r.acknowledged}");
-        ack_edges = [edge fall <-:Acknowledged:<-];
-        print(f"[escalate] Acknowledged edges into fall belief: {len(ack_edges)}");
+        ack_edges = [edge c <-:Acknowledged:<-];
+        print(f"  {c.category}: chain {r.chain}, acknowledged {r.acknowledged}, "
+              + f"{len(ack_edges)} Acknowledged edge(s)");
     }
 }
