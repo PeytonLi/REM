@@ -21,7 +21,7 @@ import from .theme { speakerColor, initials, fmtClock }
 sv import from handoff { EndHandoff }
 
 
-def:pub RecordView(session: dict, onEnded: Callable[[list, list], None]) -> JsxElement {
+def:pub RecordView(session: dict, onEnded: Callable[[list, list, str, str, list, list], None]) -> JsxElement {
     has status: str = "idle";       # idle | connecting | listening | stopped | processing
     has interim: str = "";
     has segments: list = [];
@@ -68,7 +68,14 @@ def:pub RecordView(session: dict, onEnded: Callable[[list, list], None]) -> JsxE
             );
             out = res.reports[0];
             if out["ok"] {
-                onEnded(out["summaries"] as list, out["transcript"]["segments"] as list);
+                onEnded(
+                    out["summaries"] as list,
+                    out["transcript"]["segments"] as list,
+                    out.get("audio_url", "") as str,
+                    out.get("audio_mime", "audio/webm") as str,
+                    out.get("tripwire", []) as list,
+                    out.get("escalations", []) as list
+                );
             } else {
                 errorMsg = "Could not finish handoff: " + (out["error"] as str);
                 status = "stopped";

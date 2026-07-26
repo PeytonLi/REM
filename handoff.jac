@@ -25,8 +25,10 @@ minimal per PRD 5.1: seeded demo users, plaintext demo passwords, no token store
 import os;
 import base64;
 import requests;
-import from schema { SBARPlus, Action, IfThen, Episode, Clinical, Derived, now }
+import from schema { SBARPlus, Action, IfThen, Episode, Clinical, Derived, Fired, now }
 import from jaclang.byllm.lib { Model }
+import from tripwire { Tripwire }
+import from escalate { Escalate }
 
 # python-dotenv is optional; load the project .env so DEEPGRAM_API_KEY (batch
 # transcription) and the LLM key are visible even when the shell that launched
@@ -627,7 +629,11 @@ walker:pub EndHandoff {
         }
 
         # 2. Persist the transcript on the session.
-        tnode = Transcript(segments=segs, audio_ref="");
+        audio_url: str = "";
+        if self.audio_b64 {
+            audio_url = "data:" + self.mime + ";base64," + self.audio_b64;
+        }
+        tnode = Transcript(segments=segs, audio_ref=audio_url);
         sess ++> tnode;
 
         # 3. Summarize the whole conversation ONCE (the LLM, with a canned
@@ -672,8 +678,50 @@ walker:pub EndHandoff {
 
         sess.status = "completed";
         sess.ended_at = now();
+
+        # 4. Tripwire: re-evaluate rules against the graph (now with fresh
+        #    verbal_handoff episodes from this conversation).
+        tripwire_findings: list[dict] = [];
+        escalations: list[dict] = [];
+        try {
+            tw = root spawn Tripwire(now_ref=now());
+            for f in tw.reports {
+                if f.fired {
+                    tripwire_findings.append({
+                        "rule": f.rule, "tier": f.tier, "claim": f.claim,
+                        "fired": f.fired, "claim_id": f.claim_id
+                    });
+                }
+            }
+            # Escalate every tier-3 finding.
+            for tf in tripwire_findings {
+                if tf["tier"] >= 3 and tf["claim_id"] {
+                    try {
+                        esc = root spawn Escalate(finding_id=tf["claim_id"] as str);
+                        er = esc.reports[0];
+                        escalations.append({
+                            "claim": tf["claim"],
+                            "acknowledged": er.acknowledged,
+                            "chain": er.chain
+                        });
+                    } except Exception as e2 {
+                        escalations.append({
+                            "claim": tf["claim"],
+                            "acknowledged": False,
+                            "chain": [],
+                            "error": str(e2)
+                        });
+                    }
+                }
+            }
+        } except Exception as te {
+            print(f"[handoff] tripwire/escalate failed ({te})");
+        }
+
         report {"ok": True, "session_id": jid(sess),
-                "transcript": {"segments": segs}, "summaries": out_summaries};
+                "transcript": {"segments": segs}, "summaries": out_summaries,
+                "audio_url": audio_url, "audio_mime": self.mime,
+                "tripwire": tripwire_findings, "escalations": escalations}
     }
 }
 
