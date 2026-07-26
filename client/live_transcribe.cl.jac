@@ -87,6 +87,40 @@ def _label_for(speaker: int) -> str {
     return _SPEAKER_LABELS.get(speaker, "Speaker " + str(speaker + 1));
 }
 
+"""Split one Deepgram alternative into contiguous per-speaker runs.
+
+Diarization rides on `alt.words[]`, one `speaker` int per word. A single final
+frame can span a speaker change (person A finishes, person B starts inside the
+same result), so labeling the whole frame by `words[0]` collapses two people
+into one -- that is why "it doesn't detect different speakers". Instead we walk
+the words and cut a new segment every time the speaker id changes, so each run
+carries exactly one speaker. `punctuated_word` (smart_format) keeps casing and
+commas; fall back to the raw word. No words at all -> one speaker-0 segment."""
+def _split_by_speaker(alt: any) -> list {
+    words = alt.words;
+    if not words or len(words) == 0 {
+        return [{"speaker": 0, "text": alt.transcript, "start": 0.0}];
+    }
+    runs = [];
+    cur_spk: int = words[0].speaker or 0;
+    cur_start: float = words[0].start or 0.0;
+    cur_words = [];
+    for w in words {
+        wspk: int = w.speaker or 0;
+        if wspk != cur_spk and len(cur_words) > 0 {
+            runs.append({"speaker": cur_spk, "text": " ".join(cur_words), "start": cur_start});
+            cur_spk = wspk;
+            cur_start = w.start or 0.0;
+            cur_words = [];
+        }
+        cur_words.append(w.punctuated_word or w.word);
+    }
+    if len(cur_words) > 0 {
+        runs.append({"speaker": cur_spk, "text": " ".join(cur_words), "start": cur_start});
+    }
+    return runs;
+}
+
 """Deepgram realtime URL: nova-3, diarized, interim results on, drug keyterms."""
 def _dg_url() -> str {
     url: str = "wss://api.deepgram.com/v1/listen?model=nova-3&diarize=true&interim_results=true&punctuate=true&smart_format=true";
@@ -139,20 +173,18 @@ def _on_message(event: any) {
         return;   # Deepgram emits empty partials between utterances
     }
 
-    # Diarization rides on the words; take the utterance's first speaker.
-    speaker: int = 0;
-    if alt.words and len(alt.words) > 0 {
-        speaker = alt.words[0].speaker or 0;
-    }
-
     if msg.is_final {
-        seg = {
-            "text": text,
-            "speaker": _label_for(speaker),
-            "start": msg.start or 0.0
-        };
-        _segments = _segments + [seg];
-        _fire("onFinal", seg);
+        # One final frame can hold more than one speaker -- split it so each
+        # displayed line and each ingested Episode is a single speaker.
+        for r in _split_by_speaker(alt) {
+            seg = {
+                "text": r["text"],
+                "speaker": _label_for(r["speaker"]),
+                "start": r["start"] or (msg.start or 0.0)
+            };
+            _segments = _segments + [seg];
+            _fire("onFinal", seg);
+        }
     } else {
         _fire("onInterim", text);
     }
