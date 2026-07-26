@@ -19,7 +19,7 @@ one `EscalationResult` from `with Root exit`.
 """
 
 import from schema { Clinician, Clinical, Escalates, Acknowledged, now }
-import from adapters.voice { place_call, REFUSE_PHONES }
+import from adapters.voice { place_call, REFUSE_PHONES, STUB_ANSWER_PHONES }
 
 
 obj EscalationResult {
@@ -138,6 +138,9 @@ test "escalation climbs past two no-answers to the third clinician" {
 
     REFUSE_PHONES.add("555-0001");
     REFUSE_PHONES.add("555-0002");
+    # Dr. Lee picks up. Explicit now that the adapter is real: it will not
+    # invent an acknowledgment just because telephony is unconfigured.
+    STUB_ANSWER_PHONES.add("555-0003");
 
     r = root spawn Escalate(finding_id=jid(finding));
     res = r.reports[0];
@@ -151,6 +154,7 @@ test "escalation climbs past two no-answers to the third clinician" {
 
     REFUSE_PHONES.discard("555-0001");
     REFUSE_PHONES.discard("555-0002");
+    STUB_ANSWER_PHONES.discard("555-0003");
 }
 
 test "first clinician answers: chain length 1, acknowledged" {
@@ -164,12 +168,14 @@ test "first clinician answers: chain length 1, acknowledged" {
                        last_asserted=now(), last_verified=now());
     root ++> finding;
 
+    STUB_ANSWER_PHONES.add("555-1001");
     r = root spawn Escalate(finding_id=jid(finding));
     res = r.reports[0];
     assert res.acknowledged;
     assert len(res.chain) == 1;
     assert res.chain == ["CNA Dana"];
     assert len([edge finding <-:Acknowledged:<-]) == 1;
+    STUB_ANSWER_PHONES.discard("555-1001");
 }
 
 test "bad finding jid degrades gracefully: no ack, empty chain" {

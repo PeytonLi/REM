@@ -2,9 +2,16 @@
 .jac/
 jac.local.toml
 
+# Node / client build
+node_modules/
+
 # Env / secrets
 .env
 
 # Python
 __pycache__/
 *.pyc
+
+# Editors
+.vscode/
+.idea/
