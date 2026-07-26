@@ -121,6 +121,9 @@ def _start_recorder() {
 
 """One Deepgram frame -> onInterim (partial) or onFinal (utterance)."""
 def _on_message(event: any) {
+    # First assignment BEFORE the try, or jac2js block-scopes `msg` to the try
+    # body (a `let`) and every use below is a TDZ ReferenceError (jac-cl-js-interop).
+    msg: any = None;
     try {
         msg = JSON.parse(event.data);   # jac:ignore[W2001]
     } except Exception as e {
