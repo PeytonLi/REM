@@ -25,6 +25,9 @@ import from schema {
 # variable degrades to "no answer" and the walker climbs the chain, rather than
 # dialing a stranger.
 glob DEMO_PHONE: str = os.getenv("REM_DEMO_PHONE") or "+15550000001";
+glob DEMO_PHONE_RN: str = os.getenv("REM_DEMO_PHONE_RN") or "+15550000002";
+glob DEMO_PHONE_CHARGE: str = os.getenv("REM_DEMO_PHONE_CHARGE") or "+15550000003";
+glob DEMO_PHONE_MD: str = os.getenv("REM_DEMO_PHONE_MD") or "+15550000004";
 
 # --- scenario clock ---------------------------------------------------------
 glob SEED_NOW: float = 1712347200.0;   # 2024-04-05 20:00 UTC — the shift-6 handoff
@@ -42,9 +45,9 @@ walker:pub SeedGraph {
 
         # -- escalation chain (PRD §5): CNA -> RN -> charge/DON -> on-call MD --
         cna = root ++> Clinician(name="CNA Rosa", phone=DEMO_PHONE, role="CNA", rank=1);
-        rn = root ++> Clinician(name="RN Jordan", phone="+15550000002", role="RN", rank=2);
-        charge = root ++> Clinician(name="Charge Nurse Pat", phone="+15550000003", role="RN", rank=3);
-        md = root ++> Clinician(name="Dr. On-Call", phone="+15550000004", role="on-call MD", rank=4);
+        rn = root ++> Clinician(name="RN Jordan", phone=DEMO_PHONE_RN, role="RN", rank=2);
+        charge = root ++> Clinician(name="Charge Nurse Pat", phone=DEMO_PHONE_CHARGE, role="RN", rank=3);
+        md = root ++> Clinician(name="Dr. On-Call", phone=DEMO_PHONE_MD, role="on-call MD", rank=4);
         cna +>:Escalates(after_seconds=60):+> rn;
         rn +>:Escalates(after_seconds=90):+> charge;
         charge +>:Escalates(after_seconds=120):+> md;
