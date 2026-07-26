@@ -12,11 +12,26 @@ Four phases, in order:
                 extracts the invariant belief -> one new `Clinical` node + a
                 `Derived` edge to each source episode. The >=3 floor is a hard
                 hallucination guard: a 2-episode cluster produces ZERO Clinicals.
+                ONE sanctioned exception: if a cluster carries a definitive
+                negating LAB result (`source == "lab"` + negation keywords), it is
+                split into a "ruled out" belief founded on the lab episode(s)
+                ALONE (an authoritative lab is self-justifying, so it may found a
+                belief below the floor) and a "suspected/ongoing" belief from the
+                rest; the ruled-out side wins via a directly-wired `Contradicts`
+                edge and the suspected side is suppressed. This is what makes the
+                R2 zombie (a drug still running against a negative culture) visible
+                as two contradicting beliefs.
   3. Reconcile— `Clinical` pairs are gated by `subject` tag BEFORE any LLM call
                 (the O(n^2) mitigation, PRD §15). The LLM classifies each gated
                 pair duplicate / refinement / contradiction / unrelated.
-  4. Prune    — low-strength episodes already captured by a semantic parent get
-                `archived = True`. Nothing is ever `del`'d (PRD §6.1).
+  4. Prune    — REDUNDANT episodes already captured by a semantic parent get
+                `archived = True`: an episode is redundant when its exact content
+                is echoed by >= DUP_COPIES siblings under its parent AND it sits in
+                a large cluster or has decayed below the floor. The duplicate
+                requirement guarantees unique / sole-evidence episodes are kept;
+                an unclustered episode (no parent) is always kept. This archives
+                the bulk of big repetitive nursing-note clusters (ADL, routine
+                voids) while never dropping planted evidence. Nothing is `del`'d.
 
 Architectural invariant (PRD G8 / §6.2a): a device episode is treated IDENTICALLY
 to a nursing note. There is deliberately NO `wearable_*` branch anywhere in this
@@ -117,6 +132,46 @@ def support_count(c: Clinical) -> int {
 
 
 # ---------------------------------------------------------------------------
+# Lab-negation detection (Problem 1). A `source == "lab"` episode whose content
+# reads as a definitive negative / no-growth / ruled-out result. This is the ONLY
+# content-inspecting branch in the file and it is gated on `source == "lab"`; it
+# is NOT a UTI-specific hack (no "uti"/drug names here) — any authoritative lab
+# negation in any subject cluster triggers the split.
+# ---------------------------------------------------------------------------
+
+glob LAB_NEGATION_MARKERS: list[str] = [
+    "no growth", "negative", "not detected", "ruled out",
+    "no evidence", "within normal limits", "unremarkable"
+];
+
+"""True when `content` reads as a definitive negative / ruled-out lab result."""
+def is_lab_negation(content: str) -> bool {
+    c = content.lower();
+    for m in LAB_NEGATION_MARKERS {
+        if m in c {
+            return True;
+        }
+    }
+    return False;
+}
+
+
+# ---------------------------------------------------------------------------
+# Prune redundancy knobs (Problem 2). An episode captured by a semantic parent is
+# archivable noise only when it is a REDUNDANT DUPLICATE — its exact content is
+# already captured by >= DUP_COPIES sibling episodes under the same belief — AND
+# it is either in a LARGE cluster (parent cites >= LARGE_CLUSTER) or has decayed
+# below the strength floor. The duplicate requirement is the safety guard: an
+# episode with UNIQUE content is, by construction, the sole/near-sole evidence for
+# whatever it says, so it is NEVER archived (a lone lab result, the antibiotic
+# switch, a single desaturation, a device fall all survive). Source-agnostic.
+# ---------------------------------------------------------------------------
+
+glob LARGE_CLUSTER: int = 5;   # a belief citing this many episodes is a "big cluster"
+glob DUP_COPIES: int = 2;      # content seen this many times under one parent == redundant
+
+
+# ---------------------------------------------------------------------------
 # The walker. Topology is flat (every node hangs off root), so all four phases
 # run in the single Root-entry ability via 1-hop reads; the result is reported
 # once from the Root-exit ability.
@@ -165,17 +220,44 @@ walker:pub Consolidate {
                 # Hard hallucination guard: fewer than 3 episodes -> no belief.
                 continue;
             }
-            draft = abstract_cluster([e.content for e in eps]);
-            belief = here ++> Clinical(
-                claim=draft.claim,
-                category=draft.category,
-                subject=subj,                 # cluster tag drives reconcile gating
-                last_asserted=now(),
-                last_verified=now()
-            );
-            for e in eps {
-                belief +>:Derived():+> e;     # provenance to every source episode
+
+            # -- LAB-NEGATION SPLIT (Problem 1) -----------------------------
+            # A subject cluster that carries a definitive negating LAB result
+            # holds TWO incompatible states, not one: the authoritative "ruled
+            # out" fact and the lingering "suspected / still-treating" story.
+            # Abstracting them together hides the contradiction (the R2 zombie:
+            # a drug kept running against a negative culture). So when a cluster
+            # contains an authoritative lab negation AND non-lab-negation
+            # episodes, split it:
+            #   * a "ruled out" belief founded on the lab episode(s) ALONE.
+            #     This is the SANCTIONED exception to the >=3 floor (PRD §6.3):
+            #     an authoritative lab result is self-justifying and may found a
+            #     belief on its own, where a pile of nursing notes may not.
+            #   * a "suspected / ongoing" belief from the remaining episodes.
+            # The lab is the newer, authoritative truth, so it WINS: we wire the
+            # Contradicts edge directly (deterministic — not left to the LLM
+            # reconcile, which is unreliable on the live model) and suppress the
+            # suspected loser. Reconcile then sees only the live winner for this
+            # subject, so it does not double-process. Gated purely on
+            # `source == "lab"` + negation keywords; there is no UTI-specific or
+            # per-source branch here.
+            negating = [e for e in eps
+                        if e.source == "lab" and is_lab_negation(e.content)];
+            if len(negating) >= 1 and len(negating) < len(eps) {
+                rest = [e for e in eps if e not in negating];
+                ruled = self.mint(subj, negating);      # lab-founded, sub-floor OK
+                suspected = self.mint(subj, rest);
+                ruled.last_asserted = now();            # authoritative == newer truth
+                ruled +>:Contradicts(
+                    resolved_toward=ruled.claim, at=now()
+                ):+> suspected;
+                suspected.suppressed = True;            # loser suppressed, never `del`
+                made += 2;
+                continue;
             }
+
+            # -- General path (unchanged): one belief per >=3 cluster --------
+            self.mint(subj, eps);
             made += 1;
         }
         after_abs = self.live_count();
@@ -242,7 +324,9 @@ walker:pub Consolidate {
         pruned = 0;
         for ep in [here -->[?:Episode, archived == False]] {
             # "Captured by a semantic parent" == has an incoming Derived edge.
-            if ep.strength < STRENGTH_FLOOR and [ep <-:Derived:<-] {
+            # An episode with NO parent (an unclustered decoy, subject "") is
+            # never archived here — nothing summarizes it, so it must stay live.
+            if self.is_redundant(ep) {
                 ep.archived = True;           # never `del` — salience, not deletion
                 pruned += 1;
             }
@@ -250,7 +334,7 @@ walker:pub Consolidate {
         after_prune = self.live_count();
         self.log.append(Step(
             phase="prune",
-            detail=f"archived {pruned} low-strength captured episode(s)",
+            detail=f"archived {pruned} redundant captured episode(s)",
             before=before_prune, after=after_prune
         ));
     }
@@ -261,6 +345,43 @@ walker:pub Consolidate {
             after=self.live_count(),
             log=self.log
         );
+    }
+
+    """Abstract one episode cluster into a single `Clinical` belief and cite every
+    source episode with a `Derived` edge. Shared by the general path and by BOTH
+    sides of the lab-negation split, so provenance is wired identically."""
+    def mint(subj: str, eps: list[Episode]) -> Clinical {
+        draft = abstract_cluster([e.content for e in eps]);
+        belief = root ++> Clinical(
+            claim=draft.claim,
+            category=draft.category,
+            subject=subj,                     # cluster tag drives reconcile gating
+            last_asserted=now(),
+            last_verified=now()
+        );
+        for e in eps {
+            belief +>:Derived():+> e;         # provenance to every source episode
+        }
+        return belief;
+    }
+
+    """True if `ep` is a redundant duplicate fully captured by a semantic parent
+    (Problem 2). Requires: (a) an incoming `Derived` edge — something summarizes
+    it; (b) its exact content is echoed by >= DUP_COPIES sibling episodes under
+    that parent — it is a repeated template, not unique evidence; and (c) the
+    parent is a large cluster OR the episode has already decayed below the floor.
+    Because (b) demands a duplicate, an episode with UNIQUE content is never
+    redundant, guaranteeing the sole/near-sole evidence for any finding survives."""
+    def is_redundant(ep: Episode) -> bool {
+        for p in [ep <-:Derived:<-] {
+            siblings = [p ->:Derived:->];
+            copies = len([s for s in siblings if s.content == ep.content]);
+            if copies >= DUP_COPIES
+               and (len(siblings) >= LARGE_CLUSTER or ep.strength < STRENGTH_FLOOR) {
+                return True;
+            }
+        }
+        return False;
     }
 
     """Live node count: non-archived episodes + non-suppressed clinicals."""

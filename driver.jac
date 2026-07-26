@@ -8,6 +8,7 @@ Run:  jac clean --all --force && jac run driver.jac
 import from fixture { SeedGraph, SEED_NOW }
 import from tripwire { Tripwire }
 import from escalate { Escalate }
+import from adapters.voice { STUB_ANSWER_PHONES }
 import from schema { Clinical, Clinician, Acknowledged, now }
 
 
@@ -34,6 +35,12 @@ with entry:__main__ {
     # -- Escalate the fall (R6), the primary demo call (Call script A) --------
     fall_beliefs = [root -->[?:Clinical, category == "fall"]];
     if fall_beliefs {
+        # Make the first clinician answer without live telephony (B's stub seam):
+        # exercises the acknowledged path offline. Drop this + set ELEVENLABS_* to
+        # place a real call.
+        for c in [root -->[?:Clinician]] {
+            STUB_ANSWER_PHONES.add(c.phone);
+        }
         fall = fall_beliefs[0];
         esc = root spawn Escalate(finding_id=jid(fall));
         r = esc.reports[0];

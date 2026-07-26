@@ -142,6 +142,44 @@ def distinct_shifts(c: Clinical) -> int {
 }
 
 
+"""True when SOME ≤`window_h` sliding sub-window over the Clinical's Derived
+episodes holds ≥`min_authors` distinct authors spanning ≥`min_shifts` shifts.
+
+A slowly-accreting belief (real desat data: overnight manual desats on D1–D3 plus
+wearable readings out to D5) can span far more than 72h end-to-end yet still carry
+a tight cross-shift corroboration cluster inside it. Requiring the ENTIRE Derived
+set within 72h misses that cluster; this scans every 72h window instead. Episodes
+are sorted by `at`; for each window start we extend forward while within the span
+and count distinct authors + shifts, firing on the first window that qualifies.
+"""
+def has_corroborating_window(c: Clinical, window_h: float,
+                             min_authors: int, min_shifts: int) -> bool {
+    rows = sorted([(ep.at, ep.author, shift_bucket(ep.at))
+                   for ep in [c ->:Derived:->]]);
+    if len(rows) < min_authors {
+        return False;
+    }
+    span = window_h * 3600.0;
+    n = len(rows);
+    i = 0;
+    while i < n {
+        authors: set[str] = set();
+        shifts: set[str] = set();
+        j = i;
+        while j < n and rows[j][0] - rows[i][0] <= span {
+            authors.add(rows[j][1]);
+            shifts.add(rows[j][2]);
+            j += 1;
+        }
+        if len(authors) >= min_authors and len(shifts) >= min_shifts {
+            return True;
+        }
+        i += 1;
+    }
+    return False;
+}
+
+
 """An ActionNode is 'running' when it carries no Completed self-loop."""
 def is_active_action(a: ActionNode) -> bool {
     return len([a ->:Completed:->]) == 0;
@@ -237,14 +275,18 @@ def has_decline(days: list[int], vals: list[float]) -> bool {
 # Rule predicates — each a pure boolean over the graph.
 # ---------------------------------------------------------------------------
 
-"""R1: corroborated cross-shift pattern in a watched category (PRD §7.1)."""
+"""R1: corroborated cross-shift pattern in a watched category (PRD §7.1).
+
+Corroboration is judged over a 72h SLIDING window, not the belief's full lifespan:
+a belief that accretes evidence over many days still fires the moment any 72h slice
+of it carries ≥3 distinct authors across ≥2 shifts.
+"""
 def fires_r1(c: Clinical) -> bool {
-    return len([c ->:Derived:->]) >= 3
-        and distinct_authors(c) >= 3
-        and distinct_shifts(c) >= 2
-        and span_hours(c) <= 72.0
+    return not c.suppressed          # a superseded loser doesn't corroborate; see R2
+        and len([c ->:Derived:->]) >= 3
         and c.category in WATCHED
-        and not recently_fired(c);
+        and not recently_fired(c)
+        and has_corroborating_window(c, 72.0, 3, 2);
 }
 
 
@@ -266,7 +308,8 @@ def fires_r2(c: Clinical) -> bool {
 active intervention (the copy-forward zombie)."""
 def fires_r3(c: Clinical) -> bool {
     drift = hours(c.last_asserted - c.last_verified) > 24.0;
-    return drift
+    return not c.suppressed          # the live side drifts; the loser is R2's concern
+        and drift
         and has_active_intervention(c)
         and not recently_fired(c);
 }
@@ -283,7 +326,9 @@ def eval_r1(now_ref: float) -> list[Finding] {
         if not fires_r1(c) {
             continue;
         }
-        time_sensitive = span_hours(c) <= 48.0;
+        # Time-sensitive when the corroboration is not just present but TIGHT: a
+        # ≥3-author / ≥2-shift cluster inside a single 48h window (call vs push).
+        time_sensitive = has_corroborating_window(c, 48.0, 3, 2);
         base = tier_for("R1", c.category, time_sensitive);
         t = gate("R1", time_sensitive, base, now_ref);
         if t > 0 {

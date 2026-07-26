@@ -22,6 +22,7 @@ use MockLLM so `jac test` needs no key and no network.
 """
 
 import from schema { Episode, Clinical, SBARPlus, Action, IfThen }
+import from graphutil { all_episodes, all_clinicals }
 import from jaclang.byllm.lib { Model }
 import os;
 
@@ -140,8 +141,8 @@ walker:pub Compose {
     has reports: list[SBARPlus] = [];
 
     can gather with Root entry {
-        beliefs = [c.claim for c in [root -->[?:Clinical, suppressed == False]]];
-        episodes = [e.content for e in [root -->[?:Episode, strength >= self.min_strength]]];
+        beliefs = [c.claim for c in all_clinicals() if not c.suppressed];
+        episodes = [e.content for e in all_episodes() if e.strength >= self.min_strength];
         draft = compose_handoff(episodes, beliefs) if (os.getenv("REM_LIVE") == "1")
             else _demo_draft(beliefs);
         self.sbar = to_sbar(draft);

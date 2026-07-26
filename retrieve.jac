@@ -10,6 +10,7 @@ Also home to the two functions A provides across the seam (contracts.jac):
 
 import from schema { Episode, Clinical, ActionNode, Derived, Justifies, Contradicts, now }
 import from decay { RETRIEVAL_BOOST, STRENGTH_FLOOR }
+import from graphutil { all_clinicals }
 
 
 """Apply a retrieval hit to one episode in place: count it, restamp it, boost it.
@@ -72,7 +73,7 @@ losers are excluded. The omission check compares this against what was said.
 """
 def required_findings -> list[Clinical] {
     out: list[Clinical] = [];
-    for c in [root -->[?:Clinical]] {
+    for c in all_clinicals() {
         if c.suppressed {
             continue;
         }
