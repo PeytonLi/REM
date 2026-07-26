@@ -188,6 +188,27 @@ def scripted_segments() -> list[Segment] {
 # already there, so this adds no install step to the demo machine. Two
 # endpoints, four fields -- the SDK buys nothing here.
 glob ELEVENLABS_API: str = "https://api.elevenlabs.io/v1/convai";
+
+# Test seam kept from A's stub -- escalate.jac imports this and adds numbers to
+# it so the walker can be exercised climbing the chain past no-answers. Honoured
+# here too: in the real adapter a refused number is simply nobody picking up, so
+# it returns un-acknowledged and Escalate keeps walking. Do not remove without
+# telling A -- escalate.jac's self-check depends on it.
+glob REFUSE_PHONES: set[str] = set();
+
+# The dual of REFUSE_PHONES, added when A's stub met B's real adapter. A number
+# here answers with a scripted read-back and makes NO network call, so
+# escalate.jac's chain-climbing tests run offline.
+#
+# Empty by default, and deliberately so: without an explicit test opt-in this
+# adapter never reports an acknowledgment it did not receive. A's stub answered
+# every call, which is fine for a stub and wrong for the real thing -- claiming a
+# nurse acknowledged a page that was never placed is the one lie this system
+# cannot tell (PRD §16, deterministic escalation). Un-configured telephony
+# degrades to an on-screen notification and Escalate keeps walking, which is the
+# honest outcome: nobody heard it.
+glob STUB_ANSWER_PHONES: set[str] = set();
+
 glob CALL_POLL_S: float = 3.0;
 glob CALL_TIMEOUT_S: float = 150.0;   # the 40s cap is on the agent; this is the
                                       # wall-clock give-up for ring + talk + wrap.
@@ -219,6 +240,16 @@ def notify(phone: str, script: str, why: str) -> CallResult {
 identify -> one finding -> provenance -> ask -> read-back, with the finding
 text coming from here so the walker controls what gets said."""
 def place_call(phone: str, script: str) -> CallResult {
+    if phone in REFUSE_PHONES {
+        return notify(phone, script, "no answer");
+    }
+    if phone in STUB_ANSWER_PHONES {
+        return CallResult(
+            acknowledged=True,
+            readback=True,
+            transcript=f"[stub call to {phone}] read-back OK"
+        );
+    }
     key = os.getenv("ELEVENLABS_API_KEY");
     agent_id = os.getenv("ELEVENLABS_AGENT_ID");
     number_id = os.getenv("ELEVENLABS_PHONE_NUMBER_ID");
