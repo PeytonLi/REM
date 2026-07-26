@@ -17,6 +17,7 @@ import from .RecordHandoff { RecordView }
 import from .SummaryReview { SummaryView }
 import from .Retrieve { RetrieveView }
 import from .Patient { PatientView }
+import from .theme { remCss }
 
 
 def:pub app() -> JsxElement {
@@ -38,31 +39,18 @@ def:pub app() -> JsxElement {
     def newHandoff() -> None { session = {}; screen = "start"; }
     def goPatient(r: dict) -> None { patient = r; screen = "patient"; }
 
-    return <div style={{"background": "#111827", "minHeight": "100vh"}}>
+    return <div className="rem-app">
+        <style>{remCss()}</style>
         {if screen != "login" {
-            <div style={{
-                "display": "flex", "alignItems": "center", "gap": "1rem",
-                "padding": "0.7rem 1.2rem", "borderBottom": "1px solid #1f2937",
-                "background": "#0b1220", "color": "#e5e7eb",
-                "fontFamily": "system-ui, -apple-system, sans-serif"
-            }}>
-                <strong style={{"letterSpacing": "0.05em"}}>REM</strong>
-                <span style={{"color": "#9ca3af", "fontSize": "0.85rem"}}>
+            <div className="rem-header">
+                <span className="rem-brand">REM</span>
+                <span className="muted-sm">
                     {(user.get("name", "") as str) + " · " + (user.get("role", "") as str)}
                 </span>
-                <span style={{"marginLeft": "auto", "display": "flex", "gap": "0.6rem"}}>
-                    <button onClick={goStart} style={{
-                        "background": "none", "border": "1px solid #374151", "color": "#93c5fd",
-                        "padding": "0.35rem 0.7rem", "borderRadius": "8px", "cursor": "pointer", "fontSize": "0.82rem"
-                    }}>New handoff</button>
-                    <button onClick={lambda (e: MouseEvent) { goRetrieve(); }} style={{
-                        "background": "none", "border": "1px solid #374151", "color": "#93c5fd",
-                        "padding": "0.35rem 0.7rem", "borderRadius": "8px", "cursor": "pointer", "fontSize": "0.82rem"
-                    }}>Past handoffs</button>
-                    <button onClick={onLogout} style={{
-                        "background": "none", "border": "1px solid #374151", "color": "#9ca3af",
-                        "padding": "0.35rem 0.7rem", "borderRadius": "8px", "cursor": "pointer", "fontSize": "0.82rem"
-                    }}>Sign out</button>
+                <span style={{"marginLeft": "auto", "display": "flex", "gap": "0.5rem"}}>
+                    <button onClick={goStart} className="btn btn-ghost btn-sm">New handoff</button>
+                    <button onClick={lambda (e: MouseEvent) { goRetrieve(); }} className="btn btn-ghost btn-sm">Past handoffs</button>
+                    <button onClick={onLogout} className="btn btn-outline btn-sm">Sign out</button>
                 </span>
             </div>
         }}

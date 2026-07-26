@@ -6,6 +6,7 @@ one to read the SBAR-plus summary and drill into the source transcript behind it
 (the provenance). Drafts and signed summaries both appear; only the badge differs.
 """
 
+import from .theme { speakerColor, initials }
 sv import from handoff { Roster, ListHandoffs, HandoffDetail }
 
 
@@ -62,78 +63,72 @@ def:pub RetrieveView(
 
     def badge(status: str) -> JsxElement {
         if status == "signed" {
-            return <span style={{"background": "#064e3b", "color": "#a7f3d0", "padding": "0.15rem 0.5rem", "borderRadius": "999px", "fontSize": "0.72rem", "fontWeight": "700"}}>SIGNED</span>;
+            return <span className="badge badge-success">SIGNED</span>;
         }
-        return <span style={{"background": "#78350f", "color": "#fcd34d", "padding": "0.15rem 0.5rem", "borderRadius": "999px", "fontSize": "0.72rem", "fontWeight": "700"}}>DRAFT</span>;
+        return <span className="badge badge-warn">DRAFT</span>;
     }
 
-    return <div style={{
-        "maxWidth": "720px", "margin": "1.5rem auto", "padding": "0 1rem",
-        "fontFamily": "system-ui, -apple-system, sans-serif", "color": "#e5e7eb"
-    }}>
+    return <div className="container">
         <div style={{"display": "flex", "alignItems": "center", "gap": "0.75rem"}}>
-            <h1 style={{"margin": "0"}}>Past handoffs</h1>
-            <button onClick={lambda (e: MouseEvent) { onNew(); }} style={{
-                "marginLeft": "auto", "padding": "0.5rem 0.9rem", "background": "#16a34a",
-                "color": "white", "border": "none", "borderRadius": "8px", "cursor": "pointer", "fontWeight": "600"
-            }}>＋ New handoff</button>
+            <h1 className="h1">Past handoffs</h1>
+            <button onClick={lambda (e: MouseEvent) { onNew(); }} className="btn btn-success btn-sm"
+                style={{"marginLeft": "auto"}}>＋ New handoff</button>
         </div>
 
         {if errorMsg {
-            <div style={{"background": "#7f1d1d", "color": "#fecaca", "padding": "0.5rem 0.8rem", "borderRadius": "8px", "margin": "0.8rem 0", "fontSize": "0.85rem"}}>{errorMsg}</div>
+            <div className="alert alert-error" style={{"margin": "0.8rem 0"}}>{errorMsg}</div>
         }}
 
-        # -- resident picker
         <div style={{"display": "flex", "gap": "0.4rem", "flexWrap": "wrap", "margin": "1rem 0"}}>
             {for (ri, r) in enumerate(residents) {
                 rid = (r as dict)["id"] as str;
                 rname = (r as dict)["name"] as str;
                 rroom = (r as dict)["room"] as str;
-                <button key={str(ri)} onClick={lambda (e: MouseEvent) { pickResident(rid, rname, rroom); }} style={{
-                    "padding": "0.45rem 0.8rem", "borderRadius": "999px", "cursor": "pointer",
-                    "border": "1px solid #2563eb" if rid == selectedRid else "1px solid #374151",
-                    "background": "#132038" if rid == selectedRid else "#111827", "color": "#e5e7eb"
-                }}>{rname + " · " + rroom}</button>
+                <button key={str(ri)} onClick={lambda (e: MouseEvent) { pickResident(rid, rname, rroom); }}
+                    className={"chip chip-active" if rid == selectedRid else "chip"}>{rname + " · " + rroom}</button>
             }}
         </div>
 
         {if selectedRid {
-            <button onClick={lambda (e: MouseEvent) { onInspect({"id": selectedRid, "name": selectedName, "room": selectedRoom}); }} style={{
-                "padding": "0.5rem 0.9rem", "background": "#4338ca", "color": "white",
-                "border": "none", "borderRadius": "8px", "cursor": "pointer", "fontWeight": "600",
-                "marginBottom": "0.6rem"
-            }}>{"🧠 " + selectedName + "'s knowledge graph"}</button>
+            <button onClick={lambda (e: MouseEvent) { onInspect({"id": selectedRid, "name": selectedName, "room": selectedRoom}); }}
+                className="btn btn-primary" style={{"marginBottom": "0.6rem"}}>
+                {"🧠 " + selectedName + "'s knowledge graph"}
+            </button>
         }}
 
         {if loading {
-            <p style={{"color": "#9ca3af"}}>Loading…</p>
+            <p className="muted">Loading…</p>
         }}
 
-        # -- detail view (open handoff) OR the list
         {if detail.get("ok", False) {
-            <div style={{"background": "#0b1220", "border": "1px solid #1f2937", "borderRadius": "12px", "padding": "1.1rem"}}>
-                <button onClick={closeDetail} style={{"background": "none", "border": "none", "color": "#93c5fd", "cursor": "pointer", "padding": "0", "marginBottom": "0.6rem"}}>← back to list</button>
+            <div className="card">
+                <button onClick={closeDetail} className="btn btn-ghost btn-sm" style={{"marginBottom": "0.6rem", "paddingLeft": "0"}}>← back to list</button>
                 {for (di, sm) in enumerate(detail["summaries"] as list) {
                     <div key={str(di)} style={{"marginBottom": "1rem"}}>
                         <div style={{"display": "flex", "alignItems": "center", "gap": "0.5rem", "marginBottom": "0.5rem"}}>
                             <strong>{(sm as dict).get("resident_name", "Resident") as str}</strong>
                             {badge((sm as dict)["status"] as str)}
                             {if ((sm as dict)["status"] as str) == "signed" {
-                                <span style={{"color": "#9ca3af", "fontSize": "0.8rem"}}>{"signed by " + ((sm as dict)["signed_by"] as str)}</span>
+                                <span className="muted-sm">{"signed by " + ((sm as dict)["signed_by"] as str)}</span>
                             }}
                         </div>
-                        <p style={{"margin": "0.2rem 0"}}><span style={{"color": "#93c5fd"}}>S: </span>{(sm as dict)["situation"] as str}</p>
-                        <p style={{"margin": "0.2rem 0"}}><span style={{"color": "#93c5fd"}}>B: </span>{(sm as dict)["background"] as str}</p>
-                        <p style={{"margin": "0.2rem 0"}}><span style={{"color": "#93c5fd"}}>A: </span>{(sm as dict)["assessment"] as str}</p>
-                        <p style={{"margin": "0.2rem 0"}}><span style={{"color": "#93c5fd"}}>R: </span>{(sm as dict)["recommendation"] as str}</p>
+                        <p style={{"margin": "0.2rem 0"}}><span className="field">S </span>{(sm as dict)["situation"] as str}</p>
+                        <p style={{"margin": "0.2rem 0"}}><span className="field">B </span>{(sm as dict)["background"] as str}</p>
+                        <p style={{"margin": "0.2rem 0"}}><span className="field">A </span>{(sm as dict)["assessment"] as str}</p>
+                        <p style={{"margin": "0.2rem 0"}}><span className="field">R </span>{(sm as dict)["recommendation"] as str}</p>
                     </div>
                 }}
-                <div style={{"borderTop": "1px solid #1f2937", "paddingTop": "0.7rem", "marginTop": "0.5rem"}}>
-                    <div style={{"color": "#9ca3af", "fontSize": "0.8rem", "marginBottom": "0.4rem"}}>Source transcript</div>
+                <hr className="divider"/>
+                <div className="field" style={{"marginBottom": "0.5rem"}}>Source transcript</div>
+                <div className="feed">
                     {for (ti, s) in enumerate(detail["transcript"] as list) {
-                        <div key={str(ti)} style={{"fontSize": "0.88rem", "marginBottom": "0.3rem"}}>
-                            <span style={{"color": "#60a5fa", "fontWeight": "600", "marginRight": "0.5rem"}}>{(s as dict)["speaker"] as str}</span>
-                            <span>{(s as dict)["text"] as str}</span>
+                        spk = (s as dict)["speaker"] as str;
+                        <div key={str(ti)} className="msg">
+                            <div className="msg-av" style={{"background": speakerColor(spk)}}>{initials(spk)}</div>
+                            <div className="msg-main">
+                                <div className="msg-head"><span className="msg-name">{spk}</span></div>
+                                <div className="msg-body">{(s as dict)["text"] as str}</div>
+                            </div>
                         </div>
                     }}
                 </div>
@@ -143,17 +138,15 @@ def:pub RetrieveView(
         {if selectedRid and not detail.get("ok", False) and not loading {
             <div>
                 {if len(handoffs) == 0 {
-                    <p style={{"color": "#6b7280"}}>{"No handoffs recorded for " + selectedName + " yet."}</p>
+                    <div className="empty">{"No handoffs recorded for " + selectedName + " yet."}</div>
                 }}
                 {for (hi, h) in enumerate(handoffs) {
                     sid = (h as dict)["session_id"] as str;
-                    <div key={str(hi)} onClick={lambda (e: MouseEvent) { openDetail(sid); }} style={{
-                        "background": "#0b1220", "border": "1px solid #1f2937", "borderRadius": "10px",
-                        "padding": "0.8rem 1rem", "marginBottom": "0.6rem", "cursor": "pointer"
-                    }}>
+                    <div key={str(hi)} onClick={lambda (e: MouseEvent) { openDetail(sid); }} className="chunk"
+                        style={{"marginBottom": "0.6rem", "cursor": "pointer"}}>
                         <div style={{"display": "flex", "alignItems": "center", "gap": "0.5rem", "marginBottom": "0.3rem"}}>
                             {badge((h as dict)["status"] as str)}
-                            <span style={{"color": "#9ca3af", "fontSize": "0.8rem"}}>
+                            <span className="muted-sm">
                                 {"shift " + ((h as dict).get("shift", "") as str) + " · " + ((h as dict).get("outgoing", "") as str) + " → " + ((h as dict).get("incoming", "") as str)}
                             </span>
                         </div>
