@@ -87,25 +87,15 @@ def:pub StartHandoffView(user: dict, onStarted: Callable[[dict], None]) -> JsxEl
         }
     }
 
-    return <div style={{
-        "maxWidth": "620px", "margin": "2rem auto", "padding": "0 1rem",
-        "fontFamily": "system-ui, -apple-system, sans-serif", "color": "#e5e7eb"
-    }}>
-        <h1 style={{"margin": "0 0 0.25rem 0"}}>Start a handoff</h1>
-        <p style={{"color": "#9ca3af", "marginTop": "0"}}>
+    return <div className="container" style={{"maxWidth": "620px"}}>
+        <h1 className="h1">Start a handoff</h1>
+        <p className="muted" style={{"marginTop": "0.35rem"}}>
             {"Outgoing: " + (user.get("name", "—") as str) + " · " + (user.get("role", "") as str)}
         </p>
 
-        <div style={{
-            "background": "#0b1220", "border": "1px solid #1f2937", "borderRadius": "12px",
-            "padding": "1.25rem", "marginTop": "1rem"
-        }}>
-            <label style={{"fontSize": "0.85rem", "color": "#9ca3af"}}>Incoming nurse</label>
-            <select value={incoming} onChange={onIncomingChange} style={{
-                "width": "100%", "boxSizing": "border-box", "margin": "0.3rem 0 1.1rem 0",
-                "padding": "0.55rem", "background": "#111827", "color": "#e5e7eb",
-                "border": "1px solid #374151", "borderRadius": "8px"
-            }}>
+        <div className="card" style={{"marginTop": "1rem"}}>
+            <label className="label">Incoming nurse</label>
+            <select value={incoming} onChange={onIncomingChange} className="select" style={{"marginBottom": "1.2rem"}}>
                 <option value="">— select —</option>
                 {for u in users {
                     if u["username"] != user.get("username", "") {
@@ -116,47 +106,29 @@ def:pub StartHandoffView(user: dict, onStarted: Callable[[dict], None]) -> JsxEl
                 }}
             </select>
 
-            <label style={{"fontSize": "0.85rem", "color": "#9ca3af"}}>Residents to hand off</label>
-            <div style={{"margin": "0.4rem 0 1.1rem 0", "display": "flex", "flexDirection": "column", "gap": "0.4rem"}}>
+            <label className="label">Residents to hand off</label>
+            <div style={{"margin": "0 0 1.2rem 0", "display": "flex", "flexDirection": "column", "gap": "0.45rem"}}>
                 {for r in residents {
                     rid = r["id"] as str;
                     on = rid in picked;
-                    <div key={rid} onClick={lambda (e: MouseEvent) { toggle(rid); }} style={{
-                        "display": "flex", "alignItems": "center", "gap": "0.6rem",
-                        "padding": "0.55rem 0.7rem", "cursor": "pointer", "borderRadius": "8px",
-                        "border": "1px solid #2563eb" if on else "1px solid #374151",
-                        "background": "#132038" if on else "#111827"
-                    }}>
-                        <span style={{
-                            "width": "16px", "height": "16px", "borderRadius": "4px",
-                            "border": "1px solid #6b7280", "display": "inline-flex",
-                            "alignItems": "center", "justifyContent": "center",
-                            "background": "#2563eb" if on else "transparent", "fontSize": "0.7rem"
-                        }}>{"✓" if on else ""}</span>
+                    <div key={rid} onClick={lambda (e: MouseEvent) { toggle(rid); }}
+                        className={"row row-active" if on else "row"}>
+                        <span className={"check check-on" if on else "check"}>{"✓" if on else ""}</span>
                         <span>{(r["name"] as str) + " · Room " + (r["room"] as str)}</span>
                     </div>
                 }}
             </div>
 
-            <label style={{"fontSize": "0.85rem", "color": "#9ca3af"}}>Shift</label>
-            <input value={shift} onChange={onShiftChange} style={{
-                "width": "100%", "boxSizing": "border-box", "margin": "0.3rem 0 1.2rem 0",
-                "padding": "0.55rem", "background": "#111827", "color": "#e5e7eb",
-                "border": "1px solid #374151", "borderRadius": "8px"
-            }}/>
+            <label className="label">Shift</label>
+            <input value={shift} onChange={onShiftChange} className="input" style={{"marginBottom": "1.3rem"}}/>
 
             {if errorMsg {
-                <div style={{
-                    "background": "#7f1d1d", "color": "#fecaca", "padding": "0.5rem 0.7rem",
-                    "borderRadius": "8px", "marginBottom": "0.9rem", "fontSize": "0.85rem"
-                }}>{errorMsg}</div>
+                <div className="alert alert-error" style={{"marginBottom": "0.9rem"}}>{errorMsg}</div>
             }}
 
-            <button onClick={begin} disabled={busy} style={{
-                "width": "100%", "padding": "0.7rem", "background": "#16a34a",
-                "color": "white", "border": "none", "borderRadius": "8px",
-                "cursor": "pointer", "fontWeight": "600", "opacity": "0.6" if busy else "1"
-            }}>{"Starting…" if busy else "● Start recording"}</button>
+            <button onClick={begin} disabled={busy} className="btn btn-success btn-block">
+                {"Starting…" if busy else "● Start recording"}
+            </button>
         </div>
     </div>;
 }
