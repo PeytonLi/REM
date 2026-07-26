@@ -12,7 +12,7 @@ state from an always-current source (getSegments()) or from the callback's own
 argument -- never `x = x + arg`. That is why there is no manual counter.
 """
 
-import from .live_transcribe { startLive, stopLive, getSegments, clearSegments, fullTranscript }
+import from .live_transcribe { startLive, stopLive, getSegments, clearSegments, fullTranscript, getAudioB64, getAudioMime }
 
 sv import from realtime { IngestUtterance }
 sv import from omission { OmissionPanel }
@@ -30,6 +30,8 @@ def:pub LiveHandoff() -> JsxElement {
     has tripwireRan: bool = False;
     has firedFindings: list = [];   # findings from the post-handoff tripwire
     has escalatedFindings: list = []; # tier-3 findings that were escalated
+    has audioUrl: str = "";        # downloadable recording of the handoff
+    has hasRecording: bool = False;
     has shift: str = "D5-night";
 
     # -- transcription-service callbacks (captured once at start) --------------
@@ -55,6 +57,8 @@ def:pub LiveHandoff() -> JsxElement {
         tripwireRan = False;
         firedFindings = [];
         escalatedFindings = [];
+        audioUrl = "";
+        hasRecording = False;
         segments = [];
         interim = "";
         clearSegments();
@@ -62,6 +66,24 @@ def:pub LiveHandoff() -> JsxElement {
             "onInterim": cbInterim, "onFinal": cbFinal,
             "onStatus": cbStatus, "onError": cbError
         });
+    }
+
+    # Save the raw audio recording as a downloadable file. The browser holds
+    # the captured chunks in memory (getAudioB64 from the transcription service);
+    # this creates a data-URL download link so the original recording survives
+    # past tab close — provenance needs the ground-truth audio, not just the
+    # transcribed text.
+    async def downloadRecording() -> None {
+        b64 = await getAudioB64();
+        if not b64 {
+            audioUrl = "";
+            hasRecording = False;
+            return;
+        }
+        mime = getAudioMime();
+        ext = "webm" if mime.indexOf("webm") >= 0 else "wav";   # jac:ignore[W2001]
+        audioUrl = "data:" + mime + ";base64," + b64;
+        hasRecording = True;
     }
 
     # Stop the mic, run the omission check, then re-evaluate the tripwire
@@ -117,6 +139,8 @@ def:pub LiveHandoff() -> JsxElement {
         } except Exception as err2 {
             errorMsg = "Tripwire unavailable: " + str(err2);
         }
+        # -- save the raw audio recording for provenance ---------------------
+        await downloadRecording();
     }
 
     listening = status == "listening" or status == "connecting";
@@ -222,6 +246,26 @@ def:pub LiveHandoff() -> JsxElement {
                 }}
             </div>
         }}
+        # -- audio recording download (provenance: the original audio) ------
+        {if hasRecording and audioUrl {
+            <div style={{
+                "marginTop": "1.25rem", "background": "#0b1220",
+                "border": "1px solid #1f2937", "borderRadius": "10px",
+                "padding": "0.8rem 1rem"
+            }}>
+                <span style={{"color": "#9ca3af", "fontSize": "0.9rem"}}>
+                    Original recording saved —
+                </span>
+                <a href={audioUrl} download="handoff-recording.webm" style={{
+                    "color": "#60a5fa", "fontSize": "0.9rem", "marginLeft": "0.4rem",
+                    "textDecoration": "underline", "cursor": "pointer"
+                }}>download audio</a>
+                <span style={{"color": "#6b7280", "fontSize": "0.8rem", "marginLeft": "0.5rem"}}>
+                    (keep this — it's the ground-truth source for every transcribed episode)
+                </span>
+            </div>
+        }}
+
         # -- tripwire findings + escalation result
         {if tripwireRan {
             <div style={{"marginTop": "1.25rem"}}>
