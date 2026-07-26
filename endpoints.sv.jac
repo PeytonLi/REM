@@ -21,6 +21,7 @@ so the UI gets `.author` / `.text` dot access instead of untyped dict keys.
 import from baseline { Baseline }
 import from ingest { IngestDevice, IngestTranscript }
 import from omission { OmissionPanel }
+import from realtime { DeepgramToken, IngestUtterance }
 
 node Message {
     has author: str,
