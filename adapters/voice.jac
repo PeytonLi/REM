@@ -189,6 +189,21 @@ def scripted_segments() -> list[Segment] {
 # endpoints, four fields -- the SDK buys nothing here.
 glob ELEVENLABS_API: str = "https://api.elevenlabs.io/v1/convai";
 
+# ElevenLabs has a SEPARATE outbound endpoint per telephony provider, and they
+# are not interchangeable -- posting a Twilio-imported number to the sip-trunk
+# path fails. Twilio is the live path; SignalWire is left documented because the
+# SIP route was tried first and could not be made to work.
+#
+# SignalWire (dead end, kept for the record): its SIP endpoints host *registered*
+# devices. ElevenLabs sends an unregistered INVITE to
+# <destination>@<space>.sip.signalwire.com, and SignalWire answers 404 "Domain
+# unavailable" on every transport, port, and domain -- it does not do
+# termination for arbitrary numbers on that domain. Switch back by setting
+# REM_TELEPHONY=sip only if SignalWire trunking is configured.
+glob OUTBOUND_PATH: str =
+    "sip-trunk/outbound-call" if os.getenv("REM_TELEPHONY") == "sip"
+    else "twilio/outbound-call";
+
 # Test seam kept from A's stub -- escalate.jac imports this and adds numbers to
 # it so the walker can be exercised climbing the chain past no-answers. Honoured
 # here too: in the real adapter a refused number is simply nobody picking up, so
@@ -250,6 +265,42 @@ def place_call(phone: str, script: str) -> CallResult {
             transcript=f"[stub call to {phone}] read-back OK"
         );
     }
+    # Route 1: the SignalWire media-stream bridge (bridge/server.mjs), used when
+    # BRIDGE_URL is set. Preferred over the ElevenLabs-native path because a
+    # Twilio TRIAL account both prepends a spoken trial notice and strips
+    # <Connect><Stream> from TwiML -- neither restriction exists on SignalWire.
+    # The bridge blocks until the call ends and returns the human's turns; the
+    # read-back judgement stays here, in Jac.
+    bridge = os.getenv("BRIDGE_URL");
+    if bridge {
+        try {
+            answered = requests.post(
+                f"{bridge.rstrip('/')}/call",
+                json={"to": phone, "script": script},
+                timeout=CALL_TIMEOUT_S + 30.0
+            );
+            answered.raise_for_status();
+            body = answered.json();
+        } except Exception as e {
+            return notify(phone, script, f"bridge error: {e}");
+        }
+        if body.get("error") {
+            return notify(phone, script, f"bridge: {body.get('error')}");
+        }
+        bturns: list[dict] = body.get("turns") or [];
+        bhuman = "\n".join(
+            [t["message"] for t in bturns if t.get("message")]
+        );
+        # Silence is not acknowledgment: an unanswered call, voicemail, or a
+        # timeout must leave Escalate climbing to the next clinician.
+        back = bool(body.get("answered")) and bool(bhuman.strip());
+        bread = back and readback_ok(script, bhuman);
+        print(f"[voice] bridge call: acknowledged={back} readback={bread}");
+        return CallResult(acknowledged=back, readback=bread, transcript=bhuman);
+    }
+
+    # Route 2: ElevenLabs-native telephony (imported Twilio number, or a SIP
+    # trunk if REM_TELEPHONY=sip).
     key = os.getenv("ELEVENLABS_API_KEY");
     agent_id = os.getenv("ELEVENLABS_AGENT_ID");
     number_id = os.getenv("ELEVENLABS_PHONE_NUMBER_ID");
@@ -273,7 +324,7 @@ def place_call(phone: str, script: str) -> CallResult {
     try {
         import time;
         placed = requests.post(
-            f"{ELEVENLABS_API}/sip-trunk/outbound-call",
+            f"{ELEVENLABS_API}/{OUTBOUND_PATH}",
             headers=headers,
             json=payload,
             timeout=30
