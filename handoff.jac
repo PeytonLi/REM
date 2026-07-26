@@ -25,8 +25,25 @@ minimal per PRD 5.1: seeded demo users, plaintext demo passwords, no token store
 import os;
 import base64;
 import requests;
-import from schema { Clinical, SBARPlus, Action, IfThen, now }
-import from compose { compose_handoff, to_sbar }
+import from schema { SBARPlus, Action, IfThen, now }
+import from jaclang.byllm.lib { Model }
+
+# python-dotenv is optional; load the project .env so DEEPGRAM_API_KEY (batch
+# transcription) and the LLM key are visible even when the shell that launched
+# the server didn't export them. Jac has no module-level try/except, so the
+# guard lives in a function called from `with entry` (same idiom as voice.jac).
+def _load_env {
+    try {
+        import from dotenv { load_dotenv }
+        load_dotenv();
+    } except ImportError as e {
+        print(f"[handoff] dotenv not installed ({e}); reading os.environ directly");
+    }
+}
+
+with entry {
+    _load_env();
+}
 
 glob DEEPGRAM_URL: str = "https://api.deepgram.com/v1/listen";
 
@@ -151,28 +168,91 @@ def _transcribe_b64(b64: str, mime: str) -> list[dict] {
 }
 
 
-"""Compose an SBARPlus from transcript lines + clinical context.
+# --- LLM summarization (transcript -> SBAR-plus) ---------------------------
+# Local draft types the LLM fills. Defined HERE (not imported) because byllm 0.6
+# cannot build an output schema for a nested obj imported from another module --
+# the same constraint compose.jac documents. The nested SBAR is structurally
+# hard, so we route to gpt-4o (same choice compose.jac makes), not the mini
+# default; OPENAI_API_KEY drives it.
+glob SUMMARY_MODEL: str = "gpt-4o";
+glob _summarizer: Model = Model(model_name="gpt-4o");
 
-Live (REM_LIVE=1): the frozen `compose_handoff` writer fills the draft, mapped
-into SBARPlus by the frozen `to_sbar`. Offline / on failure: a deterministic
-draft grounded in the actual transcript text, so tests and keyless demos still
-produce a reviewable (clearly-draft) summary without an API call."""
-def _make_sbar(lines: list[str], context: list[str]) -> SBARPlus {
-    if os.getenv("REM_LIVE") == "1" and lines {
-        try {
-            return to_sbar(compose_handoff(lines, context));
-        } except Exception as e {
-            print(f"[handoff] compose failed ({e}) -- canned summary");
-        }
-    }
-    joined: str = (" ".join(lines))[:400] if lines else "No transcript captured.";
+obj HAction {
+    """One action-list item."""
+    has task: str;
+    has owner: str;
+    has due: str;
+}
+sem HAction.task  = "A concrete follow-up task, imperative (e.g. 'Recheck SpO2 in 2 hours').";
+sem HAction.owner = "Who does it: RN, LPN, CNA, or on-call MD.";
+sem HAction.due   = "When it is due (e.g. 'q2h', 'by 2200', 'this shift').";
+
+obj HIfThen {
+    """One if/then contingency."""
+    has trigger: str;
+    has response: str;
+}
+sem HIfThen.trigger  = "An observable warning sign to watch for.";
+sem HIfThen.response = "Exactly what to do if the trigger is observed.";
+
+obj HDraft {
+    """The SBAR-plus the LLM fills from the conversation, before it is copied
+    into the frozen schema.SBARPlus the rest of REM renders."""
+    has situation: str;
+    has background: str;
+    has assessment: str;
+    has recommendation: str;
+    has action_list: list[HAction] = [];
+    has contingencies: list[HIfThen] = [];
+}
+sem HDraft.situation = "1-2 sentences: who the resident is and the single most important thing this "
+    "shift -- drawn ONLY from the conversation. If the resident isn't named, don't invent one.";
+sem HDraft.background = "Relevant history/timeline actually mentioned in the conversation. If little "
+    "was said, keep it short; never fabricate history, vitals, or medications.";
+sem HDraft.assessment = "The clinical read of what is going on and how concerning, based on the "
+    "conversation. If it is too sparse to assess, say so plainly instead of guessing.";
+sem HDraft.recommendation = "What the oncoming nurse should do and watch for, from the conversation. "
+    "If nothing specific was said, give the safe default: monitor and verify current orders.";
+sem HDraft.action_list = "Discrete follow-up tasks stated or clearly implied by the conversation. "
+    "Empty list if none were discussed -- do not invent tasks.";
+sem HDraft.contingencies = "If/then safety nets mentioned or clearly implied. Empty list if none.";
+
+def summarize_handoff(transcript: str) -> HDraft by _summarizer();
+sem summarize_handoff = "You are a nurse writing a shift handoff. The input is a verbatim, "
+    "speaker-labeled transcript of the outgoing and incoming nurse talking -- it may be short, "
+    "messy, or full of filler ('yeah', 'he he', 'are you sure'). Produce a clean SBAR-plus handoff "
+    "summary using ONLY facts actually present in the transcript. Never invent clinical details, "
+    "vitals, medications, diagnoses, or history that were not said. If the conversation is too thin "
+    "to fill a field, keep it brief and honestly note what was not covered rather than fabricating.";
+sem summarize_handoff.transcript = "The verbatim diarized nurse-to-nurse handoff conversation.";
+
+
+"""Real LLM summary: transcript text -> frozen schema.SBARPlus. Raises if the
+model call fails (no key, network) so the caller can fall back to the canned SBAR."""
+def _summarize(transcript_text: str) -> SBARPlus {
+    d = summarize_handoff(transcript_text);
     return SBARPlus(
-        situation="Handoff recorded for resident this shift.",
-        background=f"Conversation covered: {joined}",
-        assessment="Auto-generated draft from the transcript -- review before signing.",
-        recommendation="Verify against current orders and complete the action list below.",
-        action_list=[Action(task="Review overnight status and vitals", owner="RN", due="start of shift")],
-        contingencies=[IfThen(trigger="Any acute change in condition", response="Escalate per protocol")]
+        situation=d.situation,
+        background=d.background,
+        assessment=d.assessment,
+        recommendation=d.recommendation,
+        action_list=[Action(task=a.task, owner=a.owner, due=a.due) for a in d.action_list],
+        contingencies=[IfThen(trigger=c.trigger, response=c.response) for c in d.contingencies]
+    );
+}
+
+
+"""Fallback when the LLM is unavailable (no key / call failed). Honest about
+being unsummarized rather than dressing up a transcript echo as a summary."""
+def _canned_sbar(transcript_text: str) -> SBARPlus {
+    snippet: str = transcript_text[:400] if transcript_text else "No transcript captured.";
+    return SBARPlus(
+        situation="Handoff recorded; automatic summary unavailable (no LLM key configured).",
+        background=f"Raw transcript: {snippet}",
+        assessment="Not assessed -- summarize this handoff manually.",
+        recommendation="Review the transcript below and edit this summary before signing.",
+        action_list=[],
+        contingencies=[]
     );
 }
 
@@ -341,29 +421,40 @@ walker:pub EndHandoff {
         tnode = Transcript(segments=segs, audio_ref="");
         sess ++> tnode;
 
-        # 3. One draft summary per resident, grounded in the transcript.
+        # 3. Summarize the whole conversation ONCE (the LLM, with a canned
+        #    fallback if no key), then attach one draft summary per resident.
         lines = [
             (s.get("speaker", "Speaker") as str) + ": " + (s.get("text", "") as str)
             for s in segs
         ];
-        context = [c.claim for c in [here --> [?:Clinical, suppressed == False]]];
-        live: bool = os.getenv("REM_LIVE") == "1";
+        transcript_text: str = "\n".join(lines);
+        sbar: SBARPlus | None = None;
+        model_used: str = "offline-canned";
+        if transcript_text.strip() {
+            try {
+                sbar = _summarize(transcript_text);
+                model_used = SUMMARY_MODEL;
+            } except Exception as e {
+                print(f"[handoff] summarize failed ({e}) -- canned fallback");
+            }
+        }
+        final: SBARPlus = sbar if sbar is not None else _canned_sbar(transcript_text);
+        al = [{"task": a.task, "owner": a.owner, "due": a.due} for a in final.action_list];
+        cg = [{"trigger": c.trigger, "response": c.response} for c in final.contingencies];
+
         rid_list = sess.resident_ids if sess.resident_ids else [""];
         out_summaries: list[dict] = [];
         for rid in rid_list {
-            sbar = _make_sbar(lines, context);
-            al = [{"task": a.task, "owner": a.owner, "due": a.due} for a in sbar.action_list];
-            cg = [{"trigger": c.trigger, "response": c.response} for c in sbar.contingencies];
             summ = HandoffSummary(
                 resident_id=rid,
-                situation=sbar.situation,
-                background=sbar.background,
-                assessment=sbar.assessment,
-                recommendation=sbar.recommendation,
+                situation=final.situation,
+                background=final.background,
+                assessment=final.assessment,
+                recommendation=final.recommendation,
                 action_list=al,
                 contingencies=cg,
                 generated_at=now(),
-                model_used="gpt-4o" if live else "offline-canned",
+                model_used=model_used,
                 status="draft"
             );
             sess ++> summ;
