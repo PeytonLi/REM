@@ -1,3 +1,10 @@
+# Jac build cache + persisted graph data (runtime artifacts)
+.jac/
+jac.local.toml
+
+# Env / secrets
 .env
+
+# Python
 __pycache__/
 *.pyc
