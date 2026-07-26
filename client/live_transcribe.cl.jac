@@ -56,17 +56,17 @@ glob _KEYTERMS: list = [
 
 
 """A fresh copy of every finalized utterance so far (new ref -> re-render)."""
-def getSegments() -> list {
+def:pub getSegments() -> list {
     return _segments[:];
 }
 
 """Reset the finalized-utterance buffer at the start of a new handoff."""
-def clearSegments() -> None {
+def:pub clearSegments() -> None {
     _segments = [];
 }
 
 """The whole handoff as one string, for the post-hoc omission check."""
-def fullTranscript() -> str {
+def:pub fullTranscript() -> str {
     parts = [];
     for s in _segments {
         parts.append(s["speaker"] + ": " + s["text"]);
@@ -157,7 +157,7 @@ def _on_message(event: any) {
 
 """Mint a token, open the mic + socket, begin streaming. Any failure lands on
 cbs["onError"] and leaves no half-open resources."""
-async def startLive(cbs: dict) -> None {
+async def:pub startLive(cbs: dict) -> None {
     _cbs = cbs;
     _segments = [];
     _fire("onStatus", "connecting");
@@ -192,7 +192,7 @@ async def startLive(cbs: dict) -> None {
 }
 
 """Stop the recorder, tell Deepgram we're done, close the socket, free the mic."""
-def stopLive() {
+def:pub stopLive() {
     if _recorder and _recorder.state != "inactive" {
         _recorder.stop();
     }
