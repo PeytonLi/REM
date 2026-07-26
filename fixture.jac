@@ -13,10 +13,18 @@ Timestamps hang off a fixed SEED_NOW anchor, which is also passed to Tripwire as
 Reset before re-seeding: `jac clean --all --force` (re-running duplicates nodes).
 """
 
+import os;
 import from schema {
     Episode, Clinical, ActionNode, Clinician,
     Derived, Causes, Justifies, Contradicts, Escalates, Completed
 }
+
+# The one clinician whose phone actually rings on demo day. Read from the
+# environment (REM_DEMO_PHONE in .env) so nobody's personal number is committed.
+# Falls back to a reserved +1555 number, which can never connect -- so an unset
+# variable degrades to "no answer" and the walker climbs the chain, rather than
+# dialing a stranger.
+glob DEMO_PHONE: str = os.getenv("REM_DEMO_PHONE") or "+15550000001";
 
 # --- scenario clock ---------------------------------------------------------
 glob SEED_NOW: float = 1712347200.0;   # 2024-04-05 20:00 UTC — the shift-6 handoff
@@ -33,7 +41,7 @@ walker:pub SeedGraph {
         raw = 0;
 
         # -- escalation chain (PRD §5): CNA -> RN -> charge/DON -> on-call MD --
-        cna = root ++> Clinician(name="CNA Rosa", phone="+15550000001", role="CNA", rank=1);
+        cna = root ++> Clinician(name="CNA Rosa", phone=DEMO_PHONE, role="CNA", rank=1);
         rn = root ++> Clinician(name="RN Jordan", phone="+15550000002", role="RN", rank=2);
         charge = root ++> Clinician(name="Charge Nurse Pat", phone="+15550000003", role="RN", rank=3);
         md = root ++> Clinician(name="Dr. On-Call", phone="+15550000004", role="on-call MD", rank=4);
