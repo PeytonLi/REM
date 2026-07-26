@@ -19,6 +19,10 @@ def:pub SummaryView(
     user: dict,
     summaries: list,
     transcript: list,
+    audioUrl: str = "",
+    audioMime: str = "audio/webm",
+    tripwire: list = [],
+    escalations: list = [],
     onDone: Callable[[], None]
 ) -> JsxElement {
     has items: list = summaries;
@@ -216,6 +220,91 @@ def:pub SummaryView(
                 </div>
             }}
         </div>
+
+        # -- audio recording playback --------------------------------------
+        {if audioUrl {
+            <div style={{
+                "marginTop": "1.5rem", "background": "#020617",
+                "border": "1px solid #374151", "borderRadius": "14px",
+                "padding": "1.25rem"
+            }}>
+                <div style={{
+                    "display": "flex", "alignItems": "center", "gap": "0.5rem",
+                    "marginBottom": "0.75rem"
+                }}>
+                    <span style={{"fontSize": "1.4rem"}}>🎙️</span>
+                    <div>
+                        <div style={{"color": "#f1f5f9", "fontWeight": "700", "fontSize": "0.95rem"}}>
+                            Handoff Recording
+                        </div>
+                        <div style={{"color": "#6b7280", "fontSize": "0.8rem"}}>
+                            Ground-truth source for all transcribed episodes
+                        </div>
+                    </div>
+                </div>
+                <audio
+                    controls
+                    style={{"width": "100%", "height": "48px", "borderRadius": "8px"}}
+                >
+                    <source src={audioUrl} type={audioMime}/>
+                </audio>
+            </div>
+        }}
+
+        # -- tripwire findings + escalation results -------------------------
+        {if len(tripwire) > 0 {
+            <div style={{
+                "marginTop": "1.25rem", "background": "#1f2937",
+                "border": "1px solid #374151", "borderRadius": "10px",
+                "padding": "1rem"
+            }}>
+                <div style={{"color": "#fbbf24", "fontWeight": "700", "marginBottom": "0.5rem"}}>
+                    {"Findings fired (" + str(len(tripwire)) + ")"}
+                </div>
+                {for (k, f) in enumerate(tripwire) {
+                    <div key={str(k)} style={{
+                        "padding": "0.4rem 0", "fontSize": "0.9rem",
+                        "display": "flex", "justifyContent": "space-between",
+                        "color": "#d1d5db"
+                    }}>
+                        <span style={{"flex": "1"}}>{(f as dict)["rule"] as str + " — " + (f as dict)["claim"] as str}</span>
+                        <span style={{
+                            "background": "#dc2626" if ((f as dict)["tier"] as int) >= 3 else "#d97706",
+                            "color": "white", "padding": "0.15rem 0.5rem",
+                            "borderRadius": "6px", "fontSize": "0.8rem",
+                            "fontWeight": "600"
+                        }}>{"T" + str((f as dict)["tier"] as int) + (" 📞" if ((f as dict)["tier"] as int) >= 3 else "")}</span>
+                    </div>
+                }}
+                {if len(escalations) > 0 {
+                    <div style={{"marginTop": "0.75rem"}}>
+                        <div style={{"color": "#fbbf24", "fontWeight": "700", "marginBottom": "0.4rem"}}>
+                            Escalation results
+                        </div>
+                        {for (j, e) in enumerate(escalations) {
+                            ed = e as dict;
+                            <div key={str(j)} style={{
+                                "padding": "0.4rem 0.6rem", "marginBottom": "0.3rem",
+                                "borderRadius": "8px", "fontSize": "0.85rem",
+                                "background": "#064e3b" if ed["acknowledged"] else "#7f1d1d"
+                            }}>
+                                <div style={{"color": "#a7f3d0" if ed["acknowledged"] else "#fecaca", "fontWeight": "600"}}>
+                                    {ed["claim"] as str}
+                                </div>
+                                <div style={{"color": "#9ca3af", "marginTop": "0.15rem"}}>
+                                    {if ed["acknowledged"] {
+                                        "Acknowledged by " + ((ed["chain"] as list)[len(ed["chain"] as list) - 1] as str)
+                                    } else {
+                                        chainList = ed["chain"] as list;
+                                        "Not acknowledged" + (" — " + (chainList[len(chainList) - 1] as str) + " reached" if len(chainList) > 0 else "")
+                                    }}
+                                </div>
+                            </div>
+                        }}
+                    </div>
+                }}
+            </div>
+        }}
 
         <div style={{"display": "flex", "gap": "0.6rem", "marginTop": "1.4rem", "alignItems": "center"}}>
             {if not locked {

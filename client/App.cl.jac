@@ -26,13 +26,20 @@ def:pub app() -> JsxElement {
     has session: dict = {};           # {id, shift, resident_ids, residents_label, incoming_name}
     has summaries: list = [];         # drafts from EndHandoff, for the summary screen
     has transcript: list = [];        # segments behind those summaries
+    has audioUrl: str = "";
+    has audioMime: str = "audio/webm";
+    has tripwire: list = [];
+    has escalations: list = [];
     has patient: dict = {};           # {id, name, room} for the patient knowledge screen
 
     def onLogin(u: dict) -> None { user = u; screen = "start"; }
     def onLogout(e: MouseEvent) -> None { user = {}; session = {}; screen = "login"; }
     def onStarted(s: dict) -> None { session = s; screen = "record"; }
-    def onEnded(summ: list, tsegs: list) -> None {
-        summaries = summ; transcript = tsegs; screen = "summary";
+    def onEnded(summ: list, tsegs: list, aurl: str, amime: str, tw: list, esc: list) -> None {
+        summaries = summ; transcript = tsegs;
+        audioUrl = aurl; audioMime = amime;
+        tripwire = tw; escalations = esc;
+        screen = "summary";
     }
     def goStart(e: MouseEvent) -> None { session = {}; screen = "start"; }
     def goRetrieve() -> None { screen = "retrieve"; }
@@ -65,7 +72,10 @@ def:pub app() -> JsxElement {
             <RecordView session={session} onEnded={onEnded}/>
         }}
         {if screen == "summary" {
-            <SummaryView user={user} summaries={summaries} transcript={transcript} onDone={goRetrieve}/>
+            <SummaryView user={user} summaries={summaries} transcript={transcript}
+                audioUrl={audioUrl} audioMime={audioMime}
+                tripwire={tripwire} escalations={escalations}
+                onDone={goRetrieve}/>
         }}
         {if screen == "retrieve" {
             <RetrieveView onNew={newHandoff} onInspect={goPatient}/>
