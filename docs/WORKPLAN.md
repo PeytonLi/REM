@@ -99,7 +99,7 @@ The device stream now outranks verbal capture — it's the actual product being 
 
 1. Spoken/recorded conflict detection (§9.4 original scope) — **B**
 2. Verbal handoff capture entirely (§9) — **B drops the speech path; the device narrative alone still carries the story**
-3. Live phone call → on-screen notification — **B drops ElevenLabs, A's `Escalate` is untouched**
+3. Live phone call → on-screen notification — **B drops ElevenLabs/SignalWire, A's `Escalate` is untouched**
 4. Graph animation → static before/after — **B**
 
 Never cut: consolidation (A), provenance click-through (A+B), omission check (B), **device ingestion / R5–R6** (B's `IngestDevice` + A's tripwire rules). Those are the project now. If A is behind at hour 16, B takes `tripwire.jac` — it is the most self-contained piece A owns.

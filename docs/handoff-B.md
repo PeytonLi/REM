@@ -25,7 +25,7 @@ Read first: [`docs/REM-PRD.md`](./REM-PRD.md) §6.2a, §9, §10.2, §11, §13 ·
 | `ingest.jac` — `IngestTranscript` | §9.2 | 13–15 |
 | `client/` — five screens + provenance highlighting | §10.2 | 15–17 |
 | `omission.jac` — `was_conveyed()` + panel | §9.3 | 19–20 |
-| ElevenLabs outbound call wiring | §8 | 20–22 |
+| ElevenLabs outbound call wiring, via SignalWire SIP trunk | §8 | 20–22 |
 | README, demo video, **backup call recording** | §13 | 23–24 |
 
 ## Non-negotiable
@@ -41,8 +41,9 @@ Read first: [`docs/REM-PRD.md`](./REM-PRD.md) §6.2a, §9, §10.2, §11, §13 ·
 
 - **Deepgram mangles drug names.** Use keyterm prompting with your drug list. The recorded script is yours to control — no excuse for a wrong drug name coming back.
 - **Fall detection false-positives on accelerometer jitter** (§11.1, §15). Your generator owns the fall signal — threshold the impact spike well above normal movement noise so a lone jitter never reads as a fall, and verify against the decoy set. No missed fall, no false fall.
+- **ElevenLabs doesn't provision phone numbers itself, on any tier** — you already have SignalWire, so connect it as a **generic SIP trunk**, not the Twilio-specific "native integration" flow. Register the SIP URI and digest-auth username/password in the ElevenLabs Agents dashboard; SignalWire is on ElevenLabs' supported SIP trunk list.
 - **ElevenLabs free tier is 15 min/month, 4 concurrent.** Test calls bill at half rate → ~20–30 demo calls total. Don't burn them debugging; use A's stub path for that.
-- **Deepgram's $200 credit is separate** from the ElevenLabs budget. It is effectively free at this volume; the ElevenLabs minutes are the scarce resource.
+- **Deepgram's $200 credit is separate** from the ElevenLabs budget, and both are separate from your SignalWire per-minute rate — check your SignalWire balance covers ~30 test calls.
 - **Do not reach for the static-HTML escape hatch before hour 14** (§10.2). Walkers already expose as REST, so it is a ~1h fallback, but reaching for it early forfeits the "single-file full-stack" rubric criterion for velocity you don't need across five screens.
 - **Record the backup call video before presenting.** Conference wifi will fail. Cue it so you can keep talking through the failure.
 
@@ -96,7 +97,7 @@ The obligation set is a **graph query** (A's `required_findings()`) — no model
 ### B6 — ElevenLabs + demo package
 **Writes:** `adapters/voice.jac` (real `place_call`), `README.md`, `demo/`
 **Reads:** PRD §8, §13, §16
-Outbound agent call, 40-second hard cap, script structure: identify → one finding → provenance → ask → read-back. The **primary demo call is the fall escalation (Call script A, §8)**; the cross-shift corroboration (script B) is shown via the graph/omission panel. Read-back is the walker's termination condition, so parse it honestly.
+Outbound agent call via ElevenLabs Agents, routed through the **SignalWire SIP trunk** already on the account — connect it under ElevenLabs' generic SIP trunking (SIP URI + username/password), not the Twilio-specific integration. 40-second hard cap, script structure: identify → one finding → provenance → ask → read-back. The **primary demo call is the fall escalation (Call script A, §8)**; the cross-shift corroboration (script B) is shown via the graph/omission panel. Read-back is the walker's termination condition, so parse it honestly.
 Then: README, 3-minute demo video, **backup call recording cued before presenting**, synthetic-data-and-device slide, the restraint slide (findings : calls ratio from A's eval, e.g. "142 findings. 3 calls. Zero false positives on 40 decoys").
 **Degrades to:** on-screen notification. If this is the thing that slips, it is supposed to slip — cut item #3 in §14.
 
