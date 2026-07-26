@@ -249,14 +249,29 @@ def:pub LiveHandoff() -> JsxElement {
         # -- audio recording playback (provenance: the original audio) ------
         {if hasRecording and audioUrl {
             <div style={{
-                "marginTop": "1.25rem", "background": "#0b1220",
-                "border": "1px solid #1f2937", "borderRadius": "10px",
-                "padding": "0.8rem 1rem"
+                "marginTop": "1.5rem", "background": "#020617",
+                "border": "1px solid #374151", "borderRadius": "14px",
+                "padding": "1.25rem"
             }}>
-                <div style={{"color": "#9ca3af", "fontSize": "0.85rem", "marginBottom": "0.5rem"}}>
-                    Original recording — ground-truth source for every transcribed episode
+                <div style={{
+                    "display": "flex", "alignItems": "center", "gap": "0.5rem",
+                    "marginBottom": "0.75rem"
+                }}>
+                    <span style={{"fontSize": "1.4rem"}}>🎙️</span>
+                    <div>
+                        <div style={{"color": "#f1f5f9", "fontWeight": "700", "fontSize": "0.95rem"}}>
+                            Handoff Recording
+                        </div>
+                        <div style={{"color": "#6b7280", "fontSize": "0.8rem"}}>
+                            Room 3B · {shift} · Ground-truth source for all transcribed episodes
+                        </div>
+                    </div>
                 </div>
-                <audio controls style={{"width": "100%", "height": "32px"}}>
+                <audio
+                    controls
+                    controlsList="nodownload"
+                    style={{"width": "100%", "height": "48px", "borderRadius": "8px"}}
+                >
                     <source src={audioUrl} type={getAudioMime()}/>
                 </audio>
             </div>
