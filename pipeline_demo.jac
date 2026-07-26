@@ -17,7 +17,7 @@ import from compose { Compose }
 import from tripwire { Tripwire }
 import from escalate { Escalate }
 import from eval.metrics { run_eval }
-import from schema { Episode, Clinical, Clinician, now }
+import from schema { Episode, Clinical, Clinician, Fired, now }
 
 
 with entry:__main__ {
@@ -54,10 +54,20 @@ with entry:__main__ {
     print(f"[5 tripwire]    {len(fired)} findings fired, "
         + f"rules {sorted(rules.keys())}, {len(tier3)} tier-3 (phone)");
 
-    # -- 6. Escalate the fall (R6) -------------------------------------------
-    falls = [root -->[?:Clinical, category == "fall"]];
-    esc = (root spawn Escalate(finding_id=jid(falls[0]))).reports[0];
-    print(f"[6 escalate]    chain {esc.chain}, acknowledged {esc.acknowledged}");
+    # -- 6. Escalate every tier-3 finding (phone call) ---------------------
+    # A tier-3 fired finding means someone must answer the phone NOW.
+    # Find every Clinical that fired at tier >= 3 and climb the chain.
+    tier3_beliefs = [c for c in [root -->[?:Clinical]]
+                     for edge in [c ->:Fired:->]
+                     if edge.tier >= 3];
+    if tier3_beliefs {
+        for c in tier3_beliefs {
+            esc = (root spawn Escalate(finding_id=jid(c))).reports[0];
+            print(f"[6 escalate]    {c.category}: {esc.chain}, acknowledged {esc.acknowledged}");
+        }
+    } else {
+        print("[6 escalate]    no tier-3 findings to escalate");
+    }
 
     # -- 7. Eval (PRD §12) ---------------------------------------------------
     # Fact-survival tags: 12 must-know facts planted at admission. REM keeps the
