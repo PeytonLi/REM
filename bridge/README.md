@@ -56,6 +56,19 @@ cloudflared tunnel --url http://localhost:8080
 | `ALL /twiml` | SignalWire fetches this to learn where to stream |
 | `WS /media` | audio proxy, SignalWire ↔ ElevenLabs |
 
+## If the call connects but sounds wrong
+
+Verified live — both symptoms are agent config, not bridge bugs:
+
+| Symptom | Cause |
+|---|---|
+| **Noise / static instead of speech** | agent `tts.agent_output_audio_format` is `pcm_16000`; must be `ulaw_8000` |
+| Agent never reacts to the nurse | agent `asr.user_input_audio_format` is `pcm_16000`; must be `ulaw_8000` |
+| Agent speaks a generic greeting, not the finding | `first_message` / `prompt` overrides disabled on the agent, so the bridge's injection is silently dropped |
+
+SignalWire media streams are μ-law 8kHz both ways. See `docs/elevenlabs-agent.md`
+for the one-shot PATCH that sets all four.
+
 ## Design notes
 
 - **`first_message` is the finding.** `escalate.jac::script_for()` decides every

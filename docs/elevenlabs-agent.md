@@ -26,6 +26,54 @@ Dashboard → **Agents** → **Create agent** → Blank template.
 variable `place_call()` sends. If it is missing, the agent opens with silence or
 a generic greeting and the demo call says nothing useful.
 
+## Audio format — the settings that cost four failed calls
+
+Verified against a live call. Get either of these wrong and the call connects,
+bills you, and produces nothing usable:
+
+| Setting | Required | Symptom when wrong |
+|---|---|---|
+| ASR → **user input audio format** | `ulaw_8000` | agent never hears the nurse, so no read-back is ever detected |
+| TTS → **agent output audio format** | `ulaw_8000` | caller hears **noise / background static** — real audio in the wrong encoding, not silence |
+
+SignalWire media streams are μ-law 8kHz in **both** directions. A fresh agent
+defaults to `pcm_16000`, which is what produced the static. The working VoiceSRE
+agent is `ulaw_8000` on both, which is how this was finally diagnosed — diff a
+known-good agent rather than guess.
+
+The `agent_output_audio_format` field is the one to check first: `pcm_16000`
+sounds like noise, and it is easy to misread that as a broken bridge.
+
+## Overrides that must be enabled
+
+Dashboard → agent → **Security** → allow overrides for:
+
+- `first_message`
+- `prompt`
+
+Both default to **off**, and when off the bridge's injected finding is discarded
+**silently** — the agent falls back to its dashboard greeting and the call sounds
+fine while saying the wrong thing. That is the failure mode to fear, because
+nothing errors: the graph stops controlling what is said and the model starts
+improvising clinical content, which is exactly what §7.4 forbids.
+
+Both are set via the API in one PATCH:
+
+```json
+PATCH /v1/convai/agents/{agent_id}
+{
+  "conversation_config": {
+    "asr": {"user_input_audio_format": "ulaw_8000"},
+    "tts": {"agent_output_audio_format": "ulaw_8000"}
+  },
+  "platform_settings": {
+    "overrides": {"conversation_config_override": {
+      "agent": {"first_message": true, "prompt": {"prompt": true}}
+    }}
+  }
+}
+```
+
 ## System prompt
 
 ```
