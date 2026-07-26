@@ -25,7 +25,7 @@ minimal per PRD 5.1: seeded demo users, plaintext demo passwords, no token store
 import os;
 import base64;
 import requests;
-import from schema { SBARPlus, Action, IfThen, now }
+import from schema { SBARPlus, Action, IfThen, Episode, Clinical, Derived, now }
 import from jaclang.byllm.lib { Model }
 
 # python-dotenv is optional; load the project .env so DEEPGRAM_API_KEY (batch
@@ -108,6 +108,84 @@ node HandoffSummary {
     has status: str = "draft";             # draft | signed
     has signed_by: str = "";
     has signed_at: float = 0.0;
+}
+
+
+# ===========================================================================
+# Per-resident knowledge graph (PRD §6 belief graph, scoped to a Resident).
+#
+# The frozen schema keeps Episode/Clinical hanging off root (one implicit
+# patient). To give EACH resident their own inspectable knowledge base we hang
+# their Episodes/Clinical off the Resident node via two new edges, and reuse the
+# frozen `Derived` edge for belief->episode provenance -- the exact same
+# provenance shape consolidate.jac writes, so GraphPanel's click-through works.
+# ===========================================================================
+
+edge ResObserved: Resident --> Episode {}     # a raw observation about this resident
+edge ResBelief: Resident --> Clinical {}      # a distilled belief about this resident
+
+
+# --- LLM knowledge extraction (transcript -> episodes + cited beliefs) ------
+obj KEpisode {
+    """One atomic observation the LLM pulls from the handoff."""
+    has content: str;
+}
+sem KEpisode.content = "One atomic, factual observation stated in the handoff (e.g. 'Fall at "
+    "02:00, found on floor next to bed'). Concrete, one fact per item, grounded in the transcript.";
+
+obj KBelief {
+    """One distilled belief, citing the episodes that justify it."""
+    has claim: str;
+    has category: str;
+    has evidence: list[int] = [];
+}
+sem KBelief.claim = "A distilled clinical belief about the resident (e.g. 'At high fall risk', "
+    "'Possible left hip fracture'). A judgment or summary, not a raw observation.";
+sem KBelief.category = "One-word category: respiratory, cardiac, mobility, pain, cognition, skin, "
+    "medication, fall, nutrition, or other.";
+sem KBelief.evidence = "0-based indices of the episodes above that support this belief. Cite at "
+    "least one; a belief with no supporting episode must not be emitted.";
+
+obj KGraph {
+    """The extracted knowledge: observations plus the beliefs they support."""
+    has episodes: list[KEpisode] = [];
+    has beliefs: list[KBelief] = [];
+}
+
+def extract_knowledge(transcript: str) -> KGraph by _summarizer();
+sem extract_knowledge = "Extract a small clinical knowledge graph from this nurse handoff "
+    "transcript. First list the atomic factual observations (episodes) actually stated. Then list "
+    "the distilled clinical beliefs they support, each citing the episode indices that justify it. "
+    "Ground everything strictly in the transcript -- never invent facts, and every belief must cite "
+    "at least one episode. Keep it tight: 3-8 episodes, 1-4 beliefs.";
+sem extract_knowledge.transcript = "The verbatim diarized nurse-to-nurse handoff conversation.";
+
+
+"""Persist an extracted KGraph onto a Resident: one Episode per observation
+(ResObserved), one Clinical per belief (ResBelief), and a frozen `Derived` edge
+from each belief to every episode it cited."""
+def _persist_knowledge(resident: Resident, kg: KGraph, at: float) -> None {
+    ep_nodes: list = [];
+    for ke in kg.episodes {
+        ep = Episode(content=ke.content, source="verbal_handoff", author="handoff", at=at);
+        resident +>:ResObserved():+> ep;
+        ep_nodes.append(ep);
+    }
+    for kb in kg.beliefs {
+        bel = Clinical(claim=kb.claim, category=kb.category, last_asserted=at, last_verified=at);
+        resident +>:ResBelief():+> bel;
+        for idx in kb.evidence {
+            if idx >= 0 and idx < len(ep_nodes) {
+                bel +>:Derived():+> ep_nodes[idx];
+            }
+        }
+    }
+}
+
+
+"""Truncate a label so the graph stays readable."""
+def _short(s: str) -> str {
+    return s if len(s) <= 42 else (s[:40] + "…");
 }
 
 
@@ -601,5 +679,104 @@ walker:pub SignSummary {
         s.signed_by = self.signed_by;
         s.signed_at = now();
         report {"ok": True, "summary": _summary_dict(s)};
+    }
+}
+
+
+walker:pub ResidentGraph {
+    """A resident's own knowledge graph for GraphPanel: {resident, nodes, links}.
+
+    Built lazily on first view -- extracts episodes + cited beliefs from the
+    resident's stored transcripts (LLM) and hangs them off the Resident node, so
+    each resident accumulates their own inspectable belief graph with provenance.
+    `rebuild=True` clears the current knowledge and re-extracts from scratch."""
+    has resident_id: str;
+    has rebuild: bool = False;
+    has reports: list[dict] = [];
+
+    can build with Root entry {
+        res: any = None;
+        try {
+            res = jobj(self.resident_id);
+        } except Exception {
+            res = None;
+        }
+        if not isinstance(res, Resident) {
+            report {"ok": False, "error": "resident not found"};
+            return;
+        }
+
+        if self.rebuild {
+            for e in [res ->:ResObserved:->] {
+                del e;
+            }
+            for b in [res ->:ResBelief:->] {
+                del b;
+            }
+        }
+
+        has_knowledge = len([res ->:ResBelief:->]) > 0 or len([res ->:ResObserved:->]) > 0;
+        if not has_knowledge {
+            # Gather every transcript recorded for this resident, extract once.
+            lines: list = [];
+            for sess in [here --> [?:HandoffSession]] {
+                if self.resident_id in sess.resident_ids {
+                    for t in [sess --> [?:Transcript]] {
+                        for s in t.segments {
+                            sd = s as dict;
+                            lines.append(
+                                (sd.get("speaker", "Speaker") as str) + ": "
+                                + (sd.get("text", "") as str)
+                            );
+                        }
+                    }
+                }
+            }
+            text: str = "\n".join(lines);
+            if text.strip() {
+                try {
+                    kg = extract_knowledge(text);
+                    _persist_knowledge(res, kg, now());
+                } except Exception as e {
+                    print(f"[handoff] knowledge extraction failed ({e})");
+                }
+            }
+        }
+
+        # Read the resident's subgraph back out as GraphPanel node/link dicts.
+        nodes: list[dict] = [{"id": jid(res), "kind": "Resident", "label": res.name}];
+        links: list[dict] = [];
+        seen: dict = {};                      # episode id -> True (add each once)
+        for b in [res ->:ResBelief:->] {
+            bid: str = jid(b);
+            nodes.append({"id": bid, "kind": "Clinical", "label": _short(b.claim)});
+            links.append({"source": jid(res), "target": bid});
+            for ep in [b ->:Derived:->] {
+                eid: str = jid(ep);
+                if not seen.get(eid, False) {
+                    nodes.append({"id": eid, "kind": "Episode", "label": _short(ep.content)});
+                    seen[eid] = True;
+                }
+                links.append({"source": bid, "target": eid});
+            }
+        }
+        for ep in [res ->:ResObserved:->] {
+            eid2: str = jid(ep);
+            if not seen.get(eid2, False) {
+                nodes.append({"id": eid2, "kind": "Episode", "label": _short(ep.content)});
+                seen[eid2] = True;
+                links.append({"source": jid(res), "target": eid2});
+            }
+        }
+        report {
+            "ok": True,
+            "resident": {"id": jid(res), "name": res.name, "room": res.room},
+            "nodes": nodes,
+            "links": links,
+            "counts": {
+                "beliefs": len([res ->:ResBelief:->]),
+                "episodes": len([res ->:ResObserved:->])
+            }
+        };
     }
 }
