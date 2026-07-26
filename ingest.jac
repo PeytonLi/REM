@@ -42,7 +42,18 @@ sem format_wearable_episode.metric =
 walker:pub IngestDevice {
     """Maps device readings -> plain Episode nodes. PRD 6.2a."""
     has readings: list[dict];
+    has shift: str = "D5-night";
     has reports: list[Episode] = [];
+
+    # A REST spawn lands on `root`, which is not a Handoff, so without this the
+    # walker silently absorbs nothing and returns HTTP 200 with zero episodes.
+    # Get-or-create the shift's Handoff, then fall through to `absorb`.
+    can enter with Root entry {
+        visit [here --> [?:Handoff, shift == self.shift]] else {
+            fresh = here ++> Handoff(shift=self.shift);
+            visit fresh;
+        }
+    }
 
     can absorb with Handoff entry {
         for r in self.readings {
@@ -61,7 +72,17 @@ walker:pub IngestDevice {
 walker:pub IngestTranscript {
     """Maps diarized transcript segments -> plain Episode nodes. PRD 9.2."""
     has segments: list[Segment];
+    has shift: str = "D5-night";
     has reports: list[Episode] = [];
+
+    # Same reason as IngestDevice: without a Root entry the REST spawn is a
+    # silent no-op. See the note there.
+    can enter with Root entry {
+        visit [here --> [?:Handoff, shift == self.shift]] else {
+            fresh = here ++> Handoff(shift=self.shift);
+            visit fresh;
+        }
+    }
 
     can absorb with Handoff entry {
         for seg in self.segments {

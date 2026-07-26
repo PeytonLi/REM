@@ -12,6 +12,16 @@ The walkers report `Message` nodes directly. Typing `reports` as
 so the UI gets `.author` / `.text` dot access instead of untyped dict keys.
 """
 
+# Person B walkers, re-exported through the service module.
+# `jac start` auto-detects microservice mode from this .sv.jac file and the
+# gateway only derives routes from the SERVICE -- walkers living in plain root
+# modules never register, and POST /walker/<name> 404s even when main.jac
+# imports them. Importing them here puts them on the served surface at
+# /endpoints/walker/<name>. APPEND-ONLY: add lines, never reorder.
+import from baseline { Baseline }
+import from ingest { IngestDevice, IngestTranscript }
+import from omission { OmissionPanel }
+
 node Message {
     has author: str,
         text: str;
