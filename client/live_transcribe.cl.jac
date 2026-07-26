@@ -173,6 +173,17 @@ def _on_message(event: any) {
         return;   # Deepgram emits empty partials between utterances
     }
 
+    # Debug: surface exactly what Deepgram returned, incl. the per-word speaker
+    # ids that drive diarization. Filter DevTools console by "[deepgram]".
+    kind = "final" if msg.is_final else "interim";
+    spk_map = [];
+    if alt.words {
+        for w in alt.words {
+            spk_map.append({"w": w.punctuated_word or w.word, "speaker": w.speaker});
+        }
+    }
+    console.log("[deepgram]", kind, "| text:", text, "| speakers:", spk_map, "| raw:", msg);   # jac:ignore[W2001]
+
     if msg.is_final {
         # One final frame can hold more than one speaker -- split it so each
         # displayed line and each ingested Episode is a single speaker.
