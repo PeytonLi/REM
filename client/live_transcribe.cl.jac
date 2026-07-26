@@ -32,6 +32,13 @@ glob _recorder: any = None;
 glob _stream: any = None;
 glob _cbs: dict = {};
 
+# Full-session audio, accumulated for the batch re-transcription pass on stop
+# (the hybrid path, PRD 7 override). The same MediaRecorder chunks that stream
+# to Deepgram live are also kept here so "end handoff" can re-transcribe the
+# WHOLE recording at higher (utterance-level) diarization quality.
+glob _audio_chunks: list = [];
+glob _audio_mime: str = "audio/webm";
+
 # Authoritative finalized-utterance list. Held here (not in component state) so
 # it is always current when a callback reads it -- a callback registered at
 # start() closes over stale `has` state, but a module glob never goes stale
@@ -58,6 +65,34 @@ glob _KEYTERMS: list = [
 """A fresh copy of every finalized utterance so far (new ref -> re-render)."""
 def:pub getSegments() -> list {
     return _segments[:];
+}
+
+"""The full recording as base64 (no data: prefix) for the batch re-transcribe.
+
+Empty string if nothing was captured. Concatenates the kept MediaRecorder
+chunks into one Blob, reads its bytes, and base64s them by hand (btoa needs a
+binary string). Opus is compressed, so a few-minute handoff stays small enough
+that the per-byte loop is fine for the demo."""
+async def:pub getAudioB64() -> str {
+    if len(_audio_chunks) == 0 {
+        return "";
+    }
+    blob = new(Blob, _audio_chunks, {"type": _audio_mime});   # jac:ignore[W2001]
+    buf = await blob.arrayBuffer();
+    bytes = new(Uint8Array, buf);                             # jac:ignore[W2001]
+    binary: str = "";
+    i = 0;
+    n = bytes.length;
+    while i < n {
+        binary = binary + (String.fromCharCode(bytes[i]) as str);   # jac:ignore[W2001]
+        i = i + 1;
+    }
+    return btoa(binary) as str;                               # jac:ignore[W2001]
+}
+
+"""The MIME type the recording was captured in (for the batch transcribe)."""
+def:pub getAudioMime() -> str {
+    return _audio_mime;
 }
 
 """Reset the finalized-utterance buffer at the start of a new handoff."""
@@ -130,10 +165,16 @@ def _dg_url() -> str {
     return url;
 }
 
-"""One MediaRecorder blob -> Deepgram, if the socket is open."""
+"""One MediaRecorder blob -> Deepgram (live) AND the batch buffer.
+
+The chunk is kept for the whole-recording re-transcribe regardless of socket
+state, then streamed to Deepgram only while the socket is open."""
 def _on_chunk(e: any) {
-    if _ws and _ws.readyState == 1 and e.data and e.data.size > 0 {
-        _ws.send(e.data);
+    if e.data and e.data.size > 0 {
+        _audio_chunks.append(e.data);
+        if _ws and _ws.readyState == 1 {
+            _ws.send(e.data);
+        }
     }
 }
 
@@ -145,6 +186,7 @@ def _start_recorder() {
     if not MediaRecorder.isTypeSupported(mime) {   # jac:ignore[W2001]
         mime = "audio/webm";
     }
+    _audio_mime = mime;
     rec = new(MediaRecorder, _stream, {"mimeType": mime});   # jac:ignore[W2001]
     _recorder = rec;
     chunk = _on_chunk;
@@ -206,6 +248,7 @@ cbs["onError"] and leaves no half-open resources."""
 async def:pub startLive(cbs: dict) -> None {
     _cbs = cbs;
     _segments = [];
+    _audio_chunks = [];
     _fire("onStatus", "connecting");
 
     # 1. Credential to open Deepgram's socket with (server seam).
