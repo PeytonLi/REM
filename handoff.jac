@@ -259,10 +259,11 @@ def _transcribe_b64(b64: str, mime: str) -> list[dict] {
 # Local draft types the LLM fills. Defined HERE (not imported) because byllm 0.6
 # cannot build an output schema for a nested obj imported from another module --
 # the same constraint compose.jac documents. The nested SBAR is structurally
-# hard, so we route to gpt-4o (same choice compose.jac makes), not the mini
-# default; OPENAI_API_KEY drives it.
-glob SUMMARY_MODEL: str = "gpt-4o";
-glob _summarizer: Model = Model(model_name="gpt-4o");
+# hard, so we route to gpt-5 (a stronger model than the mini default);
+# OPENAI_API_KEY drives it. NOTE: _summarizer is shared with extract_knowledge
+# below, so both the SBAR summary and the belief extraction run on this model.
+glob SUMMARY_MODEL: str = "gpt-5";
+glob _summarizer: Model = Model(model_name="gpt-5");
 
 obj HAction {
     """One action-list item."""
@@ -292,25 +293,43 @@ obj HDraft {
     has action_list: list[HAction] = [];
     has contingencies: list[HIfThen] = [];
 }
-sem HDraft.situation = "1-2 sentences: who the resident is and the single most important thing this "
-    "shift -- drawn ONLY from the conversation. If the resident isn't named, don't invent one.";
-sem HDraft.background = "Relevant history/timeline actually mentioned in the conversation. If little "
-    "was said, keep it short; never fabricate history, vitals, or medications.";
-sem HDraft.assessment = "The clinical read of what is going on and how concerning, based on the "
-    "conversation. If it is too sparse to assess, say so plainly instead of guessing.";
-sem HDraft.recommendation = "What the oncoming nurse should do and watch for, from the conversation. "
-    "If nothing specific was said, give the safe default: monitor and verify current orders.";
-sem HDraft.action_list = "Discrete follow-up tasks stated or clearly implied by the conversation. "
-    "Empty list if none were discussed -- do not invent tasks.";
-sem HDraft.contingencies = "If/then safety nets mentioned or clearly implied. Empty list if none.";
+sem HDraft.situation = "Who the resident is and their current status, in 1-2 sentences. If the "
+    "resident isn't named in the conversation, don't invent one.";
+sem HDraft.background = "Relevant history actually mentioned: admitting reason, medication changes "
+    "WITH their stated reasons, and prior relevant events. Never fabricate history, vitals, or "
+    "medications; if little was said, keep it short.";
+sem HDraft.assessment = "The current clinical picture as discussed, including any pattern raised "
+    "across the conversation and anything still open or pending. If it's too sparse to assess, say "
+    "so plainly instead of guessing.";
+sem HDraft.recommendation = "What the incoming nurse should specifically do or watch for, based on "
+    "what was actually said. If nothing specific was said, give the safe default: monitor and verify "
+    "current orders.";
+sem HDraft.action_list = "Concrete tasks mentioned or clearly implied, each with an owner and a due "
+    "time if one was stated. Empty list if none were discussed -- do not invent tasks nobody "
+    "mentioned.";
+sem HDraft.contingencies = "If/then safety nets the speakers actually raised. Leave empty if none "
+    "were discussed -- do not fabricate plausible-sounding ones.";
 
 def summarize_handoff(transcript: str) -> HDraft by _summarizer();
-sem summarize_handoff = "You are a nurse writing a shift handoff. The input is a verbatim, "
-    "speaker-labeled transcript of the outgoing and incoming nurse talking -- it may be short, "
-    "messy, or full of filler ('yeah', 'he he', 'are you sure'). Produce a clean SBAR-plus handoff "
-    "summary using ONLY facts actually present in the transcript. Never invent clinical details, "
-    "vitals, medications, diagnoses, or history that were not said. If the conversation is too thin "
-    "to fill a field, keep it brief and honestly note what was not covered rather than fabricating.";
+sem summarize_handoff =
+    "Summarize this nurse shift-handoff transcript into a structured SBAR-plus handoff for the "
+    "incoming nurse. This is a DRAFT only -- the outgoing nurse will review and sign off before it "
+    "is final, so prioritize completeness and traceability over polish. The input is a verbatim, "
+    "speaker-labeled transcript that may be short, messy, or full of filler ('yeah', 'he he', "
+    "'are you sure').\n\n"
+    "Rules:\n"
+    "- Extraction only. Every claim must trace to something explicitly said in the transcript. "
+    "Never invent, infer, or assume a clinical fact that was not stated -- no vitals, medications, "
+    "diagnoses, or history that were not said.\n"
+    "- Preserve causal reasoning. If a speaker explains WHY something happened (a medication changed "
+    "because of a reaction, a decision made because of a result), keep that reasoning attached to "
+    "the claim -- don't flatten it to just the resulting state.\n"
+    "- Mark what's unresolved as unresolved. If a treatment course is pending reassessment, a "
+    "finding hasn't been checked on yet, or something is still awaiting a decision, say so "
+    "explicitly rather than stating it as settled. If the transcript is too thin to fill a field, "
+    "keep it brief and note what wasn't covered instead of guessing.\n\n"
+    "Keep it scannable: a nurse should be able to read the whole thing in under 90 seconds, and the "
+    "same fact shouldn't be repeated across multiple fields.";
 sem summarize_handoff.transcript = "The verbatim diarized nurse-to-nurse handoff conversation.";
 
 
