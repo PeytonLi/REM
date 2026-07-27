@@ -9,6 +9,7 @@ import from endpoints { Message, PostMessage, ListMessages }
 # references it -- "404 on RPC = nothing references it" (jac-fullstack-patterns).
 # Without these lines /walker/Baseline and friends simply do not exist.
 # APPEND-ONLY by team agreement (WORKPLAN section 2): add lines, never reorder.
+import from fixture { SeedGraph }
 import from baseline { Baseline }
 import from ingest { IngestDevice, IngestTranscript }
 import from omission { OmissionPanel }
