@@ -254,8 +254,8 @@ def _transcribe_b64(b64: str, mime: str) -> list[dict] {
 # the same constraint compose.jac documents. The nested SBAR is structurally
 # hard, so we route to gpt-4o (same choice compose.jac makes), not the mini
 # default; OPENAI_API_KEY drives it.
-glob SUMMARY_MODEL: str = "gpt-4o";
-glob _summarizer: Model = Model(model_name="gpt-4o");
+glob SUMMARY_MODEL: str = "deepseek/deepseek-chat";
+glob _summarizer: Model = Model(model_name="deepseek/deepseek-chat");
 
 obj HAction {
     """One action-list item."""

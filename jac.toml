@@ -36,7 +36,7 @@ watchdog = ">=3.0.0"
 # in this environment. Flat structs + enum classification -> cheap model; the nested
 # SBARPlus composition -> the stronger model. Validated at hour 2 (see compose.jac).
 [byllm.model]
-default_model = "gpt-4o-mini"
+default_model = "deepseek/deepseek-chat"
 
 [byllm.call_params]
 temperature = 0.2

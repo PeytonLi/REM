@@ -74,7 +74,7 @@ sem SBARDraft.contingencies = "If/then safety nets: foreseeable triggers and the
 # Only invoked on the live path (`REM_LIVE=1`); the non-live path returns a
 # deterministic canned draft (below) so `jac test` and offline demos need no key,
 # no network, and no MockLLM (whose schema builder can't handle a nested obj).
-glob compose_model: Model = Model(model_name="gpt-4o");
+glob compose_model: Model = Model(model_name="deepseek/deepseek-chat");
 
 
 # --- The LLM-backed writer (PRD §6.4): declare, don't implement --------------

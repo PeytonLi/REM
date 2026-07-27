@@ -92,7 +92,7 @@ sem classify_pair.b = "The claim text of the second belief.";
 # Live runs (`REM_LIVE=1`) use the real cheap model; tests/default use MockLLM so
 # `jac test` needs no key and no network. The `by llm()` signatures are identical
 # against either backend — only this one line changes.
-glob llm = Model(model_name="gpt-4o-mini") if (os.getenv("REM_LIVE") == "1") else MockLLM(model_name="mockllm", config={"outputs": [
+glob llm = Model(model_name="deepseek/deepseek-chat") if (os.getenv("REM_LIVE") == "1") else MockLLM(model_name="mockllm", config={"outputs": [
     ClinicalDraft(claim="SpO2 recurrently desaturates overnight",
                   category="respiratory", subject="spo2"),
     ClinicalDraft(claim="Evening blood pressure runs high",
