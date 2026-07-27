@@ -1,5 +1,7 @@
 # REM
 
+> 🏆 **JacHacks Finalist** — built in 24 hours at Founders, Inc., Fort Mason, San Francisco.
+
 **A nursing home shift handoff is a memory consolidation event. We built one — and it never sleeps, even when the resident does.**
 
 REM ingests everything that happens to a resident across a shift — nursing documentation, labs, a continuously worn health-monitoring device, and the spoken handoff conversation itself — consolidates it into a provenance-linked belief graph, and emits a structured SBAR-plus handoff report. When a deterministic rule fires on the graph, REM places a live phone call to the on-duty nurse.
