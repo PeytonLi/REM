@@ -288,17 +288,21 @@ def:pub SummaryView(
                                 "borderRadius": "8px", "fontSize": "0.85rem",
                                 "background": "#064e3b" if ed["acknowledged"] else "#7f1d1d"
                             }}>
-                                <div style={{"color": "#a7f3d0" if ed["acknowledged"] else "#fecaca", "fontWeight": "600"}}>
-                                    {ed["claim"] as str}
-                                </div>
-                                <div style={{"color": "#9ca3af", "marginTop": "0.15rem"}}>
-                                    {if ed["acknowledged"] {
-                                        "Acknowledged by " + ((ed["chain"] as list)[len(ed["chain"] as list) - 1] as str)
-                                    } else {
-                                        chainList = ed["chain"] as list;
-                                        "Not acknowledged" + (" — " + (chainList[len(chainList) - 1] as str) + " reached" if len(chainList) > 0 else "")
-                                    }}
-                                </div>
+                                {if ed["acknowledged"] {
+                                    <span style={{"color": "#a7f3d0", "fontWeight": "600"}}>
+                                        {ed["claim"] as str}
+                                    </span>
+                                    <div style={{"color": "#9ca3af", "marginTop": "0.15rem"}}>
+                                        Acknowledged
+                                    </div>
+                                } else {
+                                    <span style={{"color": "#fecaca", "fontWeight": "600"}}>
+                                        {ed["claim"] as str}
+                                    </span>
+                                    <div style={{"color": "#9ca3af", "marginTop": "0.15rem"}}>
+                                        Not acknowledged
+                                    </div>
+                                }}
                             </div>
                         }}
                     </div>
