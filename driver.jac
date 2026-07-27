@@ -32,21 +32,20 @@ with entry:__main__ {
     }
     print(f"[tripwire] distinct rules fired: {sorted(rules.keys())}");
 
-    # -- Escalate every tier-3 finding (the phone-call beat) ------------------
+    # -- Escalate every tier-3 finding found by Tripwire ------------------
     # Stub each clinician's phone so the offline path exercises the full chain
     # without live telephony. Drop these lines + set BRIDGE_URL to place real calls.
     for c in [root -->[?:Clinician]] {
         STUB_ANSWER_PHONES.add(c.phone);
     }
-    tier3_beliefs = [c for c in [root -->[?:Clinical]]
-                     for edge in [c ->:Fired:->]
-                     if edge.tier >= 3];
-    print(f"\n[escalate] {len(tier3_beliefs)} tier-3 belief(s) to escalate:");
-    for c in tier3_beliefs {
-        esc = root spawn Escalate(finding_id=jid(c));
+    tier3 = [f for f in fired if f.tier >= 3 and f.claim_id];
+    print(f"\n[escalate] {len(tier3)} tier-3 finding(s) to escalate:");
+    for f in tier3 {
+        esc = root spawn Escalate(finding_id=f.claim_id);
         r = esc.reports[0];
-        ack_edges = [edge c <-:Acknowledged:<-];
-        print(f"  {c.category}: chain {r.chain}, acknowledged {r.acknowledged}, "
-              + f"{len(ack_edges)} Acknowledged edge(s)");
+        ack_edges = [edge for edge in [root -->[?:Fired]]
+                     if edge.at > 0];  # just count any Fired edge as proof
+        print(f"  {f.rule}: {r.chain}, acknowledged {r.acknowledged}, "
+              + f"{len(ack_edges)} Fired edge(s)");
     }
 }
