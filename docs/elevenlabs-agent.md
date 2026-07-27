@@ -9,6 +9,14 @@ Keeping it this narrow is the point, not laziness: the graph decides what is
 urgent and what gets said, and the model is only the voice (PRD §7.4). An agent
 that paraphrases findings would put an LLM back in the decision path.
 
+It may answer a nurse's question ("which patient was this?", "what time was
+it?") — but only by quoting `{{finding_context}}`, a fixed fact block that
+`escalate.jac::context_for()` reads off the graph (resident, claim, category,
+clock times, `Derived` provenance). Retrieval stays in the graph; the model gets
+a closed set of facts, not a licence to improvise. A question outside that set
+still gets the refusal, which is the behaviour that matters: a nurse must never
+hear a detail the record does not contain.
+
 ## Create it
 
 Dashboard → **Agents** → **Create agent** → Blank template.
@@ -89,16 +97,29 @@ Your only job:
 4. If they do not read it back, ask once: "Could you read the request back to
    me?" Then end the call either way.
 
+If the nurse asks you a question, answer it in one short sentence using ONLY the
+finding you just read and the CASE FACTS below, quoting their wording, then go
+back to asking for the read-back.
+
+CASE FACTS (the only details you may state; do not add to them):
+{{finding_context}}
+
 Hard rules:
 - You are NOT a clinician. Never diagnose, never interpret a finding, never give
   clinical advice, never speculate about cause or treatment.
-- Never invent details. If asked anything you were not told, say: "I only have
-  the finding I just read. Please check the chart or the handoff record."
+- Never invent details. If the answer is not in the finding or the CASE FACTS,
+  say: "I only have the finding I just read. Please check the chart or the
+  handoff record."
 - Never state or imply that the nurse acknowledged something they did not say.
 - Do not argue or persuade. If the nurse defers or refuses, thank them and end
   the call.
-- Keep the whole call under 40 seconds.
+- Be brief: no speeches, and do not keep the nurse on the line once the
+  read-back is done.
 ```
+
+The bridge (`bridge/server.mjs`) overrides this prompt per call and appends the
+same CASE FACTS block itself, so the two paths behave alike — but the dashboard
+copy still matters: it is what runs if the prompt override is ever disabled.
 
 ## Wire it up
 

@@ -253,8 +253,13 @@ def notify(phone: str, script: str, why: str) -> CallResult {
 """Outbound agent call. `script` is handed to the agent as the
 `finding_script` dynamic variable -- the agent prompt is
 identify -> one finding -> provenance -> ask -> read-back, with the finding
-text coming from here so the walker controls what gets said."""
-def place_call(phone: str, script: str) -> CallResult {
+text coming from here so the walker controls what gets said.
+
+`context` is the bounded fact set the agent may quote if the nurse asks a
+question ("which patient?", "what time?") -- built by escalate.jac::context_for()
+straight off the graph. Empty means the agent can only speak the script and
+refuses every question, which is what it did before this existed."""
+def place_call(phone: str, script: str, context: str = "") -> CallResult {
     if phone in REFUSE_PHONES {
         return notify(phone, script, "no answer");
     }
@@ -276,7 +281,7 @@ def place_call(phone: str, script: str) -> CallResult {
         try {
             answered = requests.post(
                 f"{bridge.rstrip('/')}/call",
-                json={"to": phone, "script": script},
+                json={"to": phone, "script": script, "context": context},
                 timeout=CALL_TIMEOUT_S + 30.0
             );
             answered.raise_for_status();
@@ -318,7 +323,10 @@ def place_call(phone: str, script: str) -> CallResult {
         "agent_phone_number_id": number_id,
         "to_number": phone,
         "conversation_initiation_client_data": {
-            "dynamic_variables": {"finding_script": script}
+            "dynamic_variables": {
+                "finding_script": script,
+                "finding_context": context
+            }
         }
     };
     try {

@@ -45,6 +45,12 @@ const SW_AUTH = "Basic " + Buffer.from(`${SIGNALWIRE_PROJECT_ID}:${SIGNALWIRE_TO
 
 // The agent must not improvise: escalate.jac already decided every word via
 // script_for(). Mirrors docs/elevenlabs-agent.md -- keep them in sync.
+//
+// It MAY answer a nurse's question ("which patient?", "what time was that?"),
+// but only by quoting the finding or the CASE FACTS the caller passed in --
+// which come straight off the graph (escalate.jac::context_for). That keeps
+// PRD 7.4 intact: the graph decides the content, the model is only the voice.
+// A question outside those facts still gets the refusal.
 const AGENT_PROMPT = [
   "You are an automated clinical handoff assistant placing a single outbound",
   "escalation call to a nurse in a long-term care facility.",
@@ -54,17 +60,29 @@ const AGENT_PROMPT = [
   "If they read back the substance of the request, say 'Thank you, that's correct'",
   "and end the call. If they do not, ask once: 'Could you read the request back to",
   "me?' Then end the call either way.",
+  "If the nurse asks you a question, answer it in one short sentence using ONLY",
+  "the finding you just read and the CASE FACTS below, quoting their wording, then",
+  "go back to asking for the read-back.",
   "You are NOT a clinician. Never diagnose, never interpret a finding, never give",
   "clinical advice, never speculate about cause or treatment.",
-  "Never invent details. If asked anything you were not told, say: 'I only have the",
-  "finding I just read. Please check the chart or the handoff record.'",
+  "Never invent details. If the answer is not in the finding or the CASE FACTS,",
+  "say: 'I only have the finding I just read. Please check the chart or the",
+  "handoff record.'",
   "Never state or imply that the nurse acknowledged something they did not say.",
-  "Do not argue or persuade. Keep the whole call under 40 seconds.",
+  "Do not argue or persuade. Be brief: no speeches, and do not keep the nurse on",
+  "the line once the read-back is done.",
 ].join(" ");
+
+// Per-call prompt: the standing instructions plus the graph facts for THIS
+// finding. No context passed -> the old behaviour, refusal on any question.
+function promptFor(context) {
+  if (!context) return AGENT_PROMPT;
+  return `${AGENT_PROMPT}\n\nCASE FACTS (the only details you may state; do not add to them):\n${context}`;
+}
 
 const CALL_TIMEOUT_MS = 150_000;
 
-// callId -> { script, turns, answered, resolve, timer }
+// callId -> { script, context, turns, answered, resolve, timer }
 const pending = new Map();
 
 async function createCall({ to, url }) {
@@ -105,14 +123,15 @@ fastify.get("/health", async () => ({ ok: true, publicUrl: PUBLIC_URL || null })
 
 // adapters/voice.jac POSTs here and waits for the finished call.
 fastify.post("/call", async (req, reply) => {
-  const { to, script } = req.body || {};
+  // `context` is optional: the graph facts the agent may quote if asked.
+  const { to, script, context = "" } = req.body || {};
   if (!to || !script) return reply.code(400).send({ error: "to and script required" });
   if (!PUBLIC_HOST) return reply.code(500).send({ error: "PUBLIC_URL not set" });
 
   const callId = `rem_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
   const done = new Promise((resolve) => {
     pending.set(callId, {
-      script, turns: [], answered: false, resolve,
+      script, context, turns: [], answered: false, resolve,
       // Never hang the walker: a call nobody answers must resolve as
       // unanswered so Escalate climbs to the next clinician.
       timer: setTimeout(() => settle(callId, { timedOut: true }), CALL_TIMEOUT_MS),
@@ -164,9 +183,15 @@ fastify.register(async (f) => {
         elevenWs.send(JSON.stringify({
           type: "conversation_initiation_client_data",
           conversation_config_override: {
-            agent: { prompt: { prompt: AGENT_PROMPT }, first_message: p?.script || "" },
+            agent: {
+              prompt: { prompt: promptFor(p?.context) },
+              first_message: p?.script || "",
+            },
           },
-          dynamic_variables: { finding_script: p?.script || "" },
+          dynamic_variables: {
+            finding_script: p?.script || "",
+            finding_context: p?.context || "",
+          },
         }));
       });
 

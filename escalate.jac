@@ -18,8 +18,14 @@ queueing the next clinician, so the walker finishes naturally and reports exactl
 one `EscalationResult` from `with Root exit`.
 """
 
-import from schema { Clinician, Clinical, Escalates, Acknowledged, now }
+import os;
+import time;
+import from schema { Clinician, Clinical, Episode, Escalates, Acknowledged, Derived, now }
 import from adapters.voice { place_call, REFUSE_PHONES, STUB_ANSWER_PHONES }
+
+# The scenario is one resident (PRD §11), and no node carries their name -- so the
+# one identity fact the nurse will ask for ("which patient was this?") lives here.
+glob RESIDENT: str = os.getenv("REM_RESIDENT") or "Ruth Alvarez, Room 3B";
 
 
 obj EscalationResult {
@@ -42,6 +48,39 @@ def script_for(finding: Clinical) -> str {
         + " No room check has been logged yet. Requesting an immediate check. "
         + "Can you read back the request?"
     );
+}
+
+
+"""Clock label for an epoch second. UTC, because the seeded demo day is UTC."""
+def clock(at: float) -> str {
+    return time.strftime("%H:%M on %d %b", time.gmtime(at));
+}
+
+
+"""The bounded fact set the agent may quote when the nurse asks a question.
+
+Every line is already in the graph -- the identity of the resident, the belief
+being escalated, its clock times, and its `Derived` provenance. The agent gets no
+license to invent, only to answer "which patient?" or "what time was that?" from
+the same belief the call is about, which keeps §7.4 intact: the graph decides the
+content, the model is only the voice. Anything outside these lines still gets
+"I only have the finding I just read."
+"""
+def context_for(finding: Clinical) -> str {
+    lines: list[str] = [
+        "Resident: " + RESIDENT + ".",
+        "Finding: " + finding.claim,
+        "Category: " + finding.category + ".",
+        "Detected at: " + clock(finding.last_asserted) + " (UTC).",
+        "Last verified by a person: " + clock(finding.last_verified) + " (UTC)."
+    ];
+    for ep in [finding ->:Derived:->] {
+        lines.append(
+            "Evidence: " + ep.source + " recorded by " + ep.author
+            + " at " + clock(ep.at) + ": " + ep.content
+        );
+    }
+    return "\n".join(lines);
 }
 
 
@@ -94,7 +133,7 @@ walker:pub Escalate {
             skip;
         }
         self.chain.append(here.name);
-        result = place_call(here.phone, script_for(f));
+        result = place_call(here.phone, script_for(f), context_for(f));
         if result.acknowledged {
             here +>:Acknowledged(at=now(), readback_ok=result.readback):+> f;
             self.acknowledged = True;
@@ -120,6 +159,25 @@ test "script_for is deterministic and derived from the finding's claim" {
     assert "read back" in s;
     assert "fall at 2:14 AM" in s;
     assert s == script_for(f);        # deterministic
+}
+
+test "context_for carries who, what, and when -- and nothing invented" {
+    f = Clinical(claim="Unwitnessed fall at 02:14, no room check logged yet",
+                 category="fall", last_asserted=1712347200.0,
+                 last_verified=1712347200.0, subject="fall");
+    root ++> f;
+    ep = root ++> Episode(content="Fall detected via accelerometer, no movement for 2 min (02:14)",
+                          source="wearable_fall", author="dev_014",
+                          at=1712347192.0, subject="fall");
+    f +>:Derived():+> ep;
+
+    c = context_for(f);
+    assert RESIDENT in c;                 # "which patient was this again?"
+    assert "20:00" in c;                  # "what time was it again?"
+    assert "fall" in c;
+    assert "dev_014" in c;                # provenance is quotable, so is its author
+    assert ep.content in c;
+    assert c == context_for(f);           # deterministic, no LLM
 }
 
 test "escalation climbs past two no-answers to the third clinician" {
