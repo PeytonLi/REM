@@ -16,7 +16,7 @@ import from realtime { DeepgramToken, IngestUtterance }
 import from handoff {
     SeedDemo, Login, Roster, StartHandoff, EndHandoff,
     ListHandoffs, HandoffDetail, EditSummary, SignSummary,
-    ResidentGraph
+    ResidentGraph, HomeFeed
 }
 
 # Client-side UI

@@ -323,11 +323,7 @@ def:pub LiveHandoff() -> JsxElement {
                                             {e.claim}
                                         </div>
                                         <div style={{"color": "#9ca3af", "marginTop": "0.15rem"}}>
-                                            {if e.acknowledged {
-                                                "Acknowledged by " + e.chain[len(e.chain) - 1]
-                                            } else {
-                                                "Not acknowledged" + (" — " + e.chain[len(e.chain) - 1] + " reached" if len(e.chain) > 0 else "")
-                                            }}
+                                            {("Acknowledged by " + e.chain[len(e.chain) - 1]) if e.acknowledged else ("Not acknowledged" + (" — " + e.chain[len(e.chain) - 1] + " reached" if len(e.chain) > 0 else ""))}
                                         </div>
                                     </div>
                                 }}

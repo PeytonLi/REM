@@ -71,10 +71,17 @@ node User {
 }
 
 node Resident {
-    """A person being handed off. Summaries and retrieval are scoped to these."""
+    """A person being handed off. Summaries and retrieval are scoped to these.
+
+    `concern_status`/`concern_note` are the homescreen's clinical-attention
+    signal: "concern" (tier-1) | "watching" (tier-2) | "stable". In a real
+    deployment the tripwire pipeline writes these; for the demo the seed
+    walker sets them (NOT fabricated in the client)."""
     has name: str;
     has room: str;
     has facility_id: str = "F1";
+    has concern_status: str = "stable";   # concern | watching | stable
+    has concern_note: str = "";           # one-line reason shown on the row
 }
 
 node HandoffSession {
@@ -380,8 +387,90 @@ def _gen_at(d: dict) -> float {
 # Walkers -- the API surface (PRD 6). All :pub, all spawned from root.
 # ===========================================================================
 
+"""One seeded handoff 'story' -- a diarized transcript + its SBAR summary -- for
+a resident and an event kind ('fall' | 'fever' | 'normal'). Text is templated
+on the resident's name so each resident reads as their own person."""
+def _seed_story(kind: str, name: str) -> dict {
+    if kind == "fall" {
+        return {
+            "shift": "N-night",
+            "segments": [
+                {"speaker": "Speaker 1", "text": f"Okay, handing over {name}. The big thing this shift — an unwitnessed fall in the bathroom around 2 AM.", "start": 0.0},
+                {"speaker": "Speaker 2", "text": "Was there any head strike or injury?", "start": 7.5},
+                {"speaker": "Speaker 1", "text": "No head strike that we could see. There's bruising over the right hip and they're guarding it on transfers.", "start": 11.0},
+                {"speaker": "Speaker 2", "text": "What were the vitals?", "start": 18.0},
+                {"speaker": "Speaker 1", "text": "Stable — BP 128 over 76, heart rate 82. Neuro obs all normal. Doctor's aware and ordered a hip X-ray for the morning.", "start": 21.0},
+                {"speaker": "Speaker 2", "text": "And mobility now?", "start": 29.0},
+                {"speaker": "Speaker 1", "text": "One-assist for now. We've put a fall mat down and the bed alarm is on.", "start": 32.0}
+            ],
+            "situation": f"{name} had an unwitnessed fall in the bathroom overnight (~02:00).",
+            "background": "Ambulates independently at baseline; no prior falls this admission.",
+            "assessment": "No head strike observed; neuro obs normal. Bruising and guarding over the right hip — query fracture. Vitals stable.",
+            "recommendation": "Hip X-ray in the morning; one-assist transfers; fall mat and bed alarm in place; continue neuro obs 4-hourly.",
+            "actions": [
+                {"task": "Hip X-ray", "owner": "Day RN", "due": "AM"},
+                {"task": "Neuro obs 4-hourly", "owner": "RN", "due": "ongoing"}
+            ],
+            "contingencies": [
+                {"trigger": "New confusion or worsening hip pain", "response": "Escalate to MD; consider CT"}
+            ]
+        };
+    }
+    if kind == "fever" {
+        return {
+            "shift": "D-day",
+            "segments": [
+                {"speaker": "Speaker 1", "text": f"Next is {name} — they spiked a fever this afternoon, 38.6.", "start": 0.0},
+                {"speaker": "Speaker 2", "text": "Any obvious source?", "start": 5.0},
+                {"speaker": "Speaker 1", "text": "Productive cough since yesterday and the urine's been cloudy. We sent bloods and a urine sample, cultures are pending.", "start": 8.0},
+                {"speaker": "Speaker 2", "text": "What have we given so far?", "start": 16.0},
+                {"speaker": "Speaker 1", "text": "Paracetamol at 3 PM, came down to 37.8. Doctor started empiric antibiotics pending cultures, and we're pushing oral fluids.", "start": 19.0},
+                {"speaker": "Speaker 2", "text": "How's their intake?", "start": 27.0},
+                {"speaker": "Speaker 1", "text": "A little low — encourage fluids. Temp is due again at 8 PM.", "start": 30.0}
+            ],
+            "situation": f"{name} became febrile this afternoon, peak 38.6°C.",
+            "background": "Productive cough since yesterday; cloudy urine — query chest vs urinary source.",
+            "assessment": "Responds to paracetamol (down to 37.8). Cultures pending. Mildly reduced oral intake.",
+            "recommendation": "Empiric antibiotics as charted; 4-hourly temperatures; encourage oral fluids; chase culture results.",
+            "actions": [
+                {"task": "Recheck temperature 20:00", "owner": "RN", "due": "20:00"},
+                {"task": "Chase blood + urine cultures", "owner": "Day RN", "due": "AM"}
+            ],
+            "contingencies": [
+                {"trigger": "Temp >39, rigors, or falling BP", "response": "Sepsis screen and escalate to MD"}
+            ]
+        };
+    }
+    return {
+        "shift": "N-night",
+        "segments": [
+            {"speaker": "Speaker 1", "text": f"And {name} — quiet shift, no concerns.", "start": 0.0},
+            {"speaker": "Speaker 2", "text": "Eating and drinking okay?", "start": 4.0},
+            {"speaker": "Speaker 1", "text": "Full diet, good intake, and they slept well overnight. Vitals all within normal limits.", "start": 7.0},
+            {"speaker": "Speaker 2", "text": "Anything outstanding with medications?", "start": 14.0},
+            {"speaker": "Speaker 1", "text": "No, routine morning meds given, nothing outstanding. Continuing as is.", "start": 17.0},
+            {"speaker": "Speaker 2", "text": "Great — nothing to action then.", "start": 23.0}
+        ],
+        "situation": f"{name} — stable, no acute concerns this shift.",
+        "background": "Independent with activities of daily living; full diet.",
+        "assessment": "Vitals within normal limits; good oral intake; slept well.",
+        "recommendation": "Continue routine care and observations. No new actions.",
+        "actions": [
+            {"task": "Routine observations per schedule", "owner": "RN", "due": "ongoing"}
+        ],
+        "contingencies": [
+            {"trigger": "Any new symptom or change in baseline", "response": "Standard clinical review"}
+        ]
+    };
+}
+
+
 walker:pub SeedDemo {
-    """Idempotently seed demo staff + residents (PRD 5.1). Safe to call repeatedly."""
+    """Seed demo staff + 3 residents, each with 3 signed handoffs (a fall, a
+    fever, and a normal shift) -- full transcript + SBAR per handoff, so the
+    retrieve / detail / knowledge-graph screens all have real data. Idempotent
+    (guarded on emptiness). To RE-seed, wipe the store first:
+    `jac clean --data --force`, then reboot / log in."""
     has reports: list[dict] = [];
 
     can seed with Root entry {
@@ -392,13 +481,55 @@ walker:pub SeedDemo {
             here ++> User(username="acna", name="Alex Cruz", role="CNA");
         }
         if not [here --> [?:Resident]] {
-            here ++> Resident(name="Harold Alvarez", room="3B");
-            here ++> Resident(name="Rosa Marino", room="2A");
-            here ++> Resident(name="Walter Kim", room="4C");
+            base = now();
+            day = 86400.0;
+            # Each resident's 3 handoffs, oldest -> newest. The newest event
+            # sets their current concern_status shown on the homescreen.
+            people = [
+                {"name": "Harold Alvarez", "room": "3B", "status": "concern",
+                 "note": "Fall overnight · hip X-ray pending",
+                 "order": ["normal", "fever", "fall"]},
+                {"name": "Rosa Marino", "room": "2A", "status": "watching",
+                 "note": "Febrile 38.6 this afternoon · cultures pending",
+                 "order": ["fall", "normal", "fever"]},
+                {"name": "Walter Kim", "room": "4C", "status": "stable",
+                 "note": "",
+                 "order": ["fever", "fall", "normal"]}
+            ];
+            agos = [6.0, 3.0, 0.5];   # days ago: oldest, middle, newest
+            for p in people {
+                r = Resident(name=p["name"] as str, room=p["room"] as str,
+                             concern_status=p["status"] as str, concern_note=p["note"] as str);
+                here ++> r;
+                rid = jid(r);
+                for (pos, kind) in enumerate(p["order"] as list) {
+                    at = base - (agos[pos] as float) * day;
+                    story = _seed_story(kind as str, p["name"] as str);
+                    sess = HandoffSession(
+                        outgoing_user="mortiz", incoming_user="dpatel",
+                        resident_ids=[rid], status="completed",
+                        started_at=at - 1800.0, ended_at=at, shift=story["shift"] as str
+                    );
+                    here ++> sess;
+                    sess ++> Transcript(segments=story["segments"] as list, audio_ref="");
+                    sess ++> HandoffSummary(
+                        resident_id=rid,
+                        situation=story["situation"] as str,
+                        background=story["background"] as str,
+                        assessment=story["assessment"] as str,
+                        recommendation=story["recommendation"] as str,
+                        action_list=story["actions"] as list,
+                        contingencies=story["contingencies"] as list,
+                        generated_at=at, model_used="seed", status="signed",
+                        signed_by="Maya Ortiz", signed_at=at
+                    );
+                }
+            }
         }
         report {
             "users": len([here --> [?:User]]),
-            "residents": len([here --> [?:Resident]])
+            "residents": len([here --> [?:Resident]]),
+            "handoffs": len([here --> [?:HandoffSession]])
         };
     }
 }
@@ -797,7 +928,13 @@ walker:pub ResidentGraph {
         seen: dict = {};                      # episode id -> True (add each once)
         for b in [res ->:ResBelief:->] {
             bid: str = jid(b);
-            nodes.append({"id": bid, "kind": "Clinical", "label": _short(b.claim)});
+            # `label` stays short for the graph canvas; `full` carries the whole
+            # claim for the belief list, plus category + evidence count.
+            nodes.append({
+                "id": bid, "kind": "Clinical", "label": _short(b.claim),
+                "full": b.claim, "category": b.category,
+                "evidence": len([b ->:Derived:->])
+            });
             links.append({"source": jid(res), "target": bid});
             for ep in [b ->:Derived:->] {
                 eid: str = jid(ep);
@@ -826,5 +963,59 @@ walker:pub ResidentGraph {
                 "episodes": len([res ->:ResObserved:->])
             }
         };
+    }
+}
+
+
+# ===========================================================================
+# Homescreen feed (landing screen). Every facility resident with a concern
+# status DERIVED from real handoff state -- no roster/assignment model in the
+# MVP, so all residents are returned. Concern is a handoff-workflow signal
+# (open session / unsigned draft / last handoff), NOT live clinical vitals:
+# the homescreen produces reviewable handoffs, it is not a monitoring board.
+# ===========================================================================
+walker:pub HomeFeed {
+    """All residents + handoff-derived status for the nurse landing screen."""
+    has reports: list[dict] = [];
+
+    can build with Root entry {
+        sessions = [here --> [?:HandoffSession]];
+        out: list[dict] = [];
+        for r in [here --> [?:Resident]] {
+            rid = jid(r);
+            open_sess = False;
+            has_draft = False;
+            signed_count = 0;
+            last_at = 0.0;
+            last_situation = "";
+            for sess in sessions {
+                if rid in sess.resident_ids {
+                    if sess.status == "in_progress" {
+                        open_sess = True;
+                    }
+                    for summ in [sess --> [?:HandoffSummary]] {
+                        if summ.resident_id == rid {
+                            if summ.status == "signed" {
+                                signed_count = signed_count + 1;
+                            } else {
+                                has_draft = True;
+                            }
+                            if summ.generated_at > last_at {
+                                last_at = summ.generated_at;
+                                last_situation = summ.situation;
+                            }
+                        }
+                    }
+                }
+            }
+            out.append({
+                "id": rid, "name": r.name, "room": r.room,
+                "concern_status": r.concern_status, "concern_note": r.concern_note,
+                "open": open_sess, "has_draft": has_draft,
+                "signed_count": signed_count,
+                "last_at": last_at, "last_situation": last_situation
+            });
+        }
+        report {"residents": out};
     }
 }

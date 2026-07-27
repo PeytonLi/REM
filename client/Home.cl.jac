@@ -1,0 +1,191 @@
+"""Nurse homescreen -- the landing screen after login.
+
+Ties the app together: a greeting + shift context, a hard-capped "needs
+attention" strip, the primary "Start handoff" action, and every facility
+resident sorted by concern (there is no roster/assignment model in the MVP, so
+all residents show). Concern status comes from the DB (Resident.concern_status
+/ concern_note, set by the seed walker / tripwire pipeline) via the HomeFeed
+walker -- nothing is fabricated client-side. Tapping a resident opens their handoff
+history (PatientView). Deliberately NOT a live-vitals monitor -- one line of
+status per row, nothing more (feature spec, alarm-fatigue + non-goal).
+"""
+
+sv import from handoff { HomeFeed }
+import from .theme { initials }
+
+
+def:pub HomeView(
+    user: dict,
+    onStartHandoff: Callable[[], None],
+    onOpenResident: Callable[[dict], None],
+    onRetrieve: Callable[[], None],
+    onSignOut: Callable[[], None]
+) -> JsxElement {
+    has residents: list = [];
+    has loading: bool = True;
+    has errorMsg: str = "";
+    has query: str = "";
+    has showAllAttn: bool = False;
+
+    async can with entry {
+        try {
+            res = root spawn HomeFeed();
+            residents = res.reports[0]["residents"] as list;
+        } except Exception as e {
+            errorMsg = "Could not load homescreen: " + str(e);
+        }
+        loading = False;
+    }
+
+    def onQuery(e: any) -> None { query = e.target.value; }
+    def toggleAttn(e: MouseEvent) -> None { showAllAttn = not showAllAttn; }
+
+    # Status comes from the DB (concern_status/concern_note, set by the seed
+    # walker / tripwire pipeline). The reason falls back to real handoff state
+    # only for stable residents with no note -- nothing is fabricated here.
+    def deriveStatus(r: dict) -> dict {
+        status = r["concern_status"] as str;
+        note = r["concern_note"] as str;
+        if status == "concern" {
+            return {"kind": "concern", "bucket": 0,
+                "reason": note if note else "Active concern", "hot": True};
+        }
+        if status == "watching" {
+            return {"kind": "watch", "bucket": 1,
+                "reason": note if note else "On watch", "hot": False};
+        }
+        if note {
+            return {"kind": "stable", "bucket": 2, "reason": note, "hot": False};
+        }
+        if (r["last_at"] as float) > 0.0 {
+            return {"kind": "stable", "bucket": 2, "reason": "Stable · handoff on file", "hot": False};
+        }
+        return {"kind": "stable", "bucket": 2, "reason": "No handoffs yet", "hot": False};
+    }
+
+    def dotClass(kind: str) -> str {
+        if kind == "concern" { return "dot dot-concern"; }
+        if kind == "watch" { return "dot dot-watch"; }
+        return "dot dot-stable";
+    }
+
+    fullName = user.get("name", "") as str;
+    parts = [p for p in fullName.split(" ") if p];
+    firstName = (parts[0] as str) if len(parts) > 0 else "there";
+
+    enriched: list[dict] = [];
+    for r in residents {
+        rd = r as dict;
+        d = deriveStatus(rd);
+        enriched.append({
+            "id": rd["id"], "name": rd["name"], "room": rd["room"],
+            "kind": d["kind"], "bucket": d["bucket"], "reason": d["reason"], "hot": d["hot"]
+        });
+    }
+
+    attnConcern = [e for e in enriched if (e["kind"] as str) == "concern"];
+    attnWatch = [e for e in enriched if (e["kind"] as str) == "watch"];
+    attention = attnConcern + attnWatch;
+    attnShown = attention if showAllAttn else attention[0:3];
+
+    q = query.strip().lower();
+    filtered = enriched;
+    if q {
+        filtered = [e for e in enriched
+            if (q in (e["name"] as str).lower()) or (q in (e["room"] as str).lower())];
+    }
+    b0 = [e for e in filtered if (e["bucket"] as int) == 0];
+    b1 = [e for e in filtered if (e["bucket"] as int) == 1];
+    b2 = [e for e in filtered if (e["bucket"] as int) == 2];
+    ordered = b0 + b1 + b2;
+
+    return <div className="home">
+        <div className="home-head">
+            <div style={{"flex": "1 1 auto", "minWidth": "0"}}>
+                <h1 className="home-greet">{"Good evening, " + firstName}</h1>
+                <p className="home-sub">Night shift · Hall B · 19:00–07:00</p>
+            </div>
+            <button className="avatar" title="Sign out"
+                onClick={lambda (e: MouseEvent) { onSignOut(); }}>{initials(fullName)}</button>
+        </div>
+
+        {if errorMsg {
+            <div className="alert alert-error">{errorMsg}</div>
+        }}
+
+        {if loading {
+            <div className="attn attn-empty"><div className="attn-head">Loading…</div></div>
+        }}
+
+        {if not loading {
+            <div className={"attn attn-empty" if len(attention) == 0 else "attn"}>
+                <div className="attn-head">
+                    <span>Needs attention</span>
+                    {if len(attention) > 0 {
+                        <span className="attn-count">{str(len(attention))}</span>
+                    }}
+                </div>
+                {if len(attention) == 0 {
+                    <div className="muted-sm">All residents stable — nothing flagged.</div>
+                }}
+                {for (ai, a) in enumerate(attnShown) {
+                    <div key={str(ai)} className="attn-item">
+                        <span className={"attn-room attn-tier1" if (a["hot"] as bool) else "attn-room"}>
+                            {"Rm " + (a["room"] as str)}
+                        </span>
+                        <span>{a["reason"] as str}</span>
+                    </div>
+                }}
+                {if len(attention) > 3 {
+                    <button className="attn-more" onClick={toggleAttn}>
+                        {("Show top 3" if showAllAttn else ("View all " + str(len(attention)) + " →"))}
+                    </button>
+                }}
+            </div>
+        }}
+
+        <button className="btn btn-primary btn-block" onClick={lambda (e: MouseEvent) { onStartHandoff(); }}>
+            + Start handoff
+        </button>
+        <div className="cta-note">Shift ends in 42 min</div>
+
+        <div className="sec-head">
+            <span className="sec-title">{"Residents · " + str(len(residents))}</span>
+            <input className="searchbox" value={query} onChange={onQuery} placeholder="Search room…"/>
+        </div>
+
+        <div className="res-list">
+            {if not loading and len(ordered) == 0 {
+                <div className="res-empty">{"No residents match “" + query + "”."}</div>
+            }}
+            {for (ri, e) in enumerate(ordered) {
+                <button key={str(ri)} className="res-row"
+                    onClick={lambda (ev: MouseEvent) { onOpenResident({"id": e["id"], "name": e["name"], "room": e["room"]}); }}>
+                    <span className={dotClass(e["kind"] as str)}></span>
+                    <span className="res-main">
+                        <span className="res-name">{"Rm " + (e["room"] as str) + " · " + (e["name"] as str)}</span>
+                        <span className={"res-reason res-reason-hot" if (e["hot"] as bool) else "res-reason"}>
+                            {e["reason"] as str}
+                        </span>
+                    </span>
+                    <span className="chev">›</span>
+                </button>
+            }}
+        </div>
+
+        <div className="tabbar">
+            <button className="tabbar-item tabbar-active">
+                <span className="tabbar-ic">⌂</span><span>Home</span>
+            </button>
+            <button className="tabbar-item" onClick={lambda (e: MouseEvent) { onRetrieve(); }}>
+                <span className="tabbar-ic">⇄</span><span>Handoffs</span>
+            </button>
+            <button className="tabbar-item">
+                <span className="tabbar-ic">☰</span><span>Residents</span>
+            </button>
+            <button className="tabbar-item" onClick={lambda (e: MouseEvent) { onSignOut(); }}>
+                <span className="tabbar-ic">◔</span><span>Me</span>
+            </button>
+        </div>
+    </div>;
+}
