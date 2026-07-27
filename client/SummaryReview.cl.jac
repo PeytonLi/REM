@@ -292,12 +292,7 @@ def:pub SummaryView(
                                     {ed["claim"] as str}
                                 </div>
                                 <div style={{"color": "#9ca3af", "marginTop": "0.15rem"}}>
-                                    {if ed["acknowledged"] {
-                                        "Acknowledged by " + ((ed["chain"] as list)[len(ed["chain"] as list) - 1] as str)
-                                    } else {
-                                        chainList = ed["chain"] as list;
-                                        "Not acknowledged" + (" — " + (chainList[len(chainList) - 1] as str) + " reached" if len(chainList) > 0 else "")
-                                    }}
+                                    {("Acknowledged by " + ((ed["chain"] as list)[len(ed["chain"] as list) - 1] as str)) if ed["acknowledged"] else ("Not acknowledged" + (" — " + ((ed["chain"] as list)[len(ed["chain"] as list) - 1] as str) + " reached" if len(ed["chain"] as list) > 0 else ""))}
                                 </div>
                             </div>
                         }}
