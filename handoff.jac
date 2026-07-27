@@ -452,14 +452,13 @@ def _seed_story(kind: str, name: str) -> dict {
             "situation": f"{name} became febrile this afternoon, peak 38.6°C.",
             "background": "Productive cough since yesterday; cloudy urine — query chest vs urinary source.",
             "assessment": "Responds to paracetamol (down to 37.8). Cultures pending. Mildly reduced oral intake.",
-            "recommendation": "Empiric antibiotics as charted; 4-hourly temperatures; encourage oral fluids; chase culture results.",
+            "recommendation": "Empiric antibiotics as charted; 4-hourly temperatures; encourage oral "
+                "fluids; chase culture results. Escalate if temp >39, rigors, or falling BP.",
             "actions": [
                 {"task": "Recheck temperature 20:00", "owner": "RN", "due": "20:00"},
                 {"task": "Chase blood + urine cultures", "owner": "Day RN", "due": "AM"}
             ],
-            "contingencies": [
-                {"trigger": "Temp >39, rigors, or falling BP", "response": "Sepsis screen and escalate to MD"}
-            ]
+            "contingencies": []
         };
     }
     return {
@@ -476,12 +475,8 @@ def _seed_story(kind: str, name: str) -> dict {
         "background": "Independent with activities of daily living; full diet.",
         "assessment": "Vitals within normal limits; good oral intake; slept well.",
         "recommendation": "Continue routine care and observations. No new actions.",
-        "actions": [
-            {"task": "Routine observations per schedule", "owner": "RN", "due": "ongoing"}
-        ],
-        "contingencies": [
-            {"trigger": "Any new symptom or change in baseline", "response": "Standard clinical review"}
-        ]
+        "actions": [],
+        "contingencies": []
     };
 }
 
@@ -504,23 +499,18 @@ walker:pub SeedDemo {
         if not [here --> [?:Resident]] {
             base = now();
             day = 86400.0;
-            # Each resident's 3 handoffs, oldest -> newest. The newest event
-            # sets their current concern_status shown on the homescreen.
+            # Each resident's 3 handoffs, oldest -> newest. HomeFeed derives the
+            # concern shown on the homescreen from the NEWEST handoff's content
+            # (fall -> concern, fever -> watching, normal -> stable), so the
+            # order here is what sets each resident's current status.
             people = [
-                {"name": "Harold Alvarez", "room": "3B", "status": "concern",
-                 "note": "Fall overnight · hip X-ray pending",
-                 "order": ["normal", "fever", "fall"]},
-                {"name": "Rosa Marino", "room": "2A", "status": "watching",
-                 "note": "Febrile 38.6 this afternoon · cultures pending",
-                 "order": ["fall", "normal", "fever"]},
-                {"name": "Walter Kim", "room": "4C", "status": "stable",
-                 "note": "",
-                 "order": ["fever", "fall", "normal"]}
+                {"name": "Harold Alvarez", "room": "3B", "order": ["normal", "fever", "fall"]},
+                {"name": "Rosa Marino", "room": "2A", "order": ["fall", "normal", "fever"]},
+                {"name": "Walter Kim", "room": "4C", "order": ["fever", "fall", "normal"]}
             ];
             agos = [6.0, 3.0, 0.5];   # days ago: oldest, middle, newest
             for p in people {
-                r = Resident(name=p["name"] as str, room=p["room"] as str,
-                             concern_status=p["status"] as str, concern_note=p["note"] as str);
+                r = Resident(name=p["name"] as str, room=p["room"] as str);
                 here ++> r;
                 rid = jid(r);
                 for (pos, kind) in enumerate(p["order"] as list) {
@@ -1009,6 +999,8 @@ walker:pub HomeFeed {
             signed_count = 0;
             last_at = 0.0;
             last_situation = "";
+            last_conts: list = [];
+            last_actions: list = [];
             for sess in sessions {
                 if rid in sess.resident_ids {
                     if sess.status == "in_progress" {
@@ -1024,14 +1016,42 @@ walker:pub HomeFeed {
                             if summ.generated_at > last_at {
                                 last_at = summ.generated_at;
                                 last_situation = summ.situation;
+                                last_conts = summ.contingencies;
+                                last_actions = summ.action_list;
                             }
                         }
                     }
                 }
             }
+            # Derive the attention status from the LATEST handoff's content:
+            # if/then safety nets -> concern; open action tasks -> watching;
+            # neither -> stable. This is what makes handoffs drive attention.
+            c_status = "stable";
+            c_note = "";
+            if len(last_conts) > 0 {
+                c_status = "concern";
+                c_note = (last_conts[0] as dict).get("trigger", "Safety net to watch") as str;
+            } elif len(last_actions) > 0 {
+                c_status = "watching";
+                c_note = (last_actions[0] as dict).get("task", "Open follow-up") as str;
+            }
+            # A nurse resolving from the strip clears the concern until a NEWER
+            # handoff arrives (resolved_at >= latest handoff => still resolved).
+            # Guarded: default-valued node fields never explicitly set don't
+            # survive the persist/reload round-trip in this jac build.
+            resolved_at = 0.0;
+            try {
+                resolved_at = r.concern_resolved_at;
+            } except Exception {
+                resolved_at = 0.0;
+            }
+            if resolved_at >= last_at and last_at > 0.0 {
+                c_status = "stable";
+                c_note = "";
+            }
             out.append({
                 "id": rid, "name": r.name, "room": r.room,
-                "concern_status": r.concern_status, "concern_note": r.concern_note,
+                "concern_status": c_status, "concern_note": c_note,
                 "open": open_sess, "has_draft": has_draft,
                 "signed_count": signed_count,
                 "last_at": last_at, "last_situation": last_situation
