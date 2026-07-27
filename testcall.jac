@@ -27,7 +27,7 @@ import from adapters.voice { place_call }
 # The primary demo call from PRD §8, script A -- same shape escalate.jac's
 # script_for() builds from a Clinical node.
 glob FALL_SCRIPT: str =
-    "This is the handoff assistant calling about Ruth Alvarez, Room 3B. "
+    "This is the handoff assistant calling about Harold Alvarez, Room 3. "
     "The wearable detected a fall at 3:05 AM with no movement for the "
     "following two minutes, and no room check has been logged yet. "
     "Requesting an immediate check. Can you read back the request?";

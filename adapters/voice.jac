@@ -143,7 +143,7 @@ That omission is what feeds the panel in omission.jac -- do not "fix" it."""
 def scripted_segments() -> list[Segment] {
     return [
         Segment(
-            text="Okay, room 3B, Ruth Alvarez, eighty-two, day five.",
+            text="Okay, room 3, Harold Alvarez, eighty-two, day five.",
             speaker="RN Maya Ortiz",
             start=0.0
         ),

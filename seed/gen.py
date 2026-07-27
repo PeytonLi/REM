@@ -22,7 +22,7 @@ SEED = 7
 OUT_DIR = Path(__file__).parent
 BASE = datetime(2026, 3, 2, 0, 0, tzinfo=timezone.utc)  # day 1 == Mar 2
 
-RESIDENT = "Ruth Alvarez, 82F, Room 3B"
+RESIDENT = "Harold Alvarez, 82M, Room 3"
 
 # Night RN rotates so the three desaturations get three distinct human observers.
 # See NOTE-R1 at the bottom of this file.

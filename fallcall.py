@@ -41,7 +41,7 @@ READINGS = ROOT / "seed" / "device_readings.json"
 # and the vitals generator at import time, and this script must run anywhere.
 FALL_THRESHOLD_G = 2.5
 
-PATIENT = "Ruth Alvarez"
+PATIENT = "Harold Alvarez"
 ROOM = "3B"
 CALL_TIMEOUT_S = 200.0  # bridge blocks up to 150s for ring + talk + wrap
 

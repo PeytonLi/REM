@@ -25,7 +25,7 @@ import from adapters.voice { place_call, REFUSE_PHONES, STUB_ANSWER_PHONES }
 
 # The scenario is one resident (PRD §11), and no node carries their name -- so the
 # one identity fact the nurse will ask for ("which patient was this?") lives here.
-glob RESIDENT: str = os.getenv("REM_RESIDENT") or "Ruth Alvarez, Room 3B";
+glob RESIDENT: str = os.getenv("REM_RESIDENT") or "Harold Alvarez, Room 3";
 
 
 obj EscalationResult {
