@@ -283,26 +283,20 @@ def:pub SummaryView(
                         </div>
                         {for (j, e) in enumerate(escalations) {
                             ed = e as dict;
+                            acked = ed["acknowledged"] as bool;
+                            chain = ed["chain"] as list;
+                            label = ("Acknowledged by " + (chain[len(chain) - 1] as str)) if acked and len(chain) > 0 else ("Not acknowledged");
                             <div key={str(j)} style={{
                                 "padding": "0.4rem 0.6rem", "marginBottom": "0.3rem",
                                 "borderRadius": "8px", "fontSize": "0.85rem",
-                                "background": "#064e3b" if ed["acknowledged"] else "#7f1d1d"
+                                "background": "#064e3b" if acked else "#7f1d1d"
                             }}>
-                                {if ed["acknowledged"] {
-                                    <span style={{"color": "#a7f3d0", "fontWeight": "600"}}>
-                                        {ed["claim"] as str}
-                                    </span>
-                                    <div style={{"color": "#9ca3af", "marginTop": "0.15rem"}}>
-                                        Acknowledged
-                                    </div>
-                                } else {
-                                    <span style={{"color": "#fecaca", "fontWeight": "600"}}>
-                                        {ed["claim"] as str}
-                                    </span>
-                                    <div style={{"color": "#9ca3af", "marginTop": "0.15rem"}}>
-                                        Not acknowledged
-                                    </div>
-                                }}
+                                <div style={{"color": "#a7f3d0" if acked else "#fecaca", "fontWeight": "600"}}>
+                                    {ed["claim"] as str}
+                                </div>
+                                <div style={{"color": "#9ca3af", "marginTop": "0.15rem"}}>
+                                    {label}
+                                </div>
                             </div>
                         }}
                     </div>
