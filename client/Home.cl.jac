@@ -10,7 +10,7 @@ history (PatientView). Deliberately NOT a live-vitals monitor -- one line of
 status per row, nothing more (feature spec, alarm-fatigue + non-goal).
 """
 
-sv import from handoff { HomeFeed }
+sv import from handoff { HomeFeed, ResolveConcern }
 import from .theme { initials }
 
 
@@ -39,6 +39,24 @@ def:pub HomeView(
 
     def onQuery(e: any) -> None { query = e.target.value; }
     def toggleAttn(e: MouseEvent) -> None { showAllAttn = not showAllAttn; }
+
+    # Clear a resident's concern from the attention strip. Records who + when
+    # server-side, then drops the item to stable locally so it leaves the strip.
+    async def resolveConcern(rid: str) -> None {
+        try {
+            root spawn ResolveConcern(resident_id=rid, resolved_by=(user.get("name", "") as str));
+            for r in residents {
+                rd = r as dict;
+                if (rd["id"] as str) == rid {
+                    rd["concern_status"] = "stable";
+                    rd["concern_note"] = "";
+                }
+            }
+            residents = residents[:];   # fresh ref so the view re-renders
+        } except Exception as e {
+            errorMsg = "Could not resolve: " + str(e);
+        }
+    }
 
     # Status comes from the DB (concern_status/concern_note, set by the seed
     # walker / tripwire pipeline). The reason falls back to real handoff state
@@ -129,11 +147,14 @@ def:pub HomeView(
                     <div className="muted-sm">All residents stable — nothing flagged.</div>
                 }}
                 {for (ai, a) in enumerate(attnShown) {
+                    rid = a["id"] as str;
                     <div key={str(ai)} className="attn-item">
                         <span className={"attn-room attn-tier1" if (a["hot"] as bool) else "attn-room"}>
                             {"Rm " + (a["room"] as str)}
                         </span>
-                        <span>{a["reason"] as str}</span>
+                        <span className="attn-reason">{a["reason"] as str}</span>
+                        <button className="attn-resolve"
+                            onClick={lambda (e: MouseEvent) { resolveConcern(rid); }}>Resolve</button>
                     </div>
                 }}
                 {if len(attention) > 3 {

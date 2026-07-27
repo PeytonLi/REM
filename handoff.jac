@@ -82,6 +82,8 @@ node Resident {
     has facility_id: str = "F1";
     has concern_status: str = "stable";   # concern | watching | stable
     has concern_note: str = "";           # one-line reason shown on the row
+    has concern_resolved_by: str = "";    # who cleared the last concern (audit)
+    has concern_resolved_at: float = 0.0; # when it was cleared (audit)
 }
 
 node HandoffSession {
@@ -1036,5 +1038,37 @@ walker:pub HomeFeed {
             });
         }
         report {"residents": out};
+    }
+}
+
+
+# ===========================================================================
+# Resolve a resident's active concern from the homescreen "Needs attention"
+# strip. Clears the concern back to stable and records who + when for audit.
+# In production the tripwire pipeline would re-raise a concern later if the
+# underlying finding recurs; this just clears the current one.
+# ===========================================================================
+walker:pub ResolveConcern {
+    """Clear a resident's concern (-> stable), recording who resolved it + when."""
+    has resident_id: str;
+    has resolved_by: str = "";
+    has reports: list[dict] = [];
+
+    can resolve with Root entry {
+        # Locate the resident by traversing root and matching jid -- the same
+        # mechanism HomeFeed uses. (jobj() by-id lookup does not round-trip
+        # across REST requests in this jac build, so we don't rely on it.)
+        for r in [here --> [?:Resident]] {
+            if jid(r) == self.resident_id {
+                r.concern_status = "stable";
+                r.concern_note = "";
+                r.concern_resolved_by = self.resolved_by;
+                r.concern_resolved_at = now();
+                report {"ok": True, "id": jid(r), "resolved_by": self.resolved_by,
+                        "resolved_at": r.concern_resolved_at};
+                return;
+            }
+        }
+        report {"ok": False, "error": "resident not found"};
     }
 }
