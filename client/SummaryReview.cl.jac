@@ -221,7 +221,6 @@ def:pub SummaryView(
             }}
         </div>
 
-        # -- audio recording playback --------------------------------------
         {if audioUrl {
             <div style={{
                 "marginTop": "1.5rem", "background": "#020617",
@@ -251,7 +250,6 @@ def:pub SummaryView(
             </div>
         }}
 
-        # -- tripwire findings + escalation results -------------------------
         {if len(tripwire) > 0 {
             <div style={{
                 "marginTop": "1.25rem", "background": "#1f2937",
