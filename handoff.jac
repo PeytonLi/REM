@@ -590,7 +590,7 @@ walker:pub EndHandoff {
         report {"ok": True, "session_id": jid(sess),
                 "transcript": {"segments": segs}, "summaries": out_summaries,
                 "audio_url": audio_url, "audio_mime": self.mime,
-                "tripwire": tripwire_findings, "escalations": escalations}
+                "tripwire": tripwire_findings, "escalations": escalations};
     }
 }
 
